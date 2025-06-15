@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
 import { AlertTriangle, Info, BellRing } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,15 +18,29 @@ const mockAlerts: AlertType[] = [
 
 ];
 
+const FormattedTimestamp = ({ timestamp }: { timestamp: string }) => {
+  const [formattedDate, setFormattedDate] = useState<string>('');
+
+  useEffect(() => {
+    setFormattedDate(new Date(timestamp).toLocaleString('fr-FR'));
+  }, [timestamp]);
+
+  if (!formattedDate) {
+    return <>Chargement...</>; // Ou une valeur par défaut, ou null
+  }
+
+  return <>{formattedDate}</>;
+};
+
 export function AlertsPanel() {
   const getSeverityIcon = (severity: AlertType['severity']) => {
     switch (severity) {
       case "critical":
         return <AlertTriangle className="h-5 w-5 text-destructive" />;
       case "warning":
-        return <Info className="h-5 w-5 text-yellow-500" />;
+        return <Info className="h-5 w-5 text-yellow-500" />; // Consistance avec OverviewCard
       case "info":
-        return <BellRing className="h-5 w-5 text-blue-500" />;
+        return <BellRing className="h-5 w-5 text-blue-500" />; // Consistance avec OverviewCard
       default:
         return <BellRing className="h-5 w-5 text-muted-foreground" />;
     }
@@ -38,7 +53,7 @@ export function AlertsPanel() {
       case "warning":
         return "secondary"; 
       case "info":
-        return "default"; 
+        return "default"; // Changé d'outline à default pour correspondre aux couleurs d'icônes
       default:
         return "outline";
     }
@@ -48,8 +63,8 @@ export function AlertsPanel() {
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
       <CardHeader>
-        <CardTitle>Notifications d'Alertes Critiques</CardTitle>
-        <CardDescription>Ces pneus requièrent une attention immédiate.</CardDescription>
+        <CardTitle>Notifications d'Alertes</CardTitle>
+        <CardDescription>Liste des alertes nécessitant une attention.</CardDescription>
       </CardHeader>
       <CardContent className="flex-grow overflow-hidden">
         <ScrollArea className="h-[300px] pr-4">
@@ -67,7 +82,9 @@ export function AlertsPanel() {
                         <Badge variant={getSeverityBadgeVariant(alert.severity)} className="capitalize text-xs">{alert.severity}</Badge>
                       </div>
                       <p className="text-sm text-muted-foreground">{alert.message}</p>
-                      <p className="text-xs text-muted-foreground/70">{new Date(alert.timestamp).toLocaleString('fr-FR')}</p>
+                      <p className="text-xs text-muted-foreground/70">
+                        <FormattedTimestamp timestamp={alert.timestamp} />
+                      </p>
                     </div>
                   </div>
                   {index < mockAlerts.length - 1 && <Separator className="my-2" />}
@@ -77,7 +94,7 @@ export function AlertsPanel() {
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
               <BellRing className="h-12 w-12 mb-2" />
-              <p>Aucune alerte active.</p>
+              <p>Aucune alerte active pour le moment.</p>
             </div>
           )}
         </ScrollArea>
@@ -85,3 +102,4 @@ export function AlertsPanel() {
     </Card>
   );
 }
+
