@@ -8,6 +8,7 @@ import {
   BarChart3,
   Clock,
   Settings2,
+  FilePlus, // Nouvelle icône pour la page de remplissage
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -19,7 +20,7 @@ import {
 
 const navItems = [
   {
-    href: "/",
+    href: "/dashboard", // Modifié pour pointer vers /dashboard
     icon: LayoutDashboard,
     label: "Tableau de Bord",
     tooltip: "Aperçu des Performances",
@@ -42,6 +43,12 @@ const navItems = [
     label: "Recommandation Pneus",
     tooltip: "Recommander les Pneus Optimaux",
   },
+  { // Nouvel élément de navigation
+    href: "/remplissage",
+    icon: FilePlus,
+    label: "Saisie Suivi Pneu",
+    tooltip: "Ajouter un nouveau suivi de pneu",
+  },
 ];
 
 export function SidebarNav() {
@@ -54,7 +61,6 @@ export function SidebarNav() {
         <SidebarMenuItem key={item.href}>
           <Link href={item.href} asChild>
             <SidebarMenuButton
-              asChild
               variant="default"
               size="default"
               isActive={pathname === item.href}
@@ -62,10 +68,8 @@ export function SidebarNav() {
               onClick={() => setOpenMobile(false)}
               aria-label={item.label}
             >
-              <a>
-                <item.icon />
-                <span>{item.label}</span>
-              </a>
+              <item.icon />
+              <span>{item.label}</span>
             </SidebarMenuButton>
           </Link>
         </SidebarMenuItem>

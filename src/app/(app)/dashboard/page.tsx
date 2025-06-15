@@ -1,7 +1,9 @@
+
 import { OverviewCard } from "@/components/dashboard/overview-card";
 import { PerformanceSummaryChart } from "@/components/dashboard/performance-summary-chart";
 import { AlertsPanel } from "@/components/dashboard/alerts-panel";
 import { Activity, AlertOctagon, Wrench, PackageCheck } from "lucide-react";
+import { TireTrackingTable } from "@/components/dashboard/tire-tracking-table"; // Import du nouveau composant
 
 export default function DashboardPage() {
   return (
@@ -45,6 +47,11 @@ export default function DashboardPage() {
         <div className="lg:col-span-3">
           <AlertsPanel />
         </div>
+      </div>
+
+      {/* Section pour afficher les données de remplissage */}
+      <div>
+        <TireTrackingTable />
       </div>
 
       {/* Placeholder for additional dashboard sections like Recent Activity or Site Performance */}
