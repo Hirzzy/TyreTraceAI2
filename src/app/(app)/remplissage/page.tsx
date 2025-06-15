@@ -9,8 +9,8 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription as CardDesc, CardFooter } from "@/components/ui/card"
 import type { RemplissageFormData } from "@/types"
 import { useToast } from "@/hooks/use-toast"
 
@@ -81,7 +81,7 @@ export default function RemplissagePage() {
       <Card className="w-full max-w-3xl shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Nouveau Suivi Pneumatique</CardTitle>
-          <CardDescription>Remplissez les informations ci-dessous pour ajouter un nouveau suivi.</CardDescription>
+          <CardDesc>Remplissez les informations ci-dessous pour ajouter un nouveau suivi.</CardDesc>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
