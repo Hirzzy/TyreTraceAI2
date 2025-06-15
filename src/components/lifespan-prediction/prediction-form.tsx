@@ -51,34 +51,36 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
       tireId: "PNEU-AVD-007",
       vehicleType: "Camion porteur 19T",
       usagePattern: "Principalement autoroute et nationales, charges variables (moy. 10T), conduite économique.",
-      historicalData: JSON.stringify({ 
-        kilometrage_actuel_km: 75000, 
-        pression_moyenne_psi: 110, 
+      historicalData: JSON.stringify({
+        kilometrage_actuel_km: 75000,
+        pression_moyenne_psi: 110,
         profondeur_sculpture_actuelle_mm: 6,
         age_pneu_mois: 18,
-        nombre_rechapages: 0
+        nombre_rechapages: 0,
+        dernier_incident: "Aucun",
+        conditions_stockage: "Garage sec et tempéré"
       }, null, 2),
-      seasonalFactors: "Utilisation intensive en été (fortes chaleurs), moins en hiver mais routes parfois enneigées/salées.",
+      seasonalFactors: "Utilisation intensive en été (fortes chaleurs), moins en hiver mais routes parfois enneigées/salées. Pneus stockés correctement hors saison.",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    onPredictionResult(null); 
+    onPredictionResult(null);
     try {
       const input: PredictTireLifespanInput = values;
       const result = await predictTireLifespan(input);
       onPredictionResult(result);
       toast({
         title: "Prédiction Réussie",
-        description: "Les résultats de la prédiction sont affichés ci-dessous.",
+        description: "Les résultats de la prédiction de durée de vie du pneu sont disponibles.",
       });
     } catch (error) {
       console.error("Erreur lors de la prédiction de durée de vie:", error);
       toast({
         variant: "destructive",
         title: "Échec de la Prédiction",
-        description: error instanceof Error ? error.message : "Une erreur inconnue est survenue lors du traitement de votre demande.",
+        description: error instanceof Error ? error.message : "Une erreur inconnue est survenue lors du traitement de votre demande. Veuillez vérifier les données et réessayer.",
       });
       onPredictionResult(null);
     } finally {
@@ -90,7 +92,7 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
     <Card className="w-full shadow-md hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
         <CardTitle>Formulaire de Prédiction de Durée de Vie</CardTitle>
-        <CardDesc>Renseignez les informations du pneu pour une estimation IA de sa durée de vie.</CardDesc>
+        <CardDesc>Saisissez les informations détaillées du pneu pour obtenir une estimation, basée sur l'IA, de sa durée de vie restante.</CardDesc>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -103,8 +105,9 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                   <FormItem>
                     <FormLabel>Identifiant Unique du Pneu</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: PNEU-AVD-007, ID-UNIQUE-123" {...field} />
+                      <Input placeholder="Ex: PNEU-AVD-007, ID-SITE- VEH-POS-01" {...field} />
                     </FormControl>
+                    <FormDescription>Code unique assigné à ce pneu spécifique.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -118,6 +121,7 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                     <FormControl>
                       <Input placeholder="Ex: Semi-remorque, Grue mobile, Tracteur agricole" {...field} />
                     </FormControl>
+                    <FormDescription>Modèle ou catégorie du véhicule utilisant le pneu.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -131,14 +135,14 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                   <FormLabel>Profil d'Utilisation Principal</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Décrivez les conditions typiques d'utilisation du véhicule..."
+                      placeholder="Décrivez les conditions typiques d'utilisation : type de routes, charges, style de conduite..."
                       className="resize-none"
                       rows={3}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Indiquez le type de trajets (autoroute, ville, chantier), les charges habituelles, et le style de conduite.
+                    Ex: "Majoritairement autoroutes (80%), charges lourdes (30T+), conduite souple, quelques routes régionales (20%)".
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -152,15 +156,15 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                   <FormLabel>Données de Performance Antérieures (Format JSON)</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='{ "kilometrage_actuel_km": 75000, ... }'
+                      placeholder='Exemple : { "kilometrage_actuel_km": 75000, "pression_moyenne_psi": 110, ... }'
                       className="resize-y min-h-[120px] font-mono text-sm"
                       rows={5}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Fournissez les données de performance clés en format JSON valide. Exemple : 
-                    `{"kilometrage_km": 50000, "pression_psi": 100, "usure_mm": 7, "age_mois": 12}`
+                    Fournissez les données de performance clés en format JSON. Incluez des métriques comme le kilométrage, la pression, l'usure (profondeur de sculpture), l'âge, etc.
+                    <br/>Exemple de structure: <code>{'{ "kilometrage_km": 50000, "pression_psi": 100, "usure_mm": 7, "age_mois": 12, "incidents": ["crevaison mineure"] }'}</code>
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -174,14 +178,14 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                   <FormLabel>Facteurs Saisonniers et Environnementaux</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Décrivez les impacts saisonniers ou environnementaux spécifiques..."
+                      placeholder="Décrivez les impacts saisonniers ou environnementaux : climat, état des routes..."
                       className="resize-none"
                       rows={3}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Mentionnez les conditions climatiques (chaleur, froid, neige) et l'état des routes (salées, abrasives) qui influencent l'usure.
+                    Mentionnez les conditions climatiques (chaleur, froid, neige/verglas), l'état des routes (salées, abrasives, dégradées) et leur impact sur l'usure du pneu.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
