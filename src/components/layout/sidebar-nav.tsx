@@ -52,7 +52,7 @@ export function SidebarNav() {
     <SidebarMenu>
       {navItems.map((item) => (
         <SidebarMenuItem key={item.href}>
-          <Link href={item.href} passHref legacyBehavior>
+          <Link href={item.href} asChild>
             <SidebarMenuButton
               asChild
               variant="default"
