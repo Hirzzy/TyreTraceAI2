@@ -23,10 +23,17 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
-  tireId: z.string().min(1, "L'ID du pneu est requis."),
+  tireId: z.string().min(1, "L'identifiant du pneu est requis."),
   vehicleType: z.string().min(1, "Le type de véhicule est requis."),
   usagePattern: z.string().min(1, "Le profil d'utilisation est requis."),
-  historicalData: z.string().min(1, "Les données historiques sont requises (chaîne JSON)."),
+  historicalData: z.string().min(1, "Les données historiques sont requises (chaîne JSON valide).").refine((val) => {
+    try {
+      JSON.parse(val);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }, { message: "Le format JSON des données historiques est invalide." }),
   seasonalFactors: z.string().min(1, "Les facteurs saisonniers sont requis."),
 });
 
@@ -41,11 +48,17 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      tireId: "",
-      vehicleType: "",
-      usagePattern: "Ex : Kilométrage autoroutier, conduite en ville, hors-piste",
-      historicalData: JSON.stringify({ kilometrage: [10000, 20000, 30000], pression: [100, 98, 95], usure: [1, 2, 3] }, null, 2),
-      seasonalFactors: "Ex : Étés chauds, hivers froids avec neige",
+      tireId: "PNEU-AVD-007",
+      vehicleType: "Camion porteur 19T",
+      usagePattern: "Principalement autoroute et nationales, charges variables (moy. 10T), conduite économique.",
+      historicalData: JSON.stringify({ 
+        kilometrage_actuel_km: 75000, 
+        pression_moyenne_psi: 110, 
+        profondeur_sculpture_actuelle_mm: 6,
+        age_pneu_mois: 18,
+        nombre_rechapages: 0
+      }, null, 2),
+      seasonalFactors: "Utilisation intensive en été (fortes chaleurs), moins en hiver mais routes parfois enneigées/salées.",
     },
   });
 
@@ -56,12 +69,16 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
       const input: PredictTireLifespanInput = values;
       const result = await predictTireLifespan(input);
       onPredictionResult(result);
+      toast({
+        title: "Prédiction Réussie",
+        description: "Les résultats de la prédiction sont affichés ci-dessous.",
+      });
     } catch (error) {
       console.error("Erreur lors de la prédiction de durée de vie:", error);
       toast({
         variant: "destructive",
         title: "Échec de la Prédiction",
-        description: error instanceof Error ? error.message : "Une erreur inconnue est survenue.",
+        description: error instanceof Error ? error.message : "Une erreur inconnue est survenue lors du traitement de votre demande.",
       });
       onPredictionResult(null);
     } finally {
@@ -84,9 +101,9 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                 name="tireId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>ID du Pneu</FormLabel>
+                    <FormLabel>Identifiant Unique du Pneu</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex : PNEU-001A" {...field} />
+                      <Input placeholder="Ex: PNEU-AVD-007, ID-UNIQUE-123" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -99,7 +116,7 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                   <FormItem>
                     <FormLabel>Type de Véhicule</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex : Semi-remorque, Chariot élévateur" {...field} />
+                      <Input placeholder="Ex: Semi-remorque, Grue mobile, Tracteur agricole" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -111,16 +128,17 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               name="usagePattern"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Profil d'Utilisation</FormLabel>
+                  <FormLabel>Profil d'Utilisation Principal</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Décrivez l'utilisation typique du véhicule..."
+                      placeholder="Décrivez les conditions typiques d'utilisation du véhicule..."
                       className="resize-none"
+                      rows={3}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Ex : Long trajet autoroutier, livraisons urbaines avec arrêts fréquents, chantier de construction hors-piste.
+                    Indiquez le type de trajets (autoroute, ville, chantier), les charges habituelles, et le style de conduite.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -131,16 +149,18 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               name="historicalData"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Données de Performance Historiques (JSON)</FormLabel>
+                  <FormLabel>Données de Performance Antérieures (Format JSON)</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='{ "kilometrage": [10000, 20000], "pression": [100, 98], "usure": [1, 2] }'
-                      className="resize-y min-h-[100px] font-code"
+                      placeholder='{ "kilometrage_actuel_km": 75000, ... }'
+                      className="resize-y min-h-[120px] font-mono text-sm"
+                      rows={5}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Fournissez une chaîne JSON de données historiques, incluant kilométrage, pression, et usure.
+                    Fournissez les données de performance clés en format JSON valide. Exemple : 
+                    `{"kilometrage_km": 50000, "pression_psi": 100, "usure_mm": 7, "age_mois": 12}`
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -151,16 +171,17 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               name="seasonalFactors"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Facteurs Saisonniers</FormLabel>
+                  <FormLabel>Facteurs Saisonniers et Environnementaux</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Décrivez les impacts saisonniers..."
+                      placeholder="Décrivez les impacts saisonniers ou environnementaux spécifiques..."
                       className="resize-none"
+                      rows={3}
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Ex : Chaleur estivale extrême augmentant l'usure, routes hivernales verglacées nécessitant des gommes spécifiques.
+                    Mentionnez les conditions climatiques (chaleur, froid, neige) et l'état des routes (salées, abrasives) qui influencent l'usure.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
