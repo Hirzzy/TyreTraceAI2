@@ -1,5 +1,8 @@
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { CarFront } from "lucide-react"; // Using CarFront as a placeholder for a tire/vehicle icon
+import { CarFront, Home } from "lucide-react"; 
 
 export function AppHeader() {
   return (
@@ -7,11 +10,19 @@ export function AppHeader() {
       <div className="md:hidden">
         <SidebarTrigger aria-label="Basculer la barre latérale" />
       </div>
-      <div className="flex items-center gap-2">
-        <CarFront className="h-7 w-7 text-primary" />
-        <h1 className="text-xl font-semibold text-foreground">TyreTrace IA</h1>
+      <div className="flex flex-1 items-center gap-4">
+        <div className="flex items-center gap-2">
+          <CarFront className="h-7 w-7 text-primary" />
+          <h1 className="text-xl font-semibold text-foreground">TyreTrace IA</h1>
+        </div>
+        <Link href="/" passHref>
+          <Button variant="outline" size="sm" className="ml-4">
+            <Home className="mr-2 h-4 w-4" />
+            Accueil
+          </Button>
+        </Link>
       </div>
-      {/* Add UserMenu or other header items here if needed */}
+      {/* Add UserMenu or other header items here if needed in the future */}
     </header>
   );
 }
