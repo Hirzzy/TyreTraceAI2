@@ -25,7 +25,14 @@ import { Loader2 } from "lucide-react";
 const formSchema = z.object({
   vehicleType: z.string().min(1, "Le type de véhicule est requis."),
   role: z.string().min(1, "Le rôle du véhicule est requis."),
-  historicalTirePerformanceData: z.string().min(1, "Les données historiques sont requises (chaîne JSON)."),
+  historicalTirePerformanceData: z.string().min(1, "Les données historiques sont requises (chaîne JSON).").refine((val) => {
+    try {
+      JSON.parse(val);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }, { message: "Le format JSON des données historiques est invalide." }),
 });
 
 interface RecommendationFormProps {
@@ -39,13 +46,44 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      vehicleType: "",
-      role: "",
-      historicalTirePerformanceData: JSON.stringify({ 
-        "donnees": [
-          {"profilPneu": "A", "dureeVie": 50000, "cout": 300, "typeVehicule": "Camion", "role": "Long Trajet", "performanceSaisonniere": {"ete": "bonne", "hiver": "moyenne"}},
-          {"profilPneu": "B", "dureeVie": 40000, "cout": 250, "typeVehicule": "Camion", "role": "Long Trajet", "performanceSaisonniere": {"ete": "excellente", "hiver": "faible"}}
-        ]
+      vehicleType: "Camion de transport régional",
+      role: "Livraison de marchandises sur moyennes distances",
+      historicalTirePerformanceData: JSON.stringify({
+        "analysePneusExistants": [
+          {
+            "profilPneu": "Michelin X Multi Z",
+            "dureeVieMoyenneKm": 120000,
+            "coutUnitaireEuro": 450,
+            "typeVehiculeConcerne": "Camion porteur 19T",
+            "roleVehicule": "Distribution régionale",
+            "conditionsUtilisation": "Mixte autoroute et routes secondaires, charges variables.",
+            "performanceSaisonniere": {
+              "eteSec": "Excellente adhérence, usure modérée",
+              "pluie": "Bonne évacuation, sécurité maintenue",
+              "neigeVerglas": "Performance limitée, non recommandé pour usage intensif hivernal"
+            },
+            "incidentsNotables": ["Usure prématurée sur un lot spécifique en 2022", "Bonne résistance aux crevaisons"]
+          },
+          {
+            "profilPneu": "Goodyear KMAX S Gen-2",
+            "dureeVieMoyenneKm": 110000,
+            "coutUnitaireEuro": 420,
+            "typeVehiculeConcerne": "Camion porteur 19T",
+            "roleVehicule": "Distribution régionale",
+            "conditionsUtilisation": "Principalement routes nationales et départementales, conduite souple.",
+            "performanceSaisonniere": {
+              "eteSec": "Très bonne performance",
+              "pluie": "Adhérence correcte",
+              "neigeVerglas": "Adapté pour conditions hivernales légères à modérées"
+            },
+            "incidentsNotables": ["Moins de plaintes concernant l'usure irrégulière comparé à d'autres modèles"]
+          }
+        ],
+        "contexteOperationnel": {
+          "region": "Nord de la France",
+          "kilometrageAnnuelMoyenParVehicule": 80000,
+          "prioritesFlotte": ["Longévité", "Sécurité toutes saisons", "Coût total de possession (TCO)"]
+        }
       }, null, 2),
     },
   });
@@ -57,12 +95,16 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
       const input: RecommendOptimalTiresInput = values;
       const result = await recommendOptimalTires(input);
       onRecommendationResult(result);
+      toast({
+        title: "Recommandation Réussie",
+        description: "La suggestion de pneu optimal est maintenant disponible.",
+      });
     } catch (error) {
       console.error("Erreur lors de la recommandation de pneus:", error);
       toast({
         variant: "destructive",
         title: "Échec de la Recommandation",
-        description: error instanceof Error ? error.message : "Une erreur inconnue est survenue.",
+        description: error instanceof Error ? error.message : "Une erreur inconnue est survenue lors du traitement de votre demande.",
       });
       onRecommendationResult(null);
     } finally {
@@ -74,7 +116,7 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
     <Card className="w-full shadow-md hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
         <CardTitle>Formulaire de Recommandation de Pneus</CardTitle>
-        <CardDesc>Indiquez les caractéristiques du véhicule et les données historiques pour des recommandations de pneus assistées par IA.</CardDesc>
+        <CardDesc>Indiquez les caractéristiques du véhicule et les données de performance antérieures pour obtenir des recommandations de pneus assistées par l'IA.</CardDesc>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -89,6 +131,7 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                     <FormControl>
                       <Input placeholder="Ex : Camion, Chariot élévateur, Fourgon" {...field} />
                     </FormControl>
+                    <FormDescription>Indiquez la catégorie ou le modèle du véhicule.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -98,10 +141,11 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                 name="role"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Rôle du Véhicule</FormLabel>
+                    <FormLabel>Rôle Principal du Véhicule</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex : Transport, Chargement, Livraison" {...field} />
+                      <Input placeholder="Ex : Transport longue distance, Distribution régionale, Manutention en entrepôt" {...field} />
                     </FormControl>
+                    <FormDescription>Décrivez l'usage principal du véhicule.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -112,16 +156,16 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
               name="historicalTirePerformanceData"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Données Historiques de Performance des Pneus (JSON)</FormLabel>
+                  <FormLabel>Données Historiques de Performance des Pneus (Format JSON)</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='{ "donnees": [{ "profilPneu": "A", "dureeVie": 50000, ... }] }'
-                      className="resize-y min-h-[150px] font-code"
+                      placeholder='Exemple : { "analysePneusExistants": [{ "profilPneu": "Marque X", "dureeVieMoyenneKm": 100000, ... }], "contexteOperationnel": { ... } }'
+                      className="resize-y min-h-[280px] font-code text-sm"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Fournissez une chaîne JSON de données historiques sur la performance des pneus, incluant profils, durée de vie, coût, et facteurs saisonniers.
+                    Fournissez une chaîne JSON structurée avec les données de performance des pneus utilisés précédemment. Incluez des détails tels que le profil, la durée de vie, le coût, le type de véhicule, le rôle, les conditions d'utilisation, et les performances saisonnières.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -133,7 +177,7 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Recommandation en cours...
+                  Analyse en cours...
                 </>
               ) : (
                 "Obtenir la Recommandation"
