@@ -22,7 +22,7 @@ export default function LandingPage() {
               Fonctionnalités
             </Link>
             <Link href="#a-propos" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-              À propos
+              À Propos
             </Link>
             <Link href="#faq" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               FAQ
@@ -33,7 +33,7 @@ export default function LandingPage() {
           </nav>
           <Link href="/dashboard">
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Accéder à l'App
+              Accéder à l'Application
             </Button>
           </Link>
         </div>
@@ -51,7 +51,7 @@ export default function LandingPage() {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-black/50 to-background p-4 text-center">
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-            Voyez enfin ce que vous <br /> coûte chaque pneu
+            Visualisez Enfin le Coût Réel de Chaque Pneu
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
             Optimisez la gestion de votre flotte et réduisez vos dépenses avec une analyse prédictive de pointe.
@@ -59,7 +59,7 @@ export default function LandingPage() {
           <div className="mt-10">
             <Link href="/dashboard">
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Démarrer l'analyse
+                Démarrer l'Analyse
                 <ChevronRight className="ml-2 h-5 w-5" />
                 </Button>
             </Link>
@@ -71,17 +71,17 @@ export default function LandingPage() {
       <section id="fonctionnalites" className="py-12 md:py-20 lg:py-28 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="mb-2 text-center text-3xl font-bold tracking-tight text-primary md:mb-4 md:text-4xl">
-            Des fonctionnalités pensées pour vous
+            Des Fonctionnalités Pensées pour Vous
           </h2>
           <p className="mb-10 text-center text-lg text-muted-foreground md:mb-16">
             Tout ce dont vous avez besoin pour une gestion optimisée de vos pneumatiques.
           </p>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: MapPin, title: "Suivi en Temps Réel", description: "Géolocalisation précise et alertes instantanées." , dataAiHint: "map location"},
-              { icon: Cog, title: "Optimisation des Opérations", description: "Maintenance prédictive et amélioration de l'efficacité." , dataAiHint: "gear settings"},
-              { icon: LineChart, title: "Analyse de Performance", description: "Visualisez vos données pour des décisions éclairées." , dataAiHint: "chart graph"},
-              { icon: BarChartBig, title: "Indicateurs Clés (KPI)", description: "Mesurez votre succès et identifiez les points d'amélioration." , dataAiHint: "dashboard metrics"},
+              { icon: MapPin, title: "Suivi en Temps Réel", description: "Géolocalisation précise et alertes instantanées pour une réactivité maximale." , dataAiHint: "map location"},
+              { icon: Cog, title: "Optimisation des Opérations", description: "Maintenance prédictive et amélioration continue de l'efficacité opérationnelle." , dataAiHint: "gear settings"},
+              { icon: LineChart, title: "Analyse de Performance", description: "Visualisez vos données clés pour prendre des décisions stratégiques éclairées." , dataAiHint: "chart graph"},
+              { icon: BarChartBig, title: "Indicateurs Clés (KPI)", description: "Mesurez votre succès et identifiez les opportunités d'amélioration continue." , dataAiHint: "dashboard metrics"},
             ].map((feature, index) => (
               <Card key={index} className="flex flex-col items-center text-center bg-card hover:shadow-xl transition-shadow">
                 <CardHeader className="pb-2">
@@ -100,13 +100,13 @@ export default function LandingPage() {
       </section>
 
       {/* Detailed Features Section */}
-      <section className="py-12 md:py-20 lg:py-28 bg-card">
+      <section id="a-propos" className="py-12 md:py-20 lg:py-28 bg-card">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {[
-              { icon: ClipboardCheck, title: "Suivi des Montages", description: "Centralisez l'historique de chaque pneu, de son montage à sa réforme pour une traçabilité complète." },
-              { icon: TrendingUp, title: "Gestion de la Performance", description: "Analysez la performance des pneus pour optimiser les choix, anticiper les remplacements et réduire les coûts opérationnels." },
-              { icon: Archive, title: "Gestion de Stock Intelligente", description: "Gérez vos stocks de pneus neufs et usagés efficacement pour anticiper les besoins et éviter les ruptures ou surplus." },
+              { icon: ClipboardCheck, title: "Suivi Complet des Montages", description: "Centralisez l'historique de chaque pneu, de son montage à sa réforme, pour une traçabilité intégrale et fiable." },
+              { icon: TrendingUp, title: "Gestion Avancée de la Performance", description: "Analysez la performance des pneus pour optimiser les choix, anticiper les remplacements et réduire significativement les coûts opérationnels." },
+              { icon: Archive, title: "Gestion de Stock Intelligente", description: "Gérez vos stocks de pneus neufs et usagés efficacement pour anticiper les besoins et éviter les ruptures ou les surplus coûteux." },
             ].map((detail, index) => (
               <div key={index} className="rounded-lg p-6 shadow-lg bg-background border border-border">
                 <div className="mb-4 flex items-center gap-3">
@@ -120,19 +120,19 @@ export default function LandingPage() {
         </div>
       </section>
       
-      {/* CTA Section (Placeholder) */}
-      <section id="a-propos" className="py-12 md:py-20 lg:py-28 bg-background">
+      {/* CTA Section */}
+      <section id="contact" className="py-12 md:py-20 lg:py-28 bg-background">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-primary md:text-4xl">
-            Prêt à transformer la gestion de vos pneus ?
+            Prêt à Transformer la Gestion de Vos Pneus ?
           </h2>
           <p className="mt-4 max-w-xl mx-auto text-lg text-muted-foreground">
-            Contactez-nous pour une démonstration personnalisée et découvrez comment TyreTrace AI peut vous aider à économiser.
+            Contactez-nous pour une démonstration personnalisée et découvrez comment TyreTrace AI peut vous aider à réaliser des économies substantielles.
           </p>
           <div className="mt-8">
-            <Link href="/dashboard">
+            <Link href="/dashboard"> {/* Temporairement vers le dashboard, idéalement vers une page contact/démo */}
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Demander une démo
+                Demander une Démo
                 </Button>
             </Link>
           </div>
@@ -140,19 +140,17 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card py-8 text-center">
+      <footer id="faq" className="border-t border-border bg-card py-8 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} TyreTrace AI. Tous droits réservés.
           </p>
           <div className="mt-2 space-x-4">
-            <Link href="#" className="text-xs text-muted-foreground hover:text-primary">Politique de confidentialité</Link>
-            <Link href="#" className="text-xs text-muted-foreground hover:text-primary">Conditions d'utilisation</Link>
+            <Link href="#" className="text-xs text-muted-foreground hover:text-primary">Politique de Confidentialité</Link>
+            <Link href="#" className="text-xs text-muted-foreground hover:text-primary">Conditions d'Utilisation</Link>
           </div>
         </div>
       </footer>
     </div>
   );
 }
-
-    
