@@ -1,7 +1,7 @@
 
 "use client"
 
-import { Line, LineChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Legend } from "recharts";
+import { Line, LineChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip as RechartsTooltip } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import type { PerformanceMetric } from "@/types";
@@ -15,11 +15,11 @@ interface TireSpecificPerformanceChartProps {
 
 const chartConfig = {
   mileage: {
-    label: "Mileage (km)",
+    label: "Kilométrage (km)",
     color: "hsl(var(--chart-1))",
   },
   wearRate: {
-    label: "Wear Rate (mm/1k km)",
+    label: "Taux d'usure (mm/1k km)",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
@@ -38,8 +38,8 @@ export function TireSpecificPerformanceChart({ tireId, tireName, data }: TireSpe
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
-        <CardTitle>Performance: {tireName} <span className="text-sm text-muted-foreground">({tireId})</span></CardTitle>
-        <CardDescription>Monthly mileage and wear rate over time.</CardDescription>
+        <CardTitle>Performance du pneu : {tireName} <span className="text-sm text-muted-foreground">({tireId})</span></CardTitle>
+        <CardDescription>Évolution mensuelle du kilométrage et du taux d'usure.</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[350px] w-full">

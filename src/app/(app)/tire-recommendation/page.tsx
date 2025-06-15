@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -11,7 +12,7 @@ export default function TireRecommendationPage() {
   return (
     <div className="flex flex-col gap-6 items-center">
       <div className="w-full max-w-3xl">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground mb-6 text-center">AI Tire Recommendation</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-foreground mb-6 text-center">Module de Recommandation IA : Pneus Optimaux</h2>
         <RecommendationForm onRecommendationResult={setRecommendationData} />
         {recommendationData && <RecommendationResult data={recommendationData} />}
       </div>

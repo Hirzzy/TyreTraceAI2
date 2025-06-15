@@ -3,38 +3,38 @@ import { OverviewCard } from "@/components/dashboard/overview-card";
 import { PerformanceSummaryChart } from "@/components/dashboard/performance-summary-chart";
 import { AlertsPanel } from "@/components/dashboard/alerts-panel";
 import { Activity, AlertOctagon, Wrench, PackageCheck } from "lucide-react";
-import { TireTrackingTable } from "@/components/dashboard/tire-tracking-table"; // Import du nouveau composant
+import { TireTrackingTable } from "@/components/dashboard/tire-tracking-table";
 
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-3xl font-bold tracking-tight text-foreground">Aperçu des Performances</h2>
+      <h2 className="text-3xl font-bold tracking-tight text-foreground">Synthèse des Performances</h2>
       
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <OverviewCard
-          title="Total Pneus Actifs"
+          title="Nombre Total de Pneus Actifs"
           value="1,234"
           description="+20.1% depuis le mois dernier"
           Icon={Activity}
         />
         <OverviewCard
-          title="Alertes Critiques"
+          title="Alertes Critiques en Cours"
           value="12"
           description="Nécessitant une attention immédiate"
           Icon={AlertOctagon}
           iconColor="text-destructive"
         />
         <OverviewCard
-          title="Maintenance Prévue"
+          title="Maintenances Planifiées"
           value="56"
-          description="Maintenance planifiée à venir"
+          description="Interventions de maintenance à venir"
           Icon={Wrench}
           iconColor="text-yellow-500"
         />
         <OverviewCard
-          title="Pneus Sains"
+          title="État des Pneus : Sains"
           value="95.8%"
-          description="Pourcentage de pneus en bon état"
+          description="Pourcentage de pneus en bon état de fonctionnement"
           Icon={PackageCheck}
           iconColor="text-green-500"
         />
@@ -49,22 +49,9 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Section pour afficher les données de remplissage */}
       <div>
         <TireTrackingTable />
       </div>
-
-      {/* Placeholder for additional dashboard sections like Recent Activity or Site Performance */}
-      {/* 
-      <Card>
-        <CardHeader>
-          <CardTitle>Activité Récente</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">Le journal d'activité sera affiché ici.</p>
-        </CardContent>
-      </Card>
-      */}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,18 +16,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription as CardDesc, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { predictTireLifespan, PredictTireLifespanInput, PredictTireLifespanOutput } from "@/ai/flows/predict-tire-lifespan";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
-  tireId: z.string().min(1, "Tire ID is required."),
-  vehicleType: z.string().min(1, "Vehicle type is required."),
-  usagePattern: z.string().min(1, "Usage pattern is required."),
-  historicalData: z.string().min(1, "Historical data is required. Should be a JSON string."),
-  seasonalFactors: z.string().min(1, "Seasonal factors are required."),
+  tireId: z.string().min(1, "L'ID du pneu est requis."),
+  vehicleType: z.string().min(1, "Le type de véhicule est requis."),
+  usagePattern: z.string().min(1, "Le profil d'utilisation est requis."),
+  historicalData: z.string().min(1, "Les données historiques sont requises (chaîne JSON)."),
+  seasonalFactors: z.string().min(1, "Les facteurs saisonniers sont requis."),
 });
 
 interface PredictionFormProps {
@@ -42,25 +43,25 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
     defaultValues: {
       tireId: "",
       vehicleType: "",
-      usagePattern: "e.g., Highway miles, city driving, off-road",
-      historicalData: JSON.stringify({ mileage: [10000, 20000, 30000], pressure: [100, 98, 95], wear: [1, 2, 3] }, null, 2),
-      seasonalFactors: "e.g., Hot summers, cold winters with snow",
+      usagePattern: "Ex : Kilométrage autoroutier, conduite en ville, hors-piste",
+      historicalData: JSON.stringify({ kilometrage: [10000, 20000, 30000], pression: [100, 98, 95], usure: [1, 2, 3] }, null, 2),
+      seasonalFactors: "Ex : Étés chauds, hivers froids avec neige",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    onPredictionResult(null); // Clear previous results
+    onPredictionResult(null); 
     try {
       const input: PredictTireLifespanInput = values;
       const result = await predictTireLifespan(input);
       onPredictionResult(result);
     } catch (error) {
-      console.error("Error predicting lifespan:", error);
+      console.error("Erreur lors de la prédiction de durée de vie:", error);
       toast({
         variant: "destructive",
-        title: "Prediction Failed",
-        description: error instanceof Error ? error.message : "An unknown error occurred.",
+        title: "Échec de la Prédiction",
+        description: error instanceof Error ? error.message : "Une erreur inconnue est survenue.",
       });
       onPredictionResult(null);
     } finally {
@@ -71,8 +72,8 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
   return (
     <Card className="w-full shadow-md hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
-        <CardTitle>Predict Tire Lifespan</CardTitle>
-        <CardDescription>Enter tire details to get an AI-powered lifespan prediction.</CardDescription>
+        <CardTitle>Formulaire de Prédiction de Durée de Vie</CardTitle>
+        <CardDesc>Renseignez les informations du pneu pour une estimation IA de sa durée de vie.</CardDesc>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -83,9 +84,9 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                 name="tireId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tire ID</FormLabel>
+                    <FormLabel>ID du Pneu</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., TIRE-001A" {...field} />
+                      <Input placeholder="Ex : PNEU-001A" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -96,9 +97,9 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                 name="vehicleType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Vehicle Type</FormLabel>
+                    <FormLabel>Type de Véhicule</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Semi-trailer truck, Forklift" {...field} />
+                      <Input placeholder="Ex : Semi-remorque, Chariot élévateur" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -110,16 +111,16 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               name="usagePattern"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Usage Pattern</FormLabel>
+                  <FormLabel>Profil d'Utilisation</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Describe how the vehicle is typically used..."
+                      placeholder="Décrivez l'utilisation typique du véhicule..."
                       className="resize-none"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    E.g., Long-haul highway driving, frequent stop-start city delivery, off-road construction site.
+                    Ex : Long trajet autoroutier, livraisons urbaines avec arrêts fréquents, chantier de construction hors-piste.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -130,16 +131,16 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               name="historicalData"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Historical Performance Data (JSON)</FormLabel>
+                  <FormLabel>Données de Performance Historiques (JSON)</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='{ "mileage": [10000, 20000], "pressure": [100, 98], "wear": [1, 2] }'
+                      placeholder='{ "kilometrage": [10000, 20000], "pression": [100, 98], "usure": [1, 2] }'
                       className="resize-y min-h-[100px] font-code"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Provide a JSON string of historical data, including mileage, pressure, and wear.
+                    Fournissez une chaîne JSON de données historiques, incluant kilométrage, pression, et usure.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -150,16 +151,16 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               name="seasonalFactors"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Seasonal Factors</FormLabel>
+                  <FormLabel>Facteurs Saisonniers</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Describe seasonal impacts..."
+                      placeholder="Décrivez les impacts saisonniers..."
                       className="resize-none"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    E.g., Extreme summer heat leading to increased wear, icy winter roads requiring specific tire compounds.
+                    Ex : Chaleur estivale extrême augmentant l'usure, routes hivernales verglacées nécessitant des gommes spécifiques.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -171,10 +172,10 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Predicting...
+                  Prédiction en cours...
                 </>
               ) : (
-                "Predict Lifespan"
+                "Prédire la Durée de Vie"
               )}
             </Button>
           </CardFooter>

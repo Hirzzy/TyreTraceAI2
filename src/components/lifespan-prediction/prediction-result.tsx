@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,16 +19,16 @@ export function PredictionResult({ data }: PredictionResultProps) {
       <CardHeader>
         <div className="flex items-center gap-2">
           <CheckCircle className="h-6 w-6 text-primary" />
-          <CardTitle className="text-primary">Lifespan Prediction Result</CardTitle>
+          <CardTitle className="text-primary">Résultats de la Prédiction de Durée de Vie</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex items-center p-4 bg-background rounded-lg shadow-sm">
           <TrendingUp className="h-8 w-8 text-accent mr-4" />
           <div>
-            <p className="text-sm text-muted-foreground">Predicted Lifespan</p>
+            <p className="text-sm text-muted-foreground">Durée de Vie Prédite</p>
             <p className="text-2xl font-bold text-foreground">
-              {data.predictedLifespanMiles.toLocaleString()} miles
+              {data.predictedLifespanMiles.toLocaleString('fr-FR')} miles
             </p>
           </div>
         </div>
@@ -35,7 +36,7 @@ export function PredictionResult({ data }: PredictionResultProps) {
         <div className="flex items-center p-4 bg-background rounded-lg shadow-sm">
            <Info className="h-8 w-8 text-accent mr-4" />
            <div>
-            <p className="text-sm text-muted-foreground">Confidence Level</p>
+            <p className="text-sm text-muted-foreground">Niveau de Confiance</p>
             <p className="text-2xl font-bold text-foreground">
               {(data.confidenceLevel * 100).toFixed(1)}%
             </p>
@@ -43,7 +44,7 @@ export function PredictionResult({ data }: PredictionResultProps) {
         </div>
         
         <div>
-          <h4 className="font-semibold text-foreground mb-1">Reasoning:</h4>
+          <h4 className="font-semibold text-foreground mb-1">Raisonnement de l'IA :</h4>
           <p className="text-sm text-muted-foreground bg-background p-3 rounded-md border">{data.reasoning}</p>
         </div>
       </CardContent>

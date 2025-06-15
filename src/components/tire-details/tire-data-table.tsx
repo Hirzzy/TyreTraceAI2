@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -35,19 +36,19 @@ import type { Tire } from "@/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const mockData: Tire[] = [
-  { id: "T-001", name: "Michelin XZY3", vehicle: "Truck A2", site: "Site Alpha", currentMileage: 45000, pressure: 100, treadDepth: 8, status: "active", lastInspection: "2023-10-15T00:00:00.000Z" },
-  { id: "T-002", name: "Goodyear Endurance", vehicle: "Van C3", site: "Site Beta", currentMileage: 22000, pressure: 65, treadDepth: 5, status: "warning", lastInspection: "2023-11-01T00:00:00.000Z" },
-  { id: "T-003", name: "Bridgestone R287", vehicle: "Truck B1", site: "Site Alpha", currentMileage: 78000, pressure: 110, treadDepth: 3, status: "critical", lastInspection: "2023-09-20T00:00:00.000Z" },
-  { id: "T-004", name: "Continental Conti Hybrid", vehicle: "Forklift D5", site: "Site Gamma", currentMileage: 12000, pressure: 90, treadDepth: 10, status: "active", lastInspection: "2023-11-10T00:00:00.000Z" },
-  { id: "T-005", name: "Pirelli P-Zero", vehicle: "Truck A2", site: "Site Beta", currentMileage: 60000, pressure: 105, treadDepth: 6, status: "active", lastInspection: "2023-10-25T00:00:00.000Z" },
+  { id: "T-001", name: "Michelin XZY3", vehicle: "Camion A2", site: "Site Alpha", currentMileage: 45000, pressure: 100, treadDepth: 8, status: "active", lastInspection: "2023-10-15T00:00:00.000Z" },
+  { id: "T-002", name: "Goodyear Endurance", vehicle: "Fourgon C3", site: "Site Beta", currentMileage: 22000, pressure: 65, treadDepth: 5, status: "warning", lastInspection: "2023-11-01T00:00:00.000Z" },
+  { id: "T-003", name: "Bridgestone R287", vehicle: "Camion B1", site: "Site Alpha", currentMileage: 78000, pressure: 110, treadDepth: 3, status: "critical", lastInspection: "2023-09-20T00:00:00.000Z" },
+  { id: "T-004", name: "Continental Conti Hybrid", vehicle: "Chariot D5", site: "Site Gamma", currentMileage: 12000, pressure: 90, treadDepth: 10, status: "active", lastInspection: "2023-11-10T00:00:00.000Z" },
+  { id: "T-005", name: "Pirelli P-Zero", vehicle: "Camion A2", site: "Site Beta", currentMileage: 60000, pressure: 105, treadDepth: 6, status: "active", lastInspection: "2023-10-25T00:00:00.000Z" },
 ];
 
 const getStatusBadgeVariant = (status: Tire['status']) => {
   switch (status) {
-    case 'active': return 'default'; // Primary (blue)
-    case 'warning': return 'secondary'; // Using secondary for warning (yellowish/greyish based on theme)
-    case 'critical': return 'destructive'; // Red
-    case 'maintenance': return 'outline'; // Neutral outline
+    case 'active': return 'default';
+    case 'warning': return 'secondary';
+    case 'critical': return 'destructive';
+    case 'maintenance': return 'outline';
     default: return 'outline';
   }
 };
@@ -62,14 +63,14 @@ export const columns: ColumnDef<Tire>[] = [
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label="Tout sélectionner"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+        aria-label="Sélectionner la ligne"
       />
     ),
     enableSorting: false,
@@ -82,7 +83,7 @@ export const columns: ColumnDef<Tire>[] = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Tire Name
+        Nom du Pneu
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -90,7 +91,7 @@ export const columns: ColumnDef<Tire>[] = [
   },
   {
     accessorKey: "vehicle",
-    header: "Vehicle",
+    header: "Véhicule",
   },
   {
     accessorKey: "site",
@@ -98,21 +99,21 @@ export const columns: ColumnDef<Tire>[] = [
   },
   {
     accessorKey: "currentMileage",
-    header: "Mileage (km)",
+    header: "Kilométrage (km)",
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("currentMileage"))
-      return <div className="text-right font-medium">{amount.toLocaleString()}</div>
+      return <div className="text-right font-medium">{amount.toLocaleString('fr-FR')}</div>
     },
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Statut",
     cell: ({ row }) => <Badge variant={getStatusBadgeVariant(row.getValue("status"))} className="capitalize">{row.getValue("status")}</Badge>,
   },
   {
     accessorKey: "lastInspection",
-    header: "Last Inspection",
-    cell: ({ row }) => new Date(row.getValue("lastInspection")).toLocaleDateString(),
+    header: "Dernière Inspection",
+    cell: ({ row }) => new Date(row.getValue("lastInspection")).toLocaleDateString('fr-FR'),
   },
   {
     id: "actions",
@@ -123,18 +124,18 @@ export const columns: ColumnDef<Tire>[] = [
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
+              <span className="sr-only">Ouvrir le menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => navigator.clipboard.writeText(tire.id)}>
-              Copy Tire ID
+              Copier ID Pneu
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View details</DropdownMenuItem>
-            <DropdownMenuItem>Log maintenance</DropdownMenuItem>
+            <DropdownMenuItem>Voir détails</DropdownMenuItem>
+            <DropdownMenuItem>Enregistrer maintenance</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -145,8 +146,7 @@ export const columns: ColumnDef<Tire>[] = [
 export function TireDataTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
-  const [data, setData] = React.useState<Tire[]>(mockData); // In a real app, this would come from props or API
-  // Basic client-side filtering example
+  const [data] = React.useState<Tire[]>(mockData);
   const [filter, setFilter] = React.useState('');
 
   const filteredData = React.useMemo(() => {
@@ -175,16 +175,16 @@ export function TireDataTable() {
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 w-full">
       <CardHeader>
-        <CardTitle>Tire Inventory</CardTitle>
+        <CardTitle>Inventaire Détaillé des Pneus</CardTitle>
         <CardDescription>
-          Detailed list of all tires. Advanced filtering and grouping controls can be added here.
-          Currently supports basic text filtering and sorting by Tire Name.
+          Liste exhaustive de tous les pneus. Des contrôles avancés de filtrage et de groupement peuvent être ajoutés.
+          Supporte actuellement le filtrage textuel simple et le tri par Nom du Pneu.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex items-center py-4">
           <Input
-            placeholder="Filter tires..."
+            placeholder="Filtrer les pneus..."
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
             className="max-w-sm"
@@ -233,7 +233,7 @@ export function TireDataTable() {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    Aucun résultat.
                   </TableCell>
                 </TableRow>
               )}
@@ -242,10 +242,9 @@ export function TireDataTable() {
         </div>
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="flex-1 text-sm text-muted-foreground">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {table.getFilteredSelectedRowModel().rows.length} sur{" "}
+            {table.getFilteredRowModel().rows.length} ligne(s) sélectionnée(s).
           </div>
-          {/* Pagination can be added here */}
         </div>
       </CardContent>
     </Card>

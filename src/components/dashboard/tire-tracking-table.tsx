@@ -20,7 +20,6 @@ export function TireTrackingTable() {
       }
     } catch (error) {
       console.error("Erreur lors de la lecture de localStorage:", error);
-      // Gérer l'erreur, peut-être afficher un message à l'utilisateur
     } finally {
       setIsLoading(false);
     }
@@ -30,12 +29,12 @@ export function TireTrackingTable() {
     return (
       <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
-          <CardTitle>Suivi des Pneus (Données de Remplissage)</CardTitle>
-          <CardDescription>Chargement des données...</CardDescription>
+          <CardTitle>Tableau de Suivi des Pneus (Saisies Manuelles)</CardTitle>
+          <CardDescription>Chargement des données de suivi...</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-64 flex items-center justify-center">
-            <p>Chargement...</p>
+            <p>Chargement en cours...</p>
           </div>
         </CardContent>
       </Card>
@@ -46,25 +45,24 @@ export function TireTrackingTable() {
     return (
       <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
-          <CardTitle>Suivi des Pneus (Données de Remplissage)</CardTitle>
-          <CardDescription>Aucune donnée de suivi n'a été trouvée. Remplissez le formulaire pour en ajouter.</CardDescription>
+          <CardTitle>Tableau de Suivi des Pneus (Saisies Manuelles)</CardTitle>
+          <CardDescription>Aucune donnée de suivi disponible. Veuillez utiliser le formulaire de saisie pour en ajouter.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-32 flex items-center justify-center">
-            <p className="text-muted-foreground">Aucune donnée disponible.</p>
+            <p className="text-muted-foreground">Aucune donnée à afficher.</p>
           </div>
         </CardContent>
       </Card>
     );
   }
 
-  // Calculer l'échéance restante en heures et le statut
   const processedData = data.map(item => {
     const echeanceRestanteHeures = item.echeanceHoraire - item.heuresRealisees;
     let statut: 'OK' | 'Proche Échéance' | 'Échu' = 'OK';
     if (echeanceRestanteHeures <= 0) {
       statut = 'Échu';
-    } else if (echeanceRestanteHeures <= item.echeanceHoraire * 0.2) { // 20% de l'échéance
+    } else if (echeanceRestanteHeures <= item.echeanceHoraire * 0.2) { 
       statut = 'Proche Échéance';
     }
     return { ...item, echeanceRestanteHeures, statut };
@@ -72,9 +70,9 @@ export function TireTrackingTable() {
 
   const getStatutBadgeVariant = (statut: 'OK' | 'Proche Échéance' | 'Échu') => {
     switch (statut) {
-      case 'OK': return 'default'; // Vert (ou bleu par défaut)
-      case 'Proche Échéance': return 'secondary'; // Jaune/Orange
-      case 'Échu': return 'destructive'; // Rouge
+      case 'OK': return 'default';
+      case 'Proche Échéance': return 'secondary';
+      case 'Échu': return 'destructive';
       default: return 'outline';
     }
   };
@@ -83,8 +81,8 @@ export function TireTrackingTable() {
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
-        <CardTitle>Suivi des Pneus (Données de Remplissage)</CardTitle>
-        <CardDescription>Liste des pneus saisis via le formulaire de remplissage.</CardDescription>
+        <CardTitle>Tableau de Suivi des Pneus (Saisies Manuelles)</CardTitle>
+        <CardDescription>Visualisation des données de pneus saisies manuellement.</CardDescription>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-[400px] w-full">
@@ -99,7 +97,7 @@ export function TireTrackingTable() {
                 <TableHead className="text-right">H. Réalisées</TableHead>
                 <TableHead className="text-right">Éch. Horaire</TableHead>
                 <TableHead className="text-right">H. Restantes</TableHead>
-                <TableHead className="text-right">Proj. Final</TableHead>
+                <TableHead className="text-right">Proj. Final (h)</TableHead>
                 <TableHead className="text-right">Éch. Mois</TableHead>
                 <TableHead className="text-right">Qté</TableHead>
                 <TableHead>Profil Recommandé</TableHead>
@@ -120,14 +118,14 @@ export function TireTrackingTable() {
                   <TableCell className="text-right">{item.echeanceHoraire}</TableCell>
                   <TableCell className="text-right">{item.echeanceRestanteHeures}</TableCell>
                   <TableCell className="text-right">{item.projectionFinal}</TableCell>
-                  <TableCell className="text-right">{item.echeanceMois}</TableCell>
+                  <TableCell className="text-right">{item.echeanceMois.toFixed(1)}</TableCell>
                   <TableCell className="text-right">{item.quantite}</TableCell>
                   <TableCell>{item.profilRecommande}</TableCell>
                   <TableCell>{item.dateChangement}</TableCell>
                   <TableCell>
                     <Badge variant={getStatutBadgeVariant(item.statut)}>{item.statut}</Badge>
                   </TableCell>
-                  <TableCell className="max-w-[200px] truncate">{item.commentaires || '-'}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">{item.commentaires || '–'}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

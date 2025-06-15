@@ -9,7 +9,7 @@ import {
   Clock,
   Settings2,
   FilePlus,
-  TrendingUp, // Ajout de l'icône pour la nouvelle page
+  TrendingUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -24,43 +24,43 @@ const navItems = [
     href: "/dashboard",
     icon: LayoutDashboard,
     label: "Tableau de Bord",
-    tooltip: "Aperçu des Performances",
+    tooltip: "Synthèse des performances et alertes",
   },
   {
     href: "/tire-details",
     icon: BarChart3,
-    label: "Détails des Pneus",
-    tooltip: "Graphiques Détaillés des Pneus",
+    label: "Analyse Détaillée des Pneus",
+    tooltip: "Analyse approfondie des données par pneu",
   },
   {
     href: "/lifespan-prediction",
     icon: Clock,
-    label: "Prédiction IA Durée Vie",
-    tooltip: "Prédire la Durée de Vie des Pneus (IA)",
+    label: "Prédiction IA de Durée de Vie",
+    tooltip: "Estimer la durée de vie des pneus avec l'IA",
   },
   {
     href: "/tire-recommendation",
     icon: Settings2,
-    label: "Recommandation IA Pneus",
-    tooltip: "Recommander les Pneus Optimaux (IA)",
+    label: "Recommandation IA de Pneus",
+    tooltip: "Obtenir des recommandations de pneus par l'IA",
   },
   {
     href: "/remplissage",
     icon: FilePlus,
-    label: "Saisie Suivi Pneu",
-    tooltip: "Ajouter un nouveau suivi de pneu",
+    label: "Saisie de Suivi des Pneus",
+    tooltip: "Enregistrer les nouvelles données de suivi",
   },
   {
-    href: "/prediction", // Nouveau lien
-    icon: TrendingUp,    // Nouvelle icône
-    label: "Prédictions Suivi",
-    tooltip: "Voir les prédictions de durée de vie",
+    href: "/prediction",
+    icon: TrendingUp,
+    label: "Analyse Prédictive du Suivi",
+    tooltip: "Consulter les analyses prédictives du suivi",
   },
 ];
 
 export function SidebarNav() {
   const pathname = usePathname();
-  const { setOpenMobile, open } = useSidebar(); // 'open' is used for desktop logic if needed
+  const { setOpenMobile } = useSidebar();
 
   return (
     <SidebarMenu>

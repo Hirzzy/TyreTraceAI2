@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,16 +16,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription as CardDesc, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { recommendOptimalTires, RecommendOptimalTiresInput, RecommendOptimalTiresOutput } from "@/ai/flows/recommend-optimal-tires";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
-  vehicleType: z.string().min(1, "Vehicle type is required."),
-  role: z.string().min(1, "Vehicle role is required."),
-  historicalTirePerformanceData: z.string().min(1, "Historical data is required. Should be a JSON string."),
+  vehicleType: z.string().min(1, "Le type de véhicule est requis."),
+  role: z.string().min(1, "Le rôle du véhicule est requis."),
+  historicalTirePerformanceData: z.string().min(1, "Les données historiques sont requises (chaîne JSON)."),
 });
 
 interface RecommendationFormProps {
@@ -41,9 +42,9 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
       vehicleType: "",
       role: "",
       historicalTirePerformanceData: JSON.stringify({ 
-        "data": [
-          {"tireProfile": "A", "lifespan": 50000, "cost": 300, "vehicleType": "Truck", "role": "Long Haul", "seasonalPerformance": {"summer": "good", "winter": "fair"}},
-          {"tireProfile": "B", "lifespan": 40000, "cost": 250, "vehicleType": "Truck", "role": "Long Haul", "seasonalPerformance": {"summer": "excellent", "winter": "poor"}}
+        "donnees": [
+          {"profilPneu": "A", "dureeVie": 50000, "cout": 300, "typeVehicule": "Camion", "role": "Long Trajet", "performanceSaisonniere": {"ete": "bonne", "hiver": "moyenne"}},
+          {"profilPneu": "B", "dureeVie": 40000, "cout": 250, "typeVehicule": "Camion", "role": "Long Trajet", "performanceSaisonniere": {"ete": "excellente", "hiver": "faible"}}
         ]
       }, null, 2),
     },
@@ -51,17 +52,17 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
-    onRecommendationResult(null); // Clear previous results
+    onRecommendationResult(null);
     try {
       const input: RecommendOptimalTiresInput = values;
       const result = await recommendOptimalTires(input);
       onRecommendationResult(result);
     } catch (error) {
-      console.error("Error recommending tires:", error);
+      console.error("Erreur lors de la recommandation de pneus:", error);
       toast({
         variant: "destructive",
-        title: "Recommendation Failed",
-        description: error instanceof Error ? error.message : "An unknown error occurred.",
+        title: "Échec de la Recommandation",
+        description: error instanceof Error ? error.message : "Une erreur inconnue est survenue.",
       });
       onRecommendationResult(null);
     } finally {
@@ -72,8 +73,8 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
   return (
     <Card className="w-full shadow-md hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
-        <CardTitle>Recommend Optimal Tires</CardTitle>
-        <CardDescription>Provide vehicle and historical data to get AI-powered tire recommendations.</CardDescription>
+        <CardTitle>Formulaire de Recommandation de Pneus</CardTitle>
+        <CardDesc>Indiquez les caractéristiques du véhicule et les données historiques pour des recommandations de pneus assistées par IA.</CardDesc>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -84,9 +85,9 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                 name="vehicleType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Vehicle Type</FormLabel>
+                    <FormLabel>Type de Véhicule</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Truck, Forklift, Van" {...field} />
+                      <Input placeholder="Ex : Camion, Chariot élévateur, Fourgon" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,9 +98,9 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                 name="role"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Vehicle Role</FormLabel>
+                    <FormLabel>Rôle du Véhicule</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Transportation, Loading, Delivery" {...field} />
+                      <Input placeholder="Ex : Transport, Chargement, Livraison" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -111,16 +112,16 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
               name="historicalTirePerformanceData"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Historical Tire Performance Data (JSON)</FormLabel>
+                  <FormLabel>Données Historiques de Performance des Pneus (JSON)</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder='{ "data": [{ "tireProfile": "A", "lifespan": 50000, ... }] }'
+                      placeholder='{ "donnees": [{ "profilPneu": "A", "dureeVie": 50000, ... }] }'
                       className="resize-y min-h-[150px] font-code"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Provide a JSON string of historical tire performance data, including profiles, lifespan, cost, and seasonal factors.
+                    Fournissez une chaîne JSON de données historiques sur la performance des pneus, incluant profils, durée de vie, coût, et facteurs saisonniers.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -132,10 +133,10 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Recommending...
+                  Recommandation en cours...
                 </>
               ) : (
-                "Get Recommendation"
+                "Obtenir la Recommandation"
               )}
             </Button>
           </CardFooter>

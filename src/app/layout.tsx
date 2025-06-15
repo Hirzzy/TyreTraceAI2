@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: 'TyreTrace IA',
-  description: 'Gestion Intelligente de la Performance des Pneus',
+  description: 'Solution de Gestion Intelligente pour la Performance des Pneus',
 };
 
 export default function RootLayout({

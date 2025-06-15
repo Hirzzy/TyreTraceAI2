@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -11,7 +12,7 @@ export default function LifespanPredictionPage() {
   return (
     <div className="flex flex-col gap-6 items-center">
       <div className="w-full max-w-3xl">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground mb-6 text-center">AI Tire Lifespan Prediction</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-foreground mb-6 text-center">Module de Prédiction IA : Durée de Vie des Pneus</h2>
         <PredictionForm onPredictionResult={setPredictionData} />
         {predictionData && <PredictionResult data={predictionData} />}
       </div>

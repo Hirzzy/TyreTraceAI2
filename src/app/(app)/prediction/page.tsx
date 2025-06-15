@@ -1,10 +1,11 @@
+
 // src/app/(app)/prediction/page.tsx
 "use client"
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import type { RemplissageFormData } from "@/types" // Utilisation du type existant
-import { Button } from "@/components/ui/button" // Utilisation du composant Button de ShadCN
+import type { RemplissageFormData } from "@/types" 
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -33,14 +34,16 @@ export default function PredictionPage() {
   }, [])
 
   const getAlerteBadgeVariant = (alerte: string) => {
-    if (alerte.startsWith("⚠️")) return "destructive";
+    if (alerte.startsWith("🚨")) return "destructive";
+    if (alerte.startsWith("⚠️")) return "secondary"; // ou une autre couleur pour 'warning'
+    if (alerte.startsWith("💡")) return "outline"; // ou une autre couleur pour 'info'
     return "default";
   }
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <p>Chargement des prédictions...</p>
+        <p>Chargement des prédictions en cours...</p>
       </div>
     )
   }
@@ -49,16 +52,16 @@ export default function PredictionPage() {
     <div className="flex flex-col gap-6">
       <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold">📈 Prédiction de durée de vie des pneus</CardTitle>
+          <CardTitle className="text-3xl font-bold">📈 Analyse Prédictive de la Durée de Vie</CardTitle>
           <CardDescription>
-            Analyse prédictive basée sur les données de suivi des pneus saisies.
+            Analyse prédictive fondée sur les données de suivi des pneus enregistrées.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {donnees.length === 0 ? (
             <div className="text-center py-10">
-              <p className="text-muted-foreground text-lg">Aucune donnée de pneu disponible.</p>
-              <p className="text-muted-foreground">Veuillez remplir des données dans la page <Button variant="link" onClick={() => router.push('/remplissage')} className="p-0 h-auto">Saisie Suivi Pneu</Button> pour voir les prédictions.</p>
+              <p className="text-muted-foreground text-lg">Aucune donnée de pneu n'est actuellement disponible.</p>
+              <p className="text-muted-foreground">Veuillez saisir des données via la page <Button variant="link" onClick={() => router.push('/remplissage')} className="p-0 h-auto">'Saisie de Suivi des Pneus'</Button> pour afficher les prédictions.</p>
             </div>
           ) : (
             <ScrollArea className="h-[500px] w-full">
@@ -82,15 +85,16 @@ export default function PredictionPage() {
 
                     if (isNaN(echeanceMoisNum)) {
                         alerteMessage = "❓ Donnée invalide";
+                        alerteDetails = "L'échéance en mois n'est pas un nombre valide.";
                     } else if (echeanceMoisNum <= 1) {
                         alerteMessage = "🚨 Remplacement urgent";
-                        alerteDetails = `Échéance: ${echeanceMoisNum.toFixed(1)} mois.`;
+                        alerteDetails = `Échéance critique : ${echeanceMoisNum.toFixed(1)} mois. Action immédiate requise.`;
                     } else if (echeanceMoisNum <= 3) {
                         alerteMessage = "⚠️ À remplacer bientôt";
-                        alerteDetails = `Échéance: ${echeanceMoisNum.toFixed(1)} mois.`;
+                        alerteDetails = `Échéance proche : ${echeanceMoisNum.toFixed(1)} mois. Planifier le remplacement.`;
                     } else if (echeanceMoisNum <= 6) {
                         alerteMessage = "💡 Planifier remplacement";
-                         alerteDetails = `Échéance: ${echeanceMoisNum.toFixed(1)} mois.`;
+                         alerteDetails = `Échéance à moyen terme : ${echeanceMoisNum.toFixed(1)} mois. Prévoir le remplacement.`;
                     }
 
 

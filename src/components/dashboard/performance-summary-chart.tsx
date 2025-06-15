@@ -1,7 +1,7 @@
 
 "use client"
 
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Legend } from "recharts";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip as RechartsTooltip } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ const initialChartData = [
 
 const chartConfig = {
   activeTires: {
-    label: "Active Tires",
+    label: "Pneus Actifs",
     color: "hsl(var(--chart-1))",
   },
   maintenance: {
@@ -40,8 +40,8 @@ export function PerformanceSummaryChart() {
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
-        <CardTitle>Overall Performance Summary</CardTitle>
-        <CardDescription>Monthly active tires vs. tires undergoing maintenance</CardDescription>
+        <CardTitle>Synthèse Générale des Performances</CardTitle>
+        <CardDescription>Comparaison mensuelle : pneus actifs vs. pneus en maintenance</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[350px] w-full">
