@@ -8,7 +8,6 @@ import {
   BarChart3,
   Clock,
   Settings2,
-  CarFront,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -22,26 +21,26 @@ const navItems = [
   {
     href: "/",
     icon: LayoutDashboard,
-    label: "Dashboard",
-    tooltip: "Performance Overview",
+    label: "Tableau de Bord",
+    tooltip: "Aperçu des Performances",
   },
   {
     href: "/tire-details",
     icon: BarChart3,
-    label: "Tire Details",
-    tooltip: "Detailed Tire Charts",
+    label: "Détails des Pneus",
+    tooltip: "Graphiques Détaillés des Pneus",
   },
   {
     href: "/lifespan-prediction",
     icon: Clock,
-    label: "Lifespan Prediction",
-    tooltip: "Predict Tire Lifespan",
+    label: "Prédiction Durée de Vie",
+    tooltip: "Prédire la Durée de Vie des Pneus",
   },
   {
     href: "/tire-recommendation",
     icon: Settings2,
-    label: "Tire Recommendation",
-    tooltip: "Recommend Optimal Tires",
+    label: "Recommandation Pneus",
+    tooltip: "Recommander les Pneus Optimaux",
   },
 ];
 

@@ -6,33 +6,33 @@ import { Activity, AlertOctagon, Wrench, PackageCheck } from "lucide-react";
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-3xl font-bold tracking-tight text-foreground">Performance Overview</h2>
+      <h2 className="text-3xl font-bold tracking-tight text-foreground">Aperçu des Performances</h2>
       
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <OverviewCard
-          title="Total Active Tires"
+          title="Total Pneus Actifs"
           value="1,234"
-          description="+20.1% from last month"
+          description="+20.1% depuis le mois dernier"
           Icon={Activity}
         />
         <OverviewCard
-          title="Critical Alerts"
+          title="Alertes Critiques"
           value="12"
-          description="Requiring immediate attention"
+          description="Nécessitant une attention immédiate"
           Icon={AlertOctagon}
           iconColor="text-destructive"
         />
         <OverviewCard
-          title="Maintenance Due"
+          title="Maintenance Prévue"
           value="56"
-          description="Upcoming scheduled maintenance"
+          description="Maintenance planifiée à venir"
           Icon={Wrench}
           iconColor="text-yellow-500"
         />
         <OverviewCard
-          title="Healthy Tires"
+          title="Pneus Sains"
           value="95.8%"
-          description="Percentage of tires in good condition"
+          description="Pourcentage de pneus en bon état"
           Icon={PackageCheck}
           iconColor="text-green-500"
         />
@@ -51,10 +51,10 @@ export default function DashboardPage() {
       {/* 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
+          <CardTitle>Activité Récente</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">Activity log will be shown here.</p>
+          <p className="text-muted-foreground">Le journal d'activité sera affiché ici.</p>
         </CardContent>
       </Card>
       */}
