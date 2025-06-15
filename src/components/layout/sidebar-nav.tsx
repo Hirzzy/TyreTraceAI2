@@ -8,7 +8,8 @@ import {
   BarChart3,
   Clock,
   Settings2,
-  FilePlus, // Nouvelle icône pour la page de remplissage
+  FilePlus,
+  Palette, // Assuming this was intended for a theme page or similar
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -20,7 +21,7 @@ import {
 
 const navItems = [
   {
-    href: "/dashboard", // Modifié pour pointer vers /dashboard
+    href: "/dashboard",
     icon: LayoutDashboard,
     label: "Tableau de Bord",
     tooltip: "Aperçu des Performances",
@@ -43,12 +44,19 @@ const navItems = [
     label: "Recommandation Pneus",
     tooltip: "Recommander les Pneus Optimaux",
   },
-  { // Nouvel élément de navigation
+  {
     href: "/remplissage",
     icon: FilePlus,
     label: "Saisie Suivi Pneu",
     tooltip: "Ajouter un nouveau suivi de pneu",
   },
+  // Example for a potential theme page - remove if not needed
+  // {
+  //   href: "/theme-settings",
+  //   icon: Palette,
+  //   label: "Paramètres du Thème",
+  //   tooltip: "Personnaliser l'apparence",
+  // },
 ];
 
 export function SidebarNav() {
@@ -59,19 +67,24 @@ export function SidebarNav() {
     <SidebarMenu>
       {navItems.map((item) => (
         <SidebarMenuItem key={item.href}>
-          <Link href={item.href} asChild>
-            <SidebarMenuButton
-              variant="default"
-              size="default"
-              isActive={pathname === item.href}
-              tooltip={{ children: item.tooltip, side: "right", align: "center" }}
-              onClick={() => setOpenMobile(false)}
-              aria-label={item.label}
-            >
+          <SidebarMenuButton
+            asChild
+            variant="default"
+            size="default"
+            isActive={pathname === item.href}
+            tooltip={{ children: item.tooltip, side: "right", align: "center" }}
+            onClick={() => {
+              // This onClick will be passed to the Link component.
+              // Link handles navigation, and setOpenMobile will close the mobile sidebar.
+              setOpenMobile(false);
+            }}
+            aria-label={item.label}
+          >
+            <Link href={item.href}>
               <item.icon />
               <span>{item.label}</span>
-            </SidebarMenuButton>
-          </Link>
+            </Link>
+          </SidebarMenuButton>
         </SidebarMenuItem>
       ))}
     </SidebarMenu>
