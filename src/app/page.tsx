@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight } from 'lucide-react';
+import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight, Cpu } from 'lucide-react';
 
 export default function LandingPage() {
   return (
@@ -48,6 +48,7 @@ export default function LandingPage() {
           objectFit="cover"
           className="opacity-30"
           data-ai-hint="quarry truck"
+          priority
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-black/50 to-background p-4 text-center">
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
@@ -119,9 +120,40 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Our Innovative Technology Section */}
+      <section className="py-12 md:py-20 lg:py-28 bg-background">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
+            <div>
+              <div className="mb-2 inline-block rounded-lg bg-primary/10 px-3 py-1 text-sm text-primary">
+                Innovation
+              </div>
+              <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
+                Notre Technologie au Service de Vos Pneus
+              </h2>
+              <p className="mt-4 text-muted-foreground md:text-lg">
+                TyreTrace AI intègre des algorithmes d'intelligence artificielle avancés pour analyser des milliers de points de données,
+                offrant des prédictions précises et des recommandations personnalisées. Notre plateforme vous aide à anticiper les
+                besoins de maintenance, à optimiser le cycle de vie de chaque pneu et à prendre des décisions basées sur des informations concrètes.
+              </p>
+            </div>
+            <div className="aspect-video overflow-hidden rounded-xl shadow-lg">
+              <Image
+                src="https://placehold.co/600x400.png"
+                alt="Illustration de technologie innovante pour la gestion des pneus"
+                width={600}
+                height={400}
+                className="h-full w-full object-cover"
+                data-ai-hint="future tech"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
       
       {/* CTA Section */}
-      <section id="contact" className="py-12 md:py-20 lg:py-28 bg-background">
+      <section id="contact" className="py-12 md:py-20 lg:py-28 bg-card">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-primary md:text-4xl">
             Prêt à Transformer la Gestion de Vos Pneus ?
@@ -140,7 +172,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer id="faq" className="border-t border-border bg-card py-8 text-center">
+      <footer id="faq" className="border-t border-border bg-background py-8 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} TyreTrace AI. Tous droits réservés.
