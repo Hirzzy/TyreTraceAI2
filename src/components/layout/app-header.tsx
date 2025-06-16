@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { CarFront, Home } from "lucide-react"; 
+import { CarFront, Home, LogIn } from "lucide-react"; 
 
 export function AppHeader() {
   return (
@@ -22,6 +22,12 @@ export function AppHeader() {
           </Button>
         </Link>
       </div>
+      
+      <Link href="/selection" passHref>
+        <Button variant="ghost" size="icon" aria-label="Connexion ou Nouvelle Inspection">
+          <LogIn className="h-5 w-5 text-foreground" />
+        </Button>
+      </Link>
       {/* Add UserMenu or other header items here if needed in the future */}
     </header>
   );
