@@ -17,16 +17,16 @@ const mockTires: MockTire[] = [
 export function TireListWidget() {
     const getStatusBadgeVariant = (status: MockTire['status']) => {
         switch (status) {
-            case 'ok': return 'default'; // Greenish in default theme or primary
-            case 'surveillance': return 'secondary'; // Yellowish
-            case 'critique': return 'destructive'; // Red
+            case 'ok': return 'default'; 
+            case 'surveillance': return 'secondary'; 
+            case 'critique': return 'destructive'; 
             default: return 'outline';
         }
     };
     return (
         <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
             <CardHeader>
-                <CardTitle>Traçabilité : Suivi des Pneus</CardTitle>
+                <CardTitle>Traçabilité : Suivi des pneus</CardTitle>
                 <CardDescription>Liste des pneus et leur état actuel.</CardDescription>
             </CardHeader>
             <CardContent>

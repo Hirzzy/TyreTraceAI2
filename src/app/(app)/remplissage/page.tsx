@@ -17,15 +17,15 @@ import { useToast } from "@/hooks/use-toast"
 const formSchema = z.object({
   site: z.string().min(1, "Le site est requis."),
   numeroInterne: z.string().min(1, "Le N° interne du véhicule est requis."),
-  heure2024: z.coerce.number().min(0, "Les heures machine doivent être positives."),
-  heure2025: z.coerce.number().min(0, "Les heures machine doivent être positives."),
+  heure2024: z.coerce.number().min(0, "Les heures machine doivent être un nombre positif."),
+  heure2025: z.coerce.number().min(0, "Les heures machine doivent être un nombre positif."),
   dimension: z.string().min(1, "La dimension du pneu est requise."),
   profilActuel: z.string().min(1, "Le profil actuel du pneu est requis."),
   position: z.string().min(1, "La position du pneu est requise."),
-  heuresRealisees: z.coerce.number().min(0, "Les heures réalisées doivent être positives."),
-  echeanceHoraire: z.coerce.number().min(0, "L'échéance horaire machine doit être positive."),
-  projectionFinal: z.coerce.number().min(0, "La projection du rendement final doit être positive."),
-  echeanceMois: z.coerce.number().min(0, "L'échéance en mois doit être positive."),
+  heuresRealisees: z.coerce.number().min(0, "Les heures réalisées doivent être un nombre positif."),
+  echeanceHoraire: z.coerce.number().min(0, "L'échéance horaire machine doit être un nombre positif."),
+  projectionFinal: z.coerce.number().min(0, "La projection du rendement final doit être un nombre positif."),
+  echeanceMois: z.coerce.number().min(0, "L'échéance en mois doit être un nombre positif."),
   quantite: z.coerce.number().min(1, "La quantité de pneus concernés doit être d'au moins 1."),
   profilRecommande: z.string().min(1, "Le profil de pneu recommandé est requis."),
   dateChangement: z.string().regex(/^\d{4}-\d{2}$/, "Le format AAAA-MM est requis pour la date de changement."), 
@@ -70,15 +70,15 @@ export default function RemplissagePage() {
       console.error("Erreur lors de la sauvegarde dans localStorage:", error)
       toast({
         variant: "destructive",
-        title: "Erreur de Sauvegarde",
+        title: "Erreur de sauvegarde",
         description: "Impossible d'enregistrer les données de l'inspection.",
       })
     }
   }
 
   return (
-    <div className="flex justify-center py-8 px-4">
-      <Card className="w-full max-w-3xl shadow-lg">
+    <div className="p-4 md:p-6 lg:p-8 flex justify-center">
+      <Card className="w-full max-w-3xl shadow-lg hover:shadow-xl transition-shadow duration-300">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Nouvelle inspection pneumatique</CardTitle>
           <CardDesc>Complétez les champs ci-dessous pour enregistrer les données d'une nouvelle inspection de pneu.</CardDesc>
@@ -96,7 +96,7 @@ export default function RemplissagePage() {
               <FormField control={form.control} name="numeroInterne" render={({ field }) => (
                 <FormItem>
                   <FormLabel>N° interne véhicule</FormLabel>
-                  <FormControl><Input placeholder="Ex : T001, Chariot 5" {...field} /></FormControl>
+                  <FormControl><Input placeholder="Ex: T001, Chariot 5" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}/>
@@ -117,21 +117,21 @@ export default function RemplissagePage() {
               <FormField control={form.control} name="dimension" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Dimension pneu</FormLabel>
-                  <FormControl><Input placeholder="Ex : 295/80R22.5" {...field} /></FormControl>
+                  <FormControl><Input placeholder="Ex: 295/80R22.5" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}/>
               <FormField control={form.control} name="profilActuel" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Profil actuel du pneu</FormLabel>
-                  <FormControl><Input placeholder="Ex : Michelin XZY3" {...field} /></FormControl>
+                  <FormControl><Input placeholder="Ex: Michelin XZY3" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}/>
               <FormField control={form.control} name="position" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Position du pneu</FormLabel>
-                  <FormControl><Input placeholder="Ex : AVG (Avant Gauche), ARD (Arrière Droit)" {...field} /></FormControl>
+                  <FormControl><Input placeholder="Ex: AVG (Avant Gauche)" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}/>
@@ -173,7 +173,7 @@ export default function RemplissagePage() {
               <FormField control={form.control} name="profilRecommande" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Profil de pneu recommandé</FormLabel>
-                  <FormControl><Input placeholder="Ex : Goodyear KMAX S" {...field} /></FormControl>
+                  <FormControl><Input placeholder="Ex: Goodyear KMAX S" {...field} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}/>
@@ -181,14 +181,14 @@ export default function RemplissagePage() {
                 <FormItem>
                   <FormLabel>Date de changement théorique</FormLabel>
                   <FormControl><Input type="month" placeholder="AAAA-MM" {...field} /></FormControl>
-                  <FormDescription>Format AAAA-MM (ex : 2024-12).</FormDescription>
+                  <FormDescription>Format AAAA-MM (ex: 2024-12).</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}/>
               <FormField control={form.control} name="commentaires" render={({ field }) => (
                 <FormItem className="md:col-span-2">
                   <FormLabel>Commentaires (optionnel)</FormLabel>
-                  <FormControl><Textarea placeholder="Ajoutez des commentaires, notes ou observations spécifiques ici..." {...field} /></FormControl>
+                  <FormControl><Textarea placeholder="Ajoutez des commentaires, notes ou observations spécifiques ici..." {...field} className="resize-none" rows={3} /></FormControl>
                   <FormMessage />
                 </FormItem>
               )}/>

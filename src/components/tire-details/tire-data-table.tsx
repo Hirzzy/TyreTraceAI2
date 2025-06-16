@@ -83,7 +83,7 @@ export const columns: ColumnDef<Tire>[] = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Nom du Pneu
+        Nom du pneu
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -112,7 +112,7 @@ export const columns: ColumnDef<Tire>[] = [
   },
   {
     accessorKey: "lastInspection",
-    header: "Dernière Inspection",
+    header: "Dernière inspection",
     cell: ({ row }) => new Date(row.getValue("lastInspection")).toLocaleDateString('fr-FR'),
   },
   {
@@ -175,10 +175,9 @@ export function TireDataTable() {
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 w-full">
       <CardHeader>
-        <CardTitle>Inventaire Détaillé des Pneus</CardTitle>
+        <CardTitle>Inventaire détaillé des pneus</CardTitle>
         <CardDescription>
           Liste exhaustive de tous les pneus. Des contrôles avancés de filtrage et de groupement peuvent être ajoutés.
-          Supporte actuellement le filtrage textuel simple et le tri par Nom du Pneu.
         </CardDescription>
       </CardHeader>
       <CardContent>

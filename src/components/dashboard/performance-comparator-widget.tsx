@@ -15,7 +15,7 @@ export function PerformanceComparatorWidget() {
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
-        <CardTitle>Aide à la Décision : Comparateur de Performance</CardTitle>
+        <CardTitle>Aide à la décision : Comparateur de performance</CardTitle>
         <CardDescription>Analyse comparative des marques de pneus.</CardDescription>
       </CardHeader>
       <CardContent>

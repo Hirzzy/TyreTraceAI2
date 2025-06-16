@@ -17,15 +17,15 @@ const mockTires: MockTire[] = [
 
 export default function NewDashboardPage() {
   const kpiData = [
-    { title: 'Coût Moyen / Heure', value: `${(mockTires.reduce((acc, t) => acc + t.cost_h, 0) / mockTires.length).toFixed(2)} €`, Icon: BarChart2, iconContainerClass: 'bg-blue-500/10 text-blue-500' },
-    { title: 'Pneus en Alerte Critique', value: mockTires.filter(t => t.status === 'critique').length, Icon: AlertTriangle, iconContainerClass: 'bg-destructive/10 text-destructive' },
-    { title: 'Sites Actifs', value: new Set(mockTires.map(t => t.site)).size, Icon: MapPin, iconContainerClass: 'bg-green-500/10 text-green-500' },
+    { title: 'Coût moyen par heure', value: `${(mockTires.reduce((acc, t) => acc + t.cost_h, 0) / mockTires.length).toFixed(2)} €`, Icon: BarChart2, iconContainerClass: 'bg-blue-500/10 text-blue-500' },
+    { title: 'Pneus en alerte critique', value: mockTires.filter(t => t.status === 'critique').length, Icon: AlertTriangle, iconContainerClass: 'bg-destructive/10 text-destructive' },
+    { title: 'Sites actifs', value: new Set(mockTires.map(t => t.site)).size, Icon: MapPin, iconContainerClass: 'bg-green-500/10 text-green-500' },
   ];
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6 lg:p-8">
       <header className="mb-4">
-        <h1 className="text-3xl font-bold text-foreground">Tableau de Bord Principal</h1>
+        <h1 className="text-3xl font-bold text-foreground">Tableau de bord</h1>
         <p className="text-muted-foreground">Bienvenue sur votre plateforme de gestion de pneumatiques.</p>
       </header>
 

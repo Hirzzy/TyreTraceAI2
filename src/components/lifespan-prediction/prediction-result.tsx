@@ -19,11 +19,11 @@ export function PredictionResult({ data }: PredictionResultProps) {
   const confidencePercentage = Math.round(data.confidenceLevel * 100);
 
   return (
-    <Card className="w-full shadow-md mt-8 mb-8 bg-primary/5 border-primary/20">
+    <Card className="w-full shadow-md hover:shadow-lg transition-shadow duration-300 mt-8 mb-8 bg-primary/5 border-primary/20">
       <CardHeader>
         <div className="flex items-center gap-2 mb-1">
           <CheckCircle className="h-7 w-7 text-primary" />
-          <CardTitle className="text-primary text-2xl">Résultats de la Prédiction</CardTitle>
+          <CardTitle className="text-primary text-2xl">Résultats de la prédiction</CardTitle>
         </div>
         <CardDescription>L'IA a analysé les données fournies pour estimer la durée de vie du pneu.</CardDescription>
       </CardHeader>
@@ -31,7 +31,7 @@ export function PredictionResult({ data }: PredictionResultProps) {
         <div className="p-4 bg-background rounded-lg shadow-sm border border-border">
           <div className="flex items-center mb-2">
             <TrendingUp className="h-6 w-6 text-accent mr-3" />
-            <h3 className="text-lg font-semibold text-foreground">Durée de Vie Prédite</h3>
+            <h3 className="text-lg font-semibold text-foreground">Durée de vie prédite</h3>
           </div>
           <p className="text-3xl font-bold text-foreground">
             {data.predictedLifespanMiles.toLocaleString('fr-FR')} miles
@@ -44,7 +44,7 @@ export function PredictionResult({ data }: PredictionResultProps) {
         <div className="p-4 bg-background rounded-lg shadow-sm border border-border">
           <div className="flex items-center mb-2">
              <Percent className="h-6 w-6 text-accent mr-3" />
-             <h3 className="text-lg font-semibold text-foreground">Niveau de Confiance</h3>
+             <h3 className="text-lg font-semibold text-foreground">Niveau de confiance</h3>
           </div>
           <TooltipProvider>
             <Tooltip>

@@ -35,24 +35,24 @@ export default function PredictionPage() {
 
   const getAlerteBadgeVariant = (alerte: string) => {
     if (alerte.startsWith("🚨")) return "destructive";
-    if (alerte.startsWith("⚠️")) return "secondary"; // ou une autre couleur pour 'warning'
-    if (alerte.startsWith("💡")) return "outline"; // ou une autre couleur pour 'info'
+    if (alerte.startsWith("⚠️")) return "secondary";
+    if (alerte.startsWith("💡")) return "outline";
     return "default";
   }
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="p-4 md:p-6 lg:p-8 flex justify-center items-center h-screen">
         <p>Chargement des prédictions en cours...</p>
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="p-4 md:p-6 lg:p-8 flex flex-col gap-6">
       <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold">📈 Analyse Prédictive de la Durée de Vie</CardTitle>
+          <CardTitle className="text-3xl font-bold">Analyse prédictive de la durée de vie</CardTitle>
           <CardDescription>
             Analyse prédictive fondée sur les données d'inspection des pneus enregistrées.
           </CardDescription>
@@ -60,7 +60,7 @@ export default function PredictionPage() {
         <CardContent>
           {donnees.length === 0 ? (
             <div className="text-center py-10">
-              <p className="text-muted-foreground text-lg">Aucune donnée d'inspection de pneu n'est actuellement disponible.</p>
+              <p className="text-muted-foreground text-lg">Aucune donnée d'inspection de pneu n'est disponible actuellement.</p>
               <p className="text-muted-foreground">Veuillez saisir des données via la page <Button variant="link" onClick={() => router.push('/remplissage')} className="p-0 h-auto">'Nouvelle inspection'</Button> pour afficher les prédictions.</p>
             </div>
           ) : (
@@ -72,8 +72,8 @@ export default function PredictionPage() {
                     <TableHead>Machine (N° Interne)</TableHead>
                     <TableHead>Profil Actuel</TableHead>
                     <TableHead className="text-right">Échéance (mois)</TableHead>
-                    <TableHead className="text-right">Rendement Final Prévu (h)</TableHead>
-                    <TableHead>Remplacement Théorique</TableHead>
+                    <TableHead className="text-right">Rendement final prévu (h)</TableHead>
+                    <TableHead>Remplacement théorique</TableHead>
                     <TableHead className="text-center">Alertes</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -120,7 +120,7 @@ export default function PredictionPage() {
           )}
           <div className="mt-6 flex justify-end">
             <Button onClick={() => router.push("/dashboard")}>
-              Retour au Tableau de Bord
+              Retour au tableau de bord
             </Button>
           </div>
         </CardContent>

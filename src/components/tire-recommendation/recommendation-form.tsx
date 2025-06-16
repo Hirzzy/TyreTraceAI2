@@ -2,7 +2,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,13 +28,13 @@ const referenceTireSchema = z.object({
   lifespanKm: z.coerce.number().positive("La durée de vie doit être positive.").optional(),
   costEuro: z.coerce.number().positive("Le coût doit être positif.").optional(),
   usageConditions: z.string().optional(),
-  photoDataUri: z.string().optional(), // Sera géré séparément pour le fichier
+  photoDataUri: z.string().optional(),
 });
 
 const operationalContextSchema = z.object({
   region: z.string().optional(),
   annualMileagePerVehicleKm: z.coerce.number().positive("Le kilométrage doit être positif.").optional(),
-  fleetPriorities: z.string().optional().transform(val => val ? val.split(',').map(s => s.trim()).filter(s => s) : []), // Transforme une chaîne de priorités séparées par des virgules en tableau
+  fleetPriorities: z.string().optional().transform(val => val ? val.split(',').map(s => s.trim()).filter(s => s) : []),
 });
 
 const formSchema = z.object({
@@ -110,7 +110,7 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
         console.error("Erreur de conversion de l'image:", error);
         toast({
           variant: "destructive",
-          title: "Erreur Fichier Image",
+          title: "Erreur de fichier image",
           description: "Impossible de traiter le fichier image sélectionné.",
         });
         setIsLoading(false);
@@ -128,7 +128,6 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
         } : undefined,
         operationalContext: values.operationalContext ? {
             ...values.operationalContext,
-            // fleetPriorities est déjà un tableau grâce à la transformation Zod
             fleetPriorities: values.operationalContext.fleetPriorities as string[] | undefined
         } : undefined,
       };
@@ -136,14 +135,14 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
       const result = await recommendOptimalTires(input);
       onRecommendationResult(result);
       toast({
-        title: "Recommandation Réussie",
+        title: "Recommandation réussie",
         description: "La suggestion de pneu optimal est maintenant disponible.",
       });
     } catch (error) {
       console.error("Erreur lors de la recommandation de pneus:", error);
       toast({
         variant: "destructive",
-        title: "Échec de la Recommandation",
+        title: "Échec de la recommandation",
         description: error instanceof Error ? error.message : "Une erreur inconnue est survenue lors du traitement de votre demande.",
       });
       onRecommendationResult(null);
@@ -153,9 +152,9 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
   }
 
   return (
-    <Card className="w-full shadow-md hover:shadow-lg transition-shadow duration-300">
+    <>
       <CardHeader>
-        <CardTitle>Formulaire de Recommandation de Pneus</CardTitle>
+        <CardTitle>Formulaire de recommandation de pneus</CardTitle>
         <CardDesc>Indiquez les caractéristiques du véhicule et les détails d'un pneu de référence pour obtenir des recommandations assistées par l'IA.</CardDesc>
       </CardHeader>
       <Form {...form}>
@@ -167,9 +166,9 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                 name="vehicleType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Type de Véhicule</FormLabel>
+                    <FormLabel>Type de véhicule</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex : Camion porteur, Tracteur routier" {...field} />
+                      <Input placeholder="Ex: Camion porteur, Tracteur routier" {...field} />
                     </FormControl>
                     <FormDescription>Indiquez la catégorie ou le modèle du véhicule.</FormDescription>
                     <FormMessage />
@@ -181,9 +180,9 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                 name="role"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Rôle Principal du Véhicule</FormLabel>
+                    <FormLabel>Rôle principal du véhicule</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex : Transport longue distance, Distribution régionale" {...field} />
+                      <Input placeholder="Ex: Transport longue distance" {...field} />
                     </FormControl>
                     <FormDescription>Décrivez l'usage principal du véhicule.</FormDescription>
                     <FormMessage />
@@ -192,10 +191,10 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
               />
             </div>
 
-            <Card className="p-4 pt-2 bg-muted/30">
+            <Card className="p-4 pt-2 bg-muted/30 shadow-none border-none">
               <CardHeader className="px-0 pb-2 pt-2">
-                <CardTitle className="text-lg">Détails du Pneu de Référence (Optionnel)</CardTitle>
-                <CardDesc className="text-sm">Informations sur un pneu actuellement utilisé ou connu pour comparaison.</CardDesc>
+                <CardTitle className="text-lg">Détails du pneu de référence (Optionnel)</CardTitle>
+                <CardDesc className="text-sm text-muted-foreground">Informations sur un pneu actuellement utilisé ou connu pour comparaison.</CardDesc>
               </CardHeader>
               <CardContent className="px-0 pb-0 space-y-4">
                  <FormField
@@ -203,9 +202,9 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                   name="referenceTire.profile"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Profil du Pneu de Référence</FormLabel>
+                      <FormLabel>Profil du pneu de référence</FormLabel>
                       <FormControl>
-                        <Input placeholder="Ex : Michelin X Multi Z" {...field} />
+                        <Input placeholder="Ex: Michelin X Multi Z" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -246,7 +245,7 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                     <FormItem>
                       <FormLabel>Conditions d'utilisation</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Ex : Mixte autoroute et routes secondaires, charges variables." {...field} rows={2} />
+                        <Textarea placeholder="Ex: Mixte autoroute et routes secondaires, charges variables." {...field} rows={2} className="resize-none"/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -257,7 +256,7 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                   name="referenceTirePhotoFile"
                   render={({ field: { onChange, value, ...restField } }) => (
                     <FormItem>
-                      <FormLabel>Photo du Pneu de Référence</FormLabel>
+                      <FormLabel>Photo du pneu de référence</FormLabel>
                       <FormControl>
                         <div className="flex items-center space-x-4">
                           <label htmlFor="photo-upload" className="flex flex-col items-center justify-center w-full h-32 border-2 border-border border-dashed rounded-lg cursor-pointer bg-card hover:bg-muted/50">
@@ -283,7 +282,7 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                                     form.clearErrors("referenceTirePhotoFile");
                                   }
                                 } else {
-                                  onChange(undefined); // Clear the file if none is selected
+                                  onChange(undefined);
                                 }
                               }}
                               {...restField}
@@ -317,10 +316,10 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
               </CardContent>
             </Card>
             
-            <Card className="p-4 pt-2 bg-muted/30">
+            <Card className="p-4 pt-2 bg-muted/30 shadow-none border-none">
               <CardHeader className="px-0 pb-2 pt-2">
-                <CardTitle className="text-lg">Contexte Opérationnel (Optionnel)</CardTitle>
-                 <CardDesc className="text-sm">Détails sur l'environnement d'exploitation de la flotte.</CardDesc>
+                <CardTitle className="text-lg">Contexte opérationnel (Optionnel)</CardTitle>
+                 <CardDesc className="text-sm text-muted-foreground">Détails sur l'environnement d'exploitation de la flotte.</CardDesc>
               </CardHeader>
               <CardContent className="px-0 pb-0 space-y-4">
                 <FormField
@@ -328,9 +327,9 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                   name="operationalContext.region"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Région d'Opération</FormLabel>
+                      <FormLabel>Région d'opération</FormLabel>
                       <FormControl>
-                        <Input placeholder="Ex : Nord de la France, Région montagneuse" {...field} />
+                        <Input placeholder="Ex: Nord de la France, Région montagneuse" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -341,7 +340,7 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                   name="operationalContext.annualMileagePerVehicleKm"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Kilométrage Annuel Moyen par Véhicule (km)</FormLabel>
+                      <FormLabel>Kilométrage annuel moyen par véhicule (km)</FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="80000" {...field} />
                       </FormControl>
@@ -354,10 +353,10 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                   name="operationalContext.fleetPriorities"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Priorités de la Flotte</FormLabel>
+                      <FormLabel>Priorités de la flotte</FormLabel>
                       <FormControl>
-                        <Input placeholder="Ex : Longévité, Sécurité, Coût" {...field} 
-                         onChange={e => field.onChange(e.target.value)} // Zod transform handle array conversion
+                        <Input placeholder="Ex: Longévité, Sécurité, Coût" {...field} 
+                         onChange={e => field.onChange(e.target.value)}
                          value={Array.isArray(field.value) ? field.value.join(', ') : field.value || ''}
                         />
                       </FormControl>
@@ -368,8 +367,6 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                 />
               </CardContent>
             </Card>
-
-
           </CardContent>
           <CardFooter>
             <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
@@ -379,12 +376,12 @@ export function RecommendationForm({ onRecommendationResult }: RecommendationFor
                   Analyse en cours...
                 </>
               ) : (
-                "Obtenir la Recommandation"
+                "Obtenir la recommandation"
               )}
             </Button>
           </CardFooter>
         </form>
       </Form>
-    </Card>
+    </>
   );
 }

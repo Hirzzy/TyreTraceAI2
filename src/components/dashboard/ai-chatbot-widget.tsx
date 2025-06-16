@@ -97,7 +97,7 @@ export function AiChatbotWidget() {
               <div className="flex justify-start">
                 <div className="p-3 rounded-lg bg-muted text-muted-foreground text-sm shadow flex items-center">
                   <Loader2 className="h-4 w-4 animate-spin mr-2"/>
-                  <span>...</span>
+                  <span>En cours de réflexion...</span>
                 </div>
               </div>
             )}

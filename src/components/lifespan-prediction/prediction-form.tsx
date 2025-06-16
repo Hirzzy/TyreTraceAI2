@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription as CardDesc, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardDescription as CardDesc, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"; // Removed Card itself
 import { predictTireLifespan, PredictTireLifespanInput, PredictTireLifespanOutput } from "@/ai/flows/predict-tire-lifespan";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -72,14 +72,14 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
       const result = await predictTireLifespan(input);
       onPredictionResult(result);
       toast({
-        title: "Prédiction Réussie",
+        title: "Prédiction réussie",
         description: "Les résultats de la prédiction de durée de vie du pneu sont disponibles.",
       });
     } catch (error) {
       console.error("Erreur lors de la prédiction de durée de vie:", error);
       toast({
         variant: "destructive",
-        title: "Échec de la Prédiction",
+        title: "Échec de la prédiction",
         description: error instanceof Error ? error.message : "Une erreur inconnue est survenue lors du traitement de votre demande. Veuillez vérifier les données et réessayer.",
       });
       onPredictionResult(null);
@@ -89,10 +89,10 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
   }
 
   return (
-    <Card className="w-full shadow-md hover:shadow-lg transition-shadow duration-300">
+    <>
       <CardHeader>
-        <CardTitle>Formulaire de Prédiction de Durée de Vie</CardTitle>
-        <CardDesc>Saisissez les informations détaillées du pneu pour obtenir une estimation, basée sur l'IA, de sa durée de vie restante.</CardDesc>
+        <CardTitle>Formulaire de prédiction de durée de vie</CardTitle>
+        <CardDesc>Saisissez les informations détaillées du pneu pour obtenir une estimation de sa durée de vie restante, basée sur l'IA.</CardDesc>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -103,9 +103,9 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                 name="tireId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Identifiant Unique du Pneu</FormLabel>
+                    <FormLabel>Identifiant unique du pneu</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: PNEU-AVD-007, ID-SITE- VEH-POS-01" {...field} />
+                      <Input placeholder="Ex: PNEU-AVD-007, ID-SITE-VEH-POS-01" {...field} />
                     </FormControl>
                     <FormDescription>Code unique assigné à ce pneu spécifique.</FormDescription>
                     <FormMessage />
@@ -117,9 +117,9 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                 name="vehicleType"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Type de Véhicule</FormLabel>
+                    <FormLabel>Type de véhicule</FormLabel>
                     <FormControl>
-                      <Input placeholder="Ex: Semi-remorque, Grue mobile, Tracteur agricole" {...field} />
+                      <Input placeholder="Ex: Semi-remorque, Grue mobile" {...field} />
                     </FormControl>
                     <FormDescription>Modèle ou catégorie du véhicule utilisant le pneu.</FormDescription>
                     <FormMessage />
@@ -132,7 +132,7 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               name="usagePattern"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Profil d'Utilisation Principal</FormLabel>
+                  <FormLabel>Profil d'utilisation principal</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Décrivez les conditions typiques d'utilisation : type de routes, charges, style de conduite..."
@@ -142,7 +142,7 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                     />
                   </FormControl>
                   <FormDescription>
-                    Ex: "Majoritairement autoroutes (80%), charges lourdes (30T+), conduite souple, quelques routes régionales (20%)".
+                    Ex: "Majoritairement autoroutes (80 %), charges lourdes (30T+), conduite souple, quelques routes régionales (20 %)".
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -153,7 +153,7 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               name="historicalData"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Données de Performance Antérieures (Format JSON)</FormLabel>
+                  <FormLabel>Données de performance antérieures (Format JSON)</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder='Exemple : { "kilometrage_actuel_km": 75000, "pression_moyenne_psi": 110, ... }'
@@ -175,7 +175,7 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
               name="seasonalFactors"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Facteurs Saisonniers et Environnementaux</FormLabel>
+                  <FormLabel>Facteurs saisonniers et environnementaux</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Décrivez les impacts saisonniers ou environnementaux : climat, état des routes..."
@@ -200,12 +200,12 @@ export function PredictionForm({ onPredictionResult }: PredictionFormProps) {
                   Prédiction en cours...
                 </>
               ) : (
-                "Prédire la Durée de Vie"
+                "Prédire la durée de vie"
               )}
             </Button>
           </CardFooter>
         </form>
       </Form>
-    </Card>
+    </>
   );
 }

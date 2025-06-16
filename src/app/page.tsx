@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight, Cpu } from 'lucide-react';
+import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight } from 'lucide-react';
 
 export default function LandingPage() {
   return (
@@ -33,7 +33,7 @@ export default function LandingPage() {
           </nav>
           <Link href="/dashboard">
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Accéder à l'Application
+              Accéder à l'application
             </Button>
           </Link>
         </div>
@@ -46,13 +46,13 @@ export default function LandingPage() {
           alt="Camion minier dans une carrière"
           layout="fill"
           objectFit="cover"
-          className="opacity-30"
+          className="opacity-20"
           data-ai-hint="quarry truck"
           priority
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-transparent via-black/50 to-background p-4 text-center">
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
-            Visualisez Enfin le Coût Réel de Chaque Pneu
+            Visualisez enfin le coût réel de chaque pneu
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
             Optimisez la gestion de votre flotte et réduisez vos dépenses avec une analyse prédictive de pointe.
@@ -60,7 +60,7 @@ export default function LandingPage() {
           <div className="mt-10">
             <Link href="/dashboard">
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Démarrer l'Analyse
+                Démarrer l'analyse
                 <ChevronRight className="ml-2 h-5 w-5" />
                 </Button>
             </Link>
@@ -69,22 +69,22 @@ export default function LandingPage() {
       </section>
 
       {/* Small Feature Highlights Section */}
-      <section id="fonctionnalites" className="py-12 md:py-20 lg:py-28 bg-background">
+      <section id="fonctionnalites" className="py-12 md:py-16 lg:py-24 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="mb-2 text-center text-3xl font-bold tracking-tight text-primary md:mb-4 md:text-4xl">
-            Des Fonctionnalités Pensées pour Vous
+            Des fonctionnalités pensées pour vous
           </h2>
           <p className="mb-10 text-center text-lg text-muted-foreground md:mb-16">
             Tout ce dont vous avez besoin pour une gestion optimisée de vos pneumatiques.
           </p>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: MapPin, title: "Suivi en Temps Réel", description: "Géolocalisation précise et alertes instantanées pour une réactivité maximale." , dataAiHint: "map location"},
-              { icon: Cog, title: "Optimisation des Opérations", description: "Maintenance prédictive et amélioration continue de l'efficacité opérationnelle." , dataAiHint: "gear settings"},
-              { icon: LineChart, title: "Analyse de Performance", description: "Visualisez vos données clés pour prendre des décisions stratégiques éclairées." , dataAiHint: "chart graph"},
-              { icon: BarChartBig, title: "Indicateurs Clés (KPI)", description: "Mesurez votre succès et identifiez les opportunités d'amélioration continue." , dataAiHint: "dashboard metrics"},
+              { icon: MapPin, title: "Suivi en temps réel", description: "Géolocalisation précise et alertes instantanées pour une réactivité maximale." , dataAiHint: "map location"},
+              { icon: Cog, title: "Optimisation des opérations", description: "Maintenance prédictive et amélioration continue de l'efficacité opérationnelle." , dataAiHint: "gear settings"},
+              { icon: LineChart, title: "Analyse de performance", description: "Visualisez vos données clés pour prendre des décisions stratégiques éclairées." , dataAiHint: "chart graph"},
+              { icon: BarChartBig, title: "Indicateurs clés (KPI)", description: "Mesurez votre succès et identifiez les opportunités d'amélioration continue." , dataAiHint: "dashboard metrics"},
             ].map((feature, index) => (
-              <Card key={index} className="flex flex-col items-center text-center bg-card hover:shadow-xl transition-shadow">
+              <Card key={index} className="flex flex-col items-center text-center bg-card hover:shadow-xl transition-shadow duration-300">
                 <CardHeader className="pb-2">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                     <feature.icon className="h-6 w-6" />
@@ -101,13 +101,13 @@ export default function LandingPage() {
       </section>
 
       {/* Detailed Features Section */}
-      <section id="a-propos" className="py-12 md:py-20 lg:py-28 bg-card">
+      <section id="a-propos" className="py-12 md:py-16 lg:py-24 bg-card">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {[
-              { icon: ClipboardCheck, title: "Suivi Complet des Montages", description: "Centralisez l'historique de chaque pneu, de son montage à sa réforme, pour une traçabilité intégrale et fiable." },
-              { icon: TrendingUp, title: "Gestion Avancée de la Performance", description: "Analysez la performance des pneus pour optimiser les choix, anticiper les remplacements et réduire significativement les coûts opérationnels." },
-              { icon: Archive, title: "Gestion de Stock Intelligente", description: "Gérez vos stocks de pneus neufs et usagés efficacement pour anticiper les besoins et éviter les ruptures ou les surplus coûteux." },
+              { icon: ClipboardCheck, title: "Suivi complet des montages", description: "Centralisez l'historique de chaque pneu, de son montage à sa réforme, pour une traçabilité intégrale et fiable." },
+              { icon: TrendingUp, title: "Gestion avancée de la performance", description: "Analysez la performance des pneus pour optimiser les choix, anticiper les remplacements et réduire significativement les coûts opérationnels." },
+              { icon: Archive, title: "Gestion de stock intelligente", description: "Gérez efficacement vos stocks de pneus neufs et usagés pour anticiper les besoins et éviter les ruptures ou les surplus coûteux." },
             ].map((detail, index) => (
               <div key={index} className="rounded-lg p-6 shadow-lg bg-background border border-border">
                 <div className="mb-4 flex items-center gap-3">
@@ -122,7 +122,7 @@ export default function LandingPage() {
       </section>
 
       {/* Our Innovative Technology Section */}
-      <section className="py-12 md:py-20 lg:py-28 bg-background">
+      <section className="py-12 md:py-16 lg:py-24 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
             <div>
@@ -130,7 +130,7 @@ export default function LandingPage() {
                 Innovation
               </div>
               <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl">
-                Notre Technologie au Service de Vos Pneus
+                Notre technologie au service de vos pneus
               </h2>
               <p className="mt-4 text-muted-foreground md:text-lg">
                 TyreTrace AI intègre des algorithmes d'intelligence artificielle avancés pour analyser des milliers de points de données,
@@ -153,10 +153,10 @@ export default function LandingPage() {
       </section>
       
       {/* CTA Section */}
-      <section id="contact" className="py-12 md:py-20 lg:py-28 bg-card">
+      <section id="contact" className="py-12 md:py-16 lg:py-24 bg-card">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-primary md:text-4xl">
-            Prêt à Transformer la Gestion de Vos Pneus ?
+            Prêt à transformer la gestion de vos pneus ?
           </h2>
           <p className="mt-4 max-w-xl mx-auto text-lg text-muted-foreground">
             Contactez-nous pour une démonstration personnalisée et découvrez comment TyreTrace AI peut vous aider à réaliser des économies substantielles.
@@ -164,7 +164,7 @@ export default function LandingPage() {
           <div className="mt-8">
             <Link href="/dashboard"> {/* Temporairement vers le dashboard, idéalement vers une page contact/démo */}
                 <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Demander une Démo
+                Demander une démo
                 </Button>
             </Link>
           </div>
@@ -178,8 +178,8 @@ export default function LandingPage() {
             &copy; {new Date().getFullYear()} TyreTrace AI. Tous droits réservés.
           </p>
           <div className="mt-2 space-x-4">
-            <Link href="#" className="text-xs text-muted-foreground hover:text-primary">Politique de Confidentialité</Link>
-            <Link href="#" className="text-xs text-muted-foreground hover:text-primary">Conditions d'Utilisation</Link>
+            <Link href="#" className="text-xs text-muted-foreground hover:text-primary">Politique de confidentialité</Link>
+            <Link href="#" className="text-xs text-muted-foreground hover:text-primary">Conditions d'utilisation</Link>
           </div>
         </div>
       </footer>

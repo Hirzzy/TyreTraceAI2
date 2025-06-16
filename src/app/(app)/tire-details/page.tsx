@@ -1,3 +1,4 @@
+
 import { TireDataTable } from "@/components/tire-details/tire-data-table";
 import { TireSpecificPerformanceChart } from "@/components/tire-details/tire-specific-performance-chart";
 import type { PerformanceMetric } from "@/types";
@@ -13,8 +14,8 @@ const mockTirePerformanceData: PerformanceMetric[] = [
 
 export default function TireDetailsPage() {
   return (
-    <div className="flex flex-col gap-6">
-      <h2 className="text-3xl font-bold tracking-tight text-foreground">Analyse Détaillée de la Performance des Pneus</h2>
+    <div className="p-4 md:p-6 lg:p-8 flex flex-col gap-6">
+      <h2 className="text-3xl font-bold tracking-tight text-foreground">Analyse détaillée de la performance des pneus</h2>
       
       <TireSpecificPerformanceChart 
         tireId="T-001" 

@@ -23,25 +23,25 @@ const navItems = [
   {
     href: "/dashboard",
     icon: LayoutDashboard,
-    label: "Tableau de Bord",
+    label: "Tableau de bord",
     tooltip: "Synthèse des performances et alertes",
   },
   {
     href: "/tire-details",
     icon: BarChart3,
-    label: "Analyse Détaillée des Pneus",
+    label: "Analyse détaillée des pneus",
     tooltip: "Analyse approfondie des données par pneu",
   },
   {
     href: "/lifespan-prediction",
     icon: Clock,
-    label: "Prédiction IA de Durée de Vie",
+    label: "Prédiction IA de durée de vie",
     tooltip: "Estimer la durée de vie des pneus avec l'IA",
   },
   {
     href: "/tire-recommendation",
     icon: Settings2,
-    label: "Recommandation IA de Pneus",
+    label: "Recommandation IA de pneus",
     tooltip: "Obtenir des recommandations de pneus par l'IA",
   },
   {
@@ -53,7 +53,7 @@ const navItems = [
   {
     href: "/prediction",
     icon: TrendingUp,
-    label: "Analyse Prédictive du Suivi",
+    label: "Analyse prédictive du suivi",
     tooltip: "Consulter les analyses prédictives du suivi",
   },
 ];

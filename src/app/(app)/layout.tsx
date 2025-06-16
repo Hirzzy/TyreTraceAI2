@@ -1,7 +1,7 @@
 
 import { AppHeader } from "@/components/layout/app-header";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
-import { AppFooter } from "@/components/layout/app-footer"; // Import du nouveau footer
+import { AppFooter } from "@/components/layout/app-footer";
 import {
   Sidebar,
   SidebarContent,
@@ -22,7 +22,7 @@ export default function AppLayout({
         <SidebarHeader className="border-b">
            <div className="flex items-center gap-2 py-2 group-data-[collapsible=icon]:justify-center">
             <CarFront className="h-7 w-7 text-primary" />
-            <span className="font-semibold text-lg group-data-[collapsible=icon]:hidden">TyreTrace IA</span>
+            <span className="font-semibold text-lg group-data-[collapsible=icon]:hidden">TyreTrace AI</span>
           </div>
         </SidebarHeader>
         <SidebarContent>
@@ -32,10 +32,10 @@ export default function AppLayout({
       <SidebarInset>
         <div className="flex flex-col min-h-screen">
           <AppHeader />
-          <main className="flex-1 p-0 md:p-0 lg:p-0 overflow-auto"> {/* Padding géré par la page enfant */}
+          <main className="flex-1 overflow-auto"> {/* Main app pages will now control their own root padding */}
             {children}
           </main>
-          <AppFooter /> {/* Ajout du footer ici */}
+          <AppFooter />
         </div>
       </SidebarInset>
     </SidebarProvider>

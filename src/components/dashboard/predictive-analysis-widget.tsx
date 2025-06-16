@@ -15,11 +15,11 @@ const mockPredictiveData: MockPredictiveDataItem[] = [
 
 const chartConfig = {
   usureReelle: {
-    label: "Usure Réelle (mm)",
+    label: "Usure réelle (mm)",
     color: "hsl(var(--chart-1))",
   },
   prediction: {
-    label: "Prédiction Usure (mm)",
+    label: "Prédiction usure (mm)",
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
@@ -35,18 +35,17 @@ export function PredictiveAnalysisWidget() {
     return <div className="h-[300px] w-full bg-muted rounded-lg animate-pulse"></div>;
   }
 
-  // Prepare data for two lines if needed, or adapt the single line
   const chartData = mockPredictiveData.map(d => ({
     name: d.name,
-    usureReelle: d.name.includes("(est.)") ? undefined : d.usure, // Only show real data for past months
-    prediction: d.usure, // Show prediction for all months
+    usureReelle: d.name.includes("(est.)") ? undefined : d.usure, 
+    prediction: d.usure, 
   }));
 
 
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
-        <CardTitle>Analyse Prédictive (Dumper A-12)</CardTitle>
+        <CardTitle>Analyse prédictive (Dumper A-12)</CardTitle>
         <CardDescription>Évolution de l'usure et prédictions.</CardDescription>
       </CardHeader>
       <CardContent>
