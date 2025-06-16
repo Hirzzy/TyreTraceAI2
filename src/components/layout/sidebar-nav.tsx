@@ -10,6 +10,7 @@ import {
   Settings2,
   FilePlus,
   TrendingUp,
+  LogIn, // Nouvelle icône pour le flux de sélection
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -47,14 +48,20 @@ const navItems = [
   {
     href: "/remplissage",
     icon: FilePlus,
-    label: "Nouvelle inspection",
-    tooltip: "Enregistrer les données d'une nouvelle inspection",
+    label: "Ancienne Inspection", // Changé pour différencier
+    tooltip: "Enregistrer les données d'une inspection (ancien formulaire)",
   },
   {
     href: "/prediction",
     icon: TrendingUp,
     label: "Analyse prédictive du suivi",
     tooltip: "Consulter les analyses prédictives du suivi",
+  },
+  { // Nouvel élément de menu pour le flux de sélection
+    href: "/selection",
+    icon: LogIn,
+    label: "Nouvelle Inspection (Flux)",
+    tooltip: "Démarrer le nouveau flux de saisie d'inspection",
   },
 ];
 
@@ -70,7 +77,7 @@ export function SidebarNav() {
               asChild
               variant="default"
               size="default"
-              isActive={pathname === item.href}
+              isActive={pathname.startsWith(item.href) && (item.href !== '/' || pathname === '/')} // Gère l'activité pour les routes imbriquées
               tooltip={{ children: item.tooltip, side: "right", align: "center" }}
               onClick={() => {
                 setOpenMobile(false);

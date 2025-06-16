@@ -4,25 +4,35 @@
 
 @layer base {
   :root {
+    /* Thème principal basé sur les directives TyreTrace IA de l'utilisateur */
     --background: 0 0% 10%; /* Noir profond #1A1A1A */
     --foreground: 0 0% 80%; /* Gris clair #CCCCCC */
-    --card: 0 0% 12%; /* #1F1F1F */
+    
+    --card: 0 0% 12%; /* #1F1F1F - Conservé du thème précédent pour cohérence interne */
     --card-foreground: 0 0% 80%; /* Gris clair #CCCCCC */
-    --popover: 0 0% 8%; /* #141414 */
+    
+    --popover: 0 0% 8%; /* #141414 - Conservé */
     --popover-foreground: 0 0% 80%; /* Gris clair #CCCCCC */
+    
     --primary: 51 100% 50%; /* Jaune doré #FFD700 */
     --primary-foreground: 0 0% 10%; /* Noir profond #1A1A1A (texte sur fond jaune) */
-    --secondary: 0 0% 20%; /* Gris plus foncé #333333 */
+    
+    --secondary: 0 0% 20%; /* Gris plus foncé #333333 - Conservé */
     --secondary-foreground: 51 100% 50%; /* Jaune doré #FFD700 (texte sur fond secondaire) */
-    --muted: 0 0% 15%; /* #262626 */
+    
+    --muted: 0 0% 15%; /* #262626 - Conservé */
     --muted-foreground: 0 0% 50%; /* Gris moyen #808080 */
-    --accent: 51 100% 55%; /* Jaune doré un peu plus clair #FFDB1A */
+    
+    --accent: 51 100% 55%; /* Jaune doré un peu plus clair #FFDB1A - Légère variation pour accent */
     --accent-foreground: 0 0% 10%; /* Noir profond #1A1A1A (texte sur fond accent) */
+    
     --destructive: 348 83% 47%; /* Rouge Cramoisi #DC143C */
     --destructive-foreground: 0 0% 98%; /* Texte blanc cassé sur fond destructeur */
-    --border: 0 0% 20%; /* Gris #333333 */
-    --input: 0 0% 22%; /* Gris #383838 */
+    
+    --border: 0 0% 20%; /* Gris #333333 - Conservé */
+    --input: 0 0% 22%; /* Gris #383838 - Conservé */
     --ring: 51 100% 60%; /* Jaune doré plus clair pour le focus #FFDE33 */
+    
     --radius: 0.5rem;
 
     --chart-1: 51 100% 50%; /* Jaune doré */
@@ -42,25 +52,25 @@
   }
 
   .dark {
-    --background: 0 0% 10%; /* Noir profond #1A1A1A */
-    --foreground: 0 0% 80%; /* Gris clair #CCCCCC */
-    --card: 0 0% 12%; /* #1F1F1F */
-    --card-foreground: 0 0% 80%; /* Gris clair #CCCCCC */
-    --popover: 0 0% 8%; /* #141414 */
-    --popover-foreground: 0 0% 80%; /* Gris clair #CCCCCC */
-    --primary: 51 100% 50%; /* Jaune doré #FFD700 */
-    --primary-foreground: 0 0% 10%; /* Noir profond #1A1A1A (texte sur fond jaune) */
-    --secondary: 0 0% 20%; /* Gris plus foncé #333333 */
-    --secondary-foreground: 51 100% 50%; /* Jaune doré #FFD700 (texte sur fond secondaire) */
-    --muted: 0 0% 15%; /* #262626 */
-    --muted-foreground: 0 0% 50%; /* Gris moyen #808080 */
-    --accent: 51 100% 55%; /* Jaune doré un peu plus clair #FFDB1A */
-    --accent-foreground: 0 0% 10%; /* Noir profond #1A1A1A (texte sur fond accent) */
-    --destructive: 348 83% 47%; /* Rouge Cramoisi #DC143C */
-    --destructive-foreground: 0 0% 98%; /* Texte blanc cassé sur fond destructeur */
-    --border: 0 0% 20%; /* Gris #333333 */
-    --input: 0 0% 22%; /* Gris #383838 */
-    --ring: 51 100% 60%; /* Jaune doré plus clair pour le focus #FFDE33 */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 80%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 80%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 80%;
+    --primary: 51 100% 50%;
+    --primary-foreground: 0 0% 10%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 51 100% 50%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 50%;
+    --accent: 51 100% 55%;
+    --accent-foreground: 0 0% 10%;
+    --destructive: 348 83% 47%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 22%;
+    --ring: 51 100% 60%;
     
     --chart-1: 51 100% 50%;
     --chart-2: 45 90% 55%;
@@ -84,7 +94,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    @apply bg-background text-foreground antialiased; 
+    font-family: 'Inter', sans-serif; /* Assure que Inter est la police par défaut */
   }
 }
 
