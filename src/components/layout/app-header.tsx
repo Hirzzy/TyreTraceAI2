@@ -12,10 +12,10 @@ export function AppHeader() {
         <SidebarTrigger aria-label="Basculer la barre latérale" />
       </div>
       <div className="flex flex-1 items-center gap-4">
-        <div className="flex items-center gap-2">
+        <Link href="/dashboard" className="flex items-center gap-2">
           <CarFront className="h-7 w-7 text-primary" />
-          <h1 className="text-xl font-semibold text-foreground">TyreTrace IA</h1>
-        </div>
+          <h1 className="text-xl font-semibold text-foreground hover:text-primary transition-colors">TyreTrace IA</h1>
+        </Link>
         <Link href="/" passHref>
           <Button variant="outline" size="sm" className="ml-4">
             <Home className="mr-2 h-4 w-4" />
