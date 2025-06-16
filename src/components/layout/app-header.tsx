@@ -28,12 +28,13 @@ export function AppHeader() {
         {/* Replace Button with LogIn icon with the Image component */}
         <div className="cursor-pointer">
           <Image
-            src="/images/tyretrace_ai_logo.png" // Path to your logo in the public folder
+            src="https://placehold.co/101x32.png" 
             alt="TyreTrace AI Logo - Connexion"
-            width={101} // Adjusted width
-            height={32} // Adjusted height
-            priority // Load the logo quickly
-            className="object-contain" // Ensures the image scales correctly within dimensions
+            width={101} 
+            height={32} 
+            priority 
+            className="object-contain"
+            data-ai-hint="logo brand"
           />
         </div>
       </Link>
