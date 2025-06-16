@@ -26,7 +26,6 @@ export interface PerformanceMetric {
   wearRate: number; // mm per 1000 miles for example
 }
 
-// Nouveau type pour les données du formulaire de remplissage
 export interface RemplissageFormData {
   site: string;
   numeroInterne: string;
@@ -43,4 +42,28 @@ export interface RemplissageFormData {
   profilRecommande: string;
   dateChangement: string; // format : YYYY-MM
   commentaires?: string;
+}
+
+// --- Types for the new dashboard ---
+export interface MockTire {
+    id: string;
+    vehicle: string;
+    site: string;
+    status: 'ok' | 'surveillance' | 'critique';
+    wear: number; // in mm
+    cost_h: number; // cost per hour
+    cost_mm: number; // cost per mm of wear
+    brand: string;
+}
+
+export interface MockPerformanceDataItem {
+    name: string;
+    'Coût/h (€)': number;
+    'Durée de vie (h)': number;
+    'Score': '🥇' | '🥈' | '🥉' | string;
+}
+
+export interface MockPredictiveDataItem {
+    name: string; // Month or time period
+    usure: number; // Wear in mm
 }

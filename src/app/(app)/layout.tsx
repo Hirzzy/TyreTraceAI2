@@ -1,5 +1,7 @@
+
 import { AppHeader } from "@/components/layout/app-header";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
+import { AppFooter } from "@/components/layout/app-footer"; // Import du nouveau footer
 import {
   Sidebar,
   SidebarContent,
@@ -28,10 +30,13 @@ export default function AppLayout({
         </SidebarContent>
       </Sidebar>
       <SidebarInset>
-        <AppHeader />
-        <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
-          {children}
-        </main>
+        <div className="flex flex-col min-h-screen">
+          <AppHeader />
+          <main className="flex-1 p-0 md:p-0 lg:p-0 overflow-auto"> {/* Padding géré par la page enfant */}
+            {children}
+          </main>
+          <AppFooter /> {/* Ajout du footer ici */}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );
