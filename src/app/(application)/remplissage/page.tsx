@@ -78,7 +78,7 @@ export default function RemplissagePage() {
 
   return (
     <div className="p-4 md:p-6 lg:p-8 flex justify-center">
-      <Card className="w-full max-w-3xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+      <Card className="w-full max-w-3xl shadow-md hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Nouvelle inspection pneumatique</CardTitle>
           <CardDesc>Complétez les champs ci-dessous pour enregistrer les données d'une nouvelle inspection de pneu.</CardDesc>

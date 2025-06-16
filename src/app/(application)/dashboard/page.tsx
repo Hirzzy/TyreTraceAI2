@@ -24,12 +24,12 @@ export default function NewDashboardPage() {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6 lg:p-8">
-      <header className="mb-4">
+      <header>
         <h1 className="text-3xl font-bold text-foreground">Tableau de bord</h1>
         <p className="text-muted-foreground">Bienvenue sur votre plateforme de gestion de pneumatiques.</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {kpiData.map(kpi => <NewKpiCard key={kpi.title} {...kpi} />)}
       </div>
 
