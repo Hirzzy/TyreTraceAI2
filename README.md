@@ -1,18 +1,8 @@
-# Firebase Studio
+# TyreTrace AI
 
-This is a NextJS starter in Firebase Studio.
+Bienvenue sur l'application officielle de gestion intelligente des pneumatiques.
 
-To get started, take a look at src/app/page.tsx.
-git init
-
-git remote add origin https://github.com/Hirzzy/TyreTraceAI.git
-
-git add .
-
-git commit -m "Déploiement initial depuis Firebase Studio"
-
-git branch -M main
-
+Ce projet a été construit avec Firebase Studio + NextJS + Vercel.
+git add README.md
+git commit -m "Conflit README.md résolu"
 git push -u origin main
-
-
