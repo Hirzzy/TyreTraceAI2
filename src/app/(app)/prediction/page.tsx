@@ -54,14 +54,14 @@ export default function PredictionPage() {
         <CardHeader>
           <CardTitle className="text-3xl font-bold">📈 Analyse Prédictive de la Durée de Vie</CardTitle>
           <CardDescription>
-            Analyse prédictive fondée sur les données de suivi des pneus enregistrées.
+            Analyse prédictive fondée sur les données d'inspection des pneus enregistrées.
           </CardDescription>
         </CardHeader>
         <CardContent>
           {donnees.length === 0 ? (
             <div className="text-center py-10">
-              <p className="text-muted-foreground text-lg">Aucune donnée de pneu n'est actuellement disponible.</p>
-              <p className="text-muted-foreground">Veuillez saisir des données via la page <Button variant="link" onClick={() => router.push('/remplissage')} className="p-0 h-auto">'Saisie de Suivi des Pneus'</Button> pour afficher les prédictions.</p>
+              <p className="text-muted-foreground text-lg">Aucune donnée d'inspection de pneu n'est actuellement disponible.</p>
+              <p className="text-muted-foreground">Veuillez saisir des données via la page <Button variant="link" onClick={() => router.push('/remplissage')} className="p-0 h-auto">'Nouvelle inspection'</Button> pour afficher les prédictions.</p>
             </div>
           ) : (
             <ScrollArea className="h-[500px] w-full">

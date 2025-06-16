@@ -47,8 +47,8 @@ const navItems = [
   {
     href: "/remplissage",
     icon: FilePlus,
-    label: "Saisie de Suivi des Pneus",
-    tooltip: "Enregistrer les nouvelles données de suivi",
+    label: "Nouvelle inspection",
+    tooltip: "Enregistrer les données d'une nouvelle inspection",
   },
   {
     href: "/prediction",

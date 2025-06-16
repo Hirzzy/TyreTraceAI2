@@ -63,7 +63,7 @@ export default function RemplissagePage() {
       localStorage.setItem("tableauPneus", JSON.stringify(tableau))
       toast({
         title: "Succès",
-        description: "Données du suivi pneumatique enregistrées avec succès.",
+        description: "Données de l'inspection enregistrées avec succès.",
       })
       router.push("/dashboard") 
     } catch (error) {
@@ -71,7 +71,7 @@ export default function RemplissagePage() {
       toast({
         variant: "destructive",
         title: "Erreur de Sauvegarde",
-        description: "Impossible d'enregistrer les données du suivi pneumatique.",
+        description: "Impossible d'enregistrer les données de l'inspection.",
       })
     }
   }
@@ -80,8 +80,8 @@ export default function RemplissagePage() {
     <div className="flex justify-center py-8 px-4">
       <Card className="w-full max-w-3xl shadow-lg">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold">Formulaire de Saisie : Suivi Pneumatique</CardTitle>
-          <CardDesc>Complétez les champs ci-dessous pour enregistrer un nouveau suivi de pneu.</CardDesc>
+          <CardTitle className="text-2xl font-bold">Nouvelle inspection pneumatique</CardTitle>
+          <CardDesc>Complétez les champs ci-dessous pour enregistrer les données d'une nouvelle inspection de pneu.</CardDesc>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -195,7 +195,7 @@ export default function RemplissagePage() {
             </CardContent>
             <CardFooter>
               <Button type="submit" className="w-full md:w-auto" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Enregistrement en cours..." : "Enregistrer le Suivi"}
+                {form.formState.isSubmitting ? "Enregistrement en cours..." : "Enregistrer l'inspection"}
               </Button>
             </CardFooter>
           </form>
