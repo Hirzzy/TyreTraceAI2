@@ -31,7 +31,7 @@ export default function LandingPage() {
           </nav>
           <Link href="/dashboard">
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Accéder à l'application
+              Accéder à l'application !
             </Button>
           </Link>
         </div>
