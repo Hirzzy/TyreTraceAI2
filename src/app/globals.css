@@ -4,88 +4,89 @@
 
 @layer base {
   :root {
-    /* Thème principal basé sur les directives TyreTrace IA de l'utilisateur */
-    --background: 0 0% 10%; /* Noir profond #1A1A1A */
-    --foreground: 0 0% 80%; /* Gris clair #CCCCCC */
+    /* TyreTrace IA Light Theme */
+    --background: 240 25% 97%; /* #F5F5FA - Light Gray */
+    --foreground: 224 71% 4%; /* #0A192F - Dark Blue */
     
-    --card: 0 0% 12%; /* #1F1F1F - Conservé du thème précédent pour cohérence interne */
-    --card-foreground: 0 0% 80%; /* Gris clair #CCCCCC */
+    --card: 0 0% 100%; /* #FFFFFF - White */
+    --card-foreground: 224 71% 4%; /* #0A192F */
     
-    --popover: 0 0% 8%; /* #141414 - Conservé */
-    --popover-foreground: 0 0% 80%; /* Gris clair #CCCCCC */
+    --popover: 0 0% 100%; /* #FFFFFF */
+    --popover-foreground: 224 71% 4%; /* #0A192F */
     
-    --primary: 51 100% 50%; /* Jaune doré #FFD700 */
-    --primary-foreground: 0 0% 10%; /* Noir profond #1A1A1A (texte sur fond jaune) */
+    --primary: 221 89% 60%; /* #4285F4 - Saturated Blue */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
     
-    --secondary: 0 0% 20%; /* Gris plus foncé #333333 - Conservé */
-    --secondary-foreground: 51 100% 50%; /* Jaune doré #FFD700 (texte sur fond secondaire) */
+    --secondary: 240 5% 96%; /* #F2F2F7 */
+    --secondary-foreground: 240 6% 10%; /* #171719 */
     
-    --muted: 0 0% 15%; /* #262626 - Conservé */
-    --muted-foreground: 0 0% 50%; /* Gris moyen #808080 */
+    --muted: 240 5% 96%; /* #F2F2F7 */
+    --muted-foreground: 240 4% 46%; /* #6F6F7A */
     
-    --accent: 51 100% 55%; /* Jaune doré un peu plus clair #FFDB1A - Légère variation pour accent */
-    --accent-foreground: 0 0% 10%; /* Noir profond #1A1A1A (texte sur fond accent) */
+    --accent: 48 96% 53%; /* #FBC02D - Yellow */
+    --accent-foreground: 240 6% 10%; /* #171719 */
     
-    --destructive: 348 83% 47%; /* Rouge Cramoisi #DC143C */
-    --destructive-foreground: 0 0% 98%; /* Texte blanc cassé sur fond destructeur */
+    --destructive: 0 84% 60%; /* #F44336 - Red */
+    --destructive-foreground: 0 0% 100%; /* #FFFFFF */
     
-    --border: 0 0% 20%; /* Gris #333333 - Conservé */
-    --input: 0 0% 22%; /* Gris #383838 - Conservé */
-    --ring: 51 100% 60%; /* Jaune doré plus clair pour le focus #FFDE33 */
+    --border: 240 6% 90%; /* #E3E3E8 */
+    --input: 240 6% 90%; /* #E3E3E8 */
+    --ring: 221 89% 60%; /* #4285F4 */
     
     --radius: 0.5rem;
 
-    --chart-1: 51 100% 50%; /* Jaune doré */
-    --chart-2: 45 90% 55%; /* Orange-jaune */
-    --chart-3: 60 80% 45%; /* Vert-jaune */
-    --chart-4: 35 100% 50%; /* Orange */
-    --chart-5: 0 0% 60%; /* Gris moyen */
+    --chart-1: 221 89% 60%; /* Blue */
+    --chart-2: 142 76% 36%; /* Green */
+    --chart-3: 48 96% 53%; /* Yellow */
+    --chart-4: 261 51% 54%; /* Purple */
+    --chart-5: 0 84% 60%; /* Red */
 
-    --sidebar-background: 0 0% 8%; /* #141414 */
-    --sidebar-foreground: 0 0% 80%;
-    --sidebar-primary: 51 100% 50%;
-    --sidebar-primary-foreground: 0 0% 10%;
-    --sidebar-accent: 0 0% 15%; /* #262626 */
-    --sidebar-accent-foreground: 51 100% 50%;
-    --sidebar-border: 0 0% 18%; /* #2E2E2E */
-    --sidebar-ring: 51 100% 60%;
+    --sidebar-background: 0 0% 100%; /* White */
+    --sidebar-foreground: 224 71% 4%; /* Dark Blue text */
+    --sidebar-primary: 221 89% 60%; /* Blue */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 240 5% 96%; /* Light gray for hover/active */
+    --sidebar-accent-foreground: 221 89% 60%; /* Blue text on hover/active */
+    --sidebar-border: 240 6% 90%; /* Light border */
+    --sidebar-ring: 221 89% 60%;
   }
 
   .dark {
-    --background: 0 0% 10%;
-    --foreground: 0 0% 80%;
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 80%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 80%;
-    --primary: 51 100% 50%;
-    --primary-foreground: 0 0% 10%;
-    --secondary: 0 0% 20%;
-    --secondary-foreground: 51 100% 50%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 50%;
-    --accent: 51 100% 55%;
-    --accent-foreground: 0 0% 10%;
-    --destructive: 348 83% 47%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 20%;
-    --input: 0 0% 22%;
-    --ring: 51 100% 60%;
+    /* Enforcing light theme even in dark mode preference */
+    --background: 240 25% 97%;
+    --foreground: 224 71% 4%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+    --primary: 221 89% 60%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 10%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --accent: 48 96% 53%;
+    --accent-foreground: 240 6% 10%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 221 89% 60%;
     
-    --chart-1: 51 100% 50%;
-    --chart-2: 45 90% 55%;
-    --chart-3: 60 80% 45%;
-    --chart-4: 35 100% 50%;
-    --chart-5: 0 0% 60%;
+    --chart-1: 221 89% 60%;
+    --chart-2: 142 76% 36%;
+    --chart-3: 48 96% 53%;
+    --chart-4: 261 51% 54%;
+    --chart-5: 0 84% 60%;
     
-    --sidebar-background: 0 0% 8%;
-    --sidebar-foreground: 0 0% 80%;
-    --sidebar-primary: 51 100% 50%;
-    --sidebar-primary-foreground: 0 0% 10%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 51 100% 50%;
-    --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 51 100% 60%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 224 71% 4%;
+    --sidebar-primary: 221 89% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 221 89% 60%;
+    --sidebar-border: 240 6% 90%;
+    --sidebar-ring: 221 89% 60%;
   }
 }
 
@@ -105,7 +106,7 @@
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(var(--background) / 0.5);
+  background: hsl(var(--secondary) / 0.5);
 }
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--primary) / 0.7);
