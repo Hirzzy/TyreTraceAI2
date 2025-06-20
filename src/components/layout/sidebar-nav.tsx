@@ -10,7 +10,8 @@ import {
   Settings2,
   FilePlus,
   TrendingUp,
-  LogIn, // Nouvelle icône pour le flux de sélection
+  LogIn,
+  LayoutGrid, // Ajout de l'icône
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -26,6 +27,12 @@ const navItems = [
     icon: LayoutDashboard,
     label: "Tableau de bord",
     tooltip: "Synthèse des performances et alertes",
+  },
+  {
+    href: "/features",
+    icon: LayoutGrid,
+    label: "Fonctionnalités & Tarifs",
+    tooltip: "Voir les fonctionnalités et les plans",
   },
   {
     href: "/tire-details",
