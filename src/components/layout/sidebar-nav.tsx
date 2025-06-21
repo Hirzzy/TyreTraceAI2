@@ -29,37 +29,37 @@ const navItems = [
     tooltip: "Synthèse des performances et alertes",
   },
   {
-    href: "/features",
+    href: "/dashboard/features",
     icon: LayoutGrid,
     label: "Fonctionnalités & Tarifs",
     tooltip: "Voir les fonctionnalités et les plans",
   },
   {
-    href: "/tire-details",
+    href: "/dashboard/tire-details",
     icon: BarChart3,
     label: "Analyse détaillée des pneus",
     tooltip: "Analyse approfondie des données par pneu",
   },
   {
-    href: "/lifespan-prediction",
+    href: "/dashboard/lifespan-prediction",
     icon: Clock,
     label: "Prédiction IA de durée de vie",
     tooltip: "Estimer la durée de vie des pneus avec l'IA",
   },
   {
-    href: "/tire-recommendation",
+    href: "/dashboard/tire-recommendation",
     icon: Settings2,
     label: "Recommandation IA de pneus",
     tooltip: "Obtenir des recommandations de pneus par l'IA",
   },
   {
-    href: "/remplissage",
+    href: "/dashboard/remplissage",
     icon: FilePlus,
     label: "Ancienne Inspection", // Changé pour différencier
     tooltip: "Enregistrer les données d'une inspection (ancien formulaire)",
   },
   {
-    href: "/prediction",
+    href: "/dashboard/prediction",
     icon: TrendingUp,
     label: "Analyse prédictive du suivi",
     tooltip: "Consulter les analyses prédictives du suivi",

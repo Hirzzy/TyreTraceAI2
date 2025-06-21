@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -7,12 +8,12 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const routeTitles: { [key: string]: string } = {
   "/dashboard": "Tableau de bord",
-  "/features": "Fonctionnalités & Tarifs",
-  "/tire-details": "Analyse détaillée des pneus",
-  "/lifespan-prediction": "Prédiction IA de durée de vie",
-  "/tire-recommendation": "Recommandation IA de pneus",
-  "/remplissage": "Ancienne Inspection",
-  "/prediction": "Analyse prédictive du suivi",
+  "/dashboard/features": "Fonctionnalités & Tarifs",
+  "/dashboard/tire-details": "Analyse détaillée des pneus",
+  "/dashboard/lifespan-prediction": "Prédiction IA de durée de vie",
+  "/dashboard/tire-recommendation": "Recommandation IA de pneus",
+  "/dashboard/remplissage": "Ancienne Inspection",
+  "/dashboard/prediction": "Analyse prédictive du suivi",
   "/selection": "Nouvelle Inspection",
 };
 
