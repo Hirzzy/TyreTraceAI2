@@ -13,7 +13,6 @@ export default function TireRecommendationPage() {
   return (
     <div className="p-4 md:p-6 lg:p-8 flex flex-col gap-6 items-center">
       <div className="w-full max-w-3xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">Recommandation IA de pneus optimaux</h2>
         <p className="text-muted-foreground mb-6">
           Obtenez des suggestions de pneus adaptées à vos besoins grâce à notre module de recommandation intelligent.
         </p>

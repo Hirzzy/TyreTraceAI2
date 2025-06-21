@@ -1,90 +1,92 @@
 
 "use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { ArrowRight, CheckCircle, Activity, BarChart2, Layers } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Check, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const strengths = [
-  { icon: CheckCircle, title: 'Fiabilité accrue', description: 'Suivi précis et continu de l\'état des pneus pour prévenir les pannes.' },
-  { icon: Activity, title: 'Maintenance proactive', description: 'Anticipez les besoins en entretien grâce à l\'analyse prédictive.' },
-  { icon: BarChart2, title: 'Réduction des coûts', description: 'Optimisez les performances opérationnelles en minimisant les dépenses inutiles.' },
-  { icon: Layers, title: 'Gestion simplifiée', description: 'Centralisez toutes les données pneumatiques pour une gestion facilitée.' },
+const features = [
+  { name: "Suivi Kilométrique par Pneu", tiers: { essentiel: true, pro: true, entreprise: true } },
+  { name: "Gestion des Stocks (Neuf & Rechapé)", tiers: { essentiel: true, pro: true, entreprise: true } },
+  { name: "Application Mobile (iOS & Android)", tiers: { essentiel: true, pro: true, entreprise: true } },
+  { name: "Rapports d'Activité Standards", tiers: { essentiel: true, pro: true, entreprise: true } },
+  { name: "Analyse d'Usure par IA", tiers: { essentiel: false, pro: true, entreprise: true } },
+  { name: "Alertes de Maintenance Prédictive", tiers: { essentiel: false, pro: true, entreprise: true } },
+  { name: "KPIs de Performance Conducteur", tiers: { essentiel: false, pro: true, entreprise: true } },
+  { name: "Tableau de Bord Personnalisable", tiers: { essentiel: false, pro: true, entreprise: true } },
+  { name: "Accès API pour Intégration", tiers: { essentiel: false, pro: false, entreprise: true } },
+  { name: "Support Technique Dédié", tiers: { essentiel: false, pro: false, entreprise: true } },
+  { name: "Formation sur Site", tiers: { essentiel: false, pro: false, entreprise: true } },
 ];
 
-const carouselImages = [
-    { src: 'https://placehold.co/800x400.png', alt: 'Industrial vehicle in a quarry', hint: 'quarry truck' },
-    { src: 'https://placehold.co/800x400.png', alt: 'Close-up of a large tire tread', hint: 'tire tread' },
-    { src: 'https://placehold.co/800x400.png', alt: 'Fleet of trucks at a depot', hint: 'truck fleet' },
-];
+// Define a type for the tier keys
+type Tier = 'essentiel' | 'pro' | 'entreprise';
+
+const tierData: { [key in Tier]: { name: string; description: string; } } = {
+  essentiel: { name: "Essentiel", description: "Pour les TPE/PME" },
+  pro: { name: "Pro", description: "Pour les flottes moyennes" },
+  entreprise: { name: "Entreprise", description: "Pour les grands comptes" },
+};
 
 export default function FeaturesPage() {
-  const [current, setCurrent] = useState(0);
-
-  const nextImage = () => {
-    setCurrent((prevCurrent) => (prevCurrent + 1) % carouselImages.length);
-  }
-
   return (
-    <div className="p-4 md:p-6 lg:p-8 space-y-8">
-       <header>
-        <h1 className="text-3xl font-bold text-foreground">Fonctionnalités Clés</h1>
-        <p className="text-muted-foreground">Découvrez comment TyreTrace AI transforme la gestion de votre flotte.</p>
-      </header>
-
-      {/* Carousel */}
-      <Card className="overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-        <div className="relative">
-            <Image 
-                src={carouselImages[current].src} 
-                width={800}
-                height={400}
-                className="w-full h-auto object-cover" 
-                alt={carouselImages[current].alt}
-                data-ai-hint={carouselImages[current].hint}
-            />
-            <Button
-                onClick={nextImage}
-                variant="ghost"
-                size="icon"
-                className="absolute inset-y-0 right-2 my-auto h-10 w-10 rounded-full text-white bg-black bg-opacity-30 hover:bg-opacity-50 transition"
-                aria-label="Image suivante"
-            >
-                <ArrowRight />
-            </Button>
+    <div className="bg-card py-12 sm:py-16">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+            La solution transparente adaptée à la taille de votre flotte
+          </h1>
+          <p className="mt-6 text-lg leading-8 text-muted-foreground">
+            Choisissez le plan qui correspond à vos ambitions. Que vous soyez une TPE ou une multinationale, nous avons une offre pour vous.
+          </p>
         </div>
-      </Card>
 
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-4 gap-0 rounded-lg border border-border shadow-sm">
+          <div className="col-span-1 p-4 md:p-6 bg-muted/50 rounded-l-lg">
+            <h2 className="text-lg font-bold text-foreground">Fonctionnalités</h2>
+            <ul className="mt-6 space-y-5">
+              {features.map((feature) => (
+                <li key={feature.name} className="text-sm font-medium text-muted-foreground h-10 flex items-center">
+                  {feature.name}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      {/* Start Analysis Button */}
-      <div className="text-center">
-        <Button size="lg">
-          Démarrer l'analyse - 1 véhicule enregistré
-        </Button>
-      </div>
-
-      {/* Key Strengths */}
-      <Card>
-        <CardHeader>
-            <CardTitle>Nos forces principales</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {strengths.map((strength) => (
-            <div key={strength.title} className="flex items-start gap-4">
-                <div className="text-primary flex-shrink-0">
-                <strength.icon className="w-8 h-8" />
-                </div>
-                <div>
-                <h3 className="text-lg font-semibold text-foreground">{strength.title}</h3>
-                <p className="text-muted-foreground">{strength.description}</p>
-                </div>
+          {(Object.keys(tierData) as Tier[]).map((tier, idx) => (
+            <div
+              key={tier}
+              className={`p-4 md:p-6 text-center border-l border-border ${tier === "pro" ? "bg-primary/5" : ""} ${
+                idx === 2 ? "rounded-r-lg" : ""
+              }`}
+            >
+              <h3 className={`text-lg font-semibold ${tier === "pro" ? "text-primary" : "text-foreground"}`}>
+                {tierData[tier].name}
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {tierData[tier].description}
+              </p>
+              <ul className="mt-6 space-y-5">
+                {features.map((feature) => (
+                  <li key={feature.name} className="h-10 flex items-center justify-center">
+                    {feature.tiers[tier as keyof typeof feature.tiers] ? (
+                      <Check className="h-6 w-6 text-green-500" />
+                    ) : (
+                      <X className="h-6 w-6 text-gray-300" />
+                    )}
+                  </li>
+                ))}
+              </ul>
+              <Button
+                className={`mt-8 w-full ${
+                  tier === "pro" ? "bg-primary hover:bg-primary/90" : "bg-foreground hover:bg-foreground/90 text-background"
+                }`}
+              >
+                {tier === "entreprise" ? "Nous Contacter" : `Choisir ${tierData[tier].name}`}
+              </Button>
             </div>
-            ))}
-        </CardContent>
-      </Card>
-
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

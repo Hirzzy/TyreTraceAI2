@@ -15,7 +15,6 @@ const mockTirePerformanceData: PerformanceMetric[] = [
 export default function TireDetailsPage() {
   return (
     <div className="p-4 md:p-6 lg:p-8 flex flex-col gap-6">
-      <h2 className="text-3xl font-bold tracking-tight text-foreground">Analyse détaillée de la performance des pneus</h2>
       
       <TireSpecificPerformanceChart 
         tireId="T-001" 

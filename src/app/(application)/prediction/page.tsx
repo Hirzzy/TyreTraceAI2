@@ -52,7 +52,6 @@ export default function PredictionPage() {
     <div className="p-4 md:p-6 lg:p-8 flex flex-col gap-6">
       <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold">Analyse prédictive de la durée de vie</CardTitle>
           <CardDescription>
             Analyse prédictive fondée sur les données d'inspection des pneus enregistrées.
           </CardDescription>

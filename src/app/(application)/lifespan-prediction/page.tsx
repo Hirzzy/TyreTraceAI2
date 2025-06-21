@@ -13,7 +13,6 @@ export default function LifespanPredictionPage() {
   return (
     <div className="p-4 md:p-6 lg:p-8 flex flex-col gap-6 items-center">
       <div className="w-full max-w-3xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">Prédiction IA de durée de vie des pneus</h2>
         <p className="text-muted-foreground mb-6">
           Utilisez ce formulaire pour obtenir une estimation de la durée de vie restante de vos pneus, basée sur l'intelligence artificielle.
         </p>
