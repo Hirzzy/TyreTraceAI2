@@ -14,12 +14,11 @@ export default function LandingPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="https://placehold.co/120x32.png"
+              src="/logo.png"
               alt="TyreTrace AI Logo"
               width={120}
               height={32}
               className="object-contain"
-              data-ai-hint="logo brand"
             />
           </Link>
           <nav className="hidden items-center gap-6 md:flex">
@@ -200,6 +199,7 @@ export default function LandingPage() {
     
 
     
+
 
 
 
