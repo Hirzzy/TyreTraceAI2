@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -43,7 +42,7 @@ export default function LandingPage() {
             </Link>
             <Link href="/dashboard">
                 <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                TABLEAU DE BORD
+                Tableau de bord
                 </Button>
             </Link>
           </div>
@@ -199,3 +198,4 @@ export default function LandingPage() {
     
 
     
+
