@@ -43,7 +43,7 @@ export default function LandingPage() {
             </Link>
             <Link href="/dashboard">
                 <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Dashboard
+                TABLEAU DE BORD
                 </Button>
             </Link>
           </div>
