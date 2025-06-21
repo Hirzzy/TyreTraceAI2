@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image"; // Import next/image
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { CarFront, Home } from "lucide-react"; 
+import { Home } from "lucide-react"; 
 
 export function AppHeader() {
   return (
@@ -12,10 +12,6 @@ export function AppHeader() {
         <SidebarTrigger aria-label="Basculer la barre latérale" />
       </div>
       <div className="flex flex-1 items-center gap-4">
-        <Link href="/dashboard" className="flex items-center gap-2">
-          <CarFront className="h-7 w-7 text-primary" />
-          <h1 className="text-xl font-semibold text-foreground hover:text-primary transition-colors">TyreTrace IA</h1>
-        </Link>
         <Link href="/" passHref>
           <Button variant="outline" size="sm" className="ml-4">
             <Home className="mr-2 h-4 w-4" />
