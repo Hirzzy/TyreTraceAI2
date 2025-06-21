@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -44,13 +43,12 @@ export function AppHeader() {
       <Link href="/" passHref>
         <div className="cursor-pointer">
           <Image
-            src="https://placehold.co/101x32.png" 
+            src="/logo1.png" 
             alt="TyreTrace AI Logo"
-            width={101} 
+            width={120} 
             height={32} 
             priority 
             className="object-contain"
-            data-ai-hint="logo brand"
           />
         </div>
       </Link>

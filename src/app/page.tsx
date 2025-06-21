@@ -14,7 +14,7 @@ export default function LandingPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="/logo.png"
+              src="/logo1.png"
               alt="TyreTrace AI Logo"
               width={120}
               height={32}
@@ -199,6 +199,7 @@ export default function LandingPage() {
     
 
     
+
 
 
 
