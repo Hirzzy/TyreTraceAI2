@@ -113,11 +113,11 @@ export default function LandingPage() {
               { icon: TrendingUp, title: "Gestion avancée de la performance", description: "Analysez la performance des pneus pour optimiser les choix, anticiper les remplacements et réduire significativement les coûts opérationnels." },
               { icon: Archive, title: "Gestion de stock intelligente", description: "Gérez efficacement vos stocks de pneus neufs et usagés pour anticiper les besoins et éviter les ruptures ou les surplus coûteux." },
             ].map((detail, index) => (
-              <div key={index} className="rounded-lg p-6 shadow-lg bg-background border border-border">
-                <div className="mb-4 flex items-center gap-3">
-                  <detail.icon className="h-8 w-8 text-primary" />
-                  <h3 className="text-2xl font-bold text-foreground">{detail.title}</h3>
+              <div key={index} className="flex flex-col items-center text-center rounded-lg p-6 shadow-lg bg-background border border-border">
+                <div className="mb-4 text-primary">
+                  <detail.icon className="h-10 w-10" />
                 </div>
+                <h3 className="text-2xl font-bold text-foreground mb-2">{detail.title}</h3>
                 <p className="text-muted-foreground">{detail.description}</p>
               </div>
             ))}
