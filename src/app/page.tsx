@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight } from 'lucide-react';
+import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight, User } from 'lucide-react';
 
 export default function LandingPage() {
   return (
@@ -38,7 +38,9 @@ export default function LandingPage() {
           </nav>
           <div className="flex items-center gap-2">
             <Link href="/selection">
-                <Button variant="outline">Connexion</Button>
+                <Button variant="outline" size="icon" aria-label="Connexion">
+                  <User className="h-5 w-5" />
+                </Button>
             </Link>
             <Link href="/dashboard">
                 <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
@@ -198,4 +200,5 @@ export default function LandingPage() {
     
 
     
+
 
