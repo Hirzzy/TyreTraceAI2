@@ -16,8 +16,8 @@ export default function LandingPage() {
             <Image
               src="/logo1.png"
               alt="TyreTrace AI Logo"
-              width={120}
-              height={32}
+              width={100}
+              height={28}
               className="object-contain"
             />
           </Link>
@@ -199,6 +199,7 @@ export default function LandingPage() {
     
 
     
+
 
 
 

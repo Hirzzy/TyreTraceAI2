@@ -45,8 +45,8 @@ export function AppHeader() {
           <Image
             src="/logo1.png" 
             alt="TyreTrace AI Logo"
-            width={120} 
-            height={32} 
+            width={100} 
+            height={28} 
             priority 
             className="object-contain"
           />
