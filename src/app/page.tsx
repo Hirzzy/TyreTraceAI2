@@ -14,7 +14,7 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 w-full border-b border-border bg-card shadow-sm">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2">
-            <img
+            <Image
               src="/mon-logo.png"
               alt="TyreTrace AI Logo"
               width={150}
@@ -49,7 +49,7 @@ export default function LandingPage() {
         <Image
           src="https://placehold.co/1920x800.png"
           alt="Camion minier dans une carrière"
-          layout="fill"
+          fill
           className="opacity-20 object-cover"
           data-ai-hint="quarry truck"
           priority
@@ -81,22 +81,22 @@ export default function LandingPage() {
           <p className="mb-10 text-center text-lg text-muted-foreground md:mb-16">
             Tout ce dont vous avez besoin pour une gestion optimisée de vos pneumatiques.
           </p>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2">
             {[
               { icon: MapPin, title: "Suivi en temps réel", description: "Géolocalisation précise et alertes instantanées pour une réactivité maximale." , dataAiHint: "map location"},
               { icon: Cog, title: "Optimisation des opérations", description: "Maintenance prédictive et amélioration continue de l'efficacité opérationnelle." , dataAiHint: "gear settings"},
               { icon: LineChart, title: "Analyse de performance", description: "Visualisez vos données clés pour prendre des décisions stratégiques éclairées." , dataAiHint: "chart graph"},
               { icon: BarChartBig, title: "Indicateurs clés (KPI)", description: "Mesurez votre succès et identifiez les opportunités d'amélioration continue." , dataAiHint: "dashboard metrics"},
             ].map((feature, index) => (
-              <Card key={index} className="flex flex-col items-center text-center bg-card hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="pb-2">
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                    <feature.icon className="h-6 w-6" />
-                  </div>
-                  <CardTitle className="text-xl font-semibold text-card-foreground">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+              <Card key={index} className="bg-card hover:shadow-xl transition-shadow duration-300">
+                <CardContent className="flex items-start gap-4 p-6">
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                        <feature.icon className="h-6 w-6" />
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-semibold text-card-foreground">{feature.title}</h3>
+                        <p className="mt-1 text-sm text-muted-foreground">{feature.description}</p>
+                    </div>
                 </CardContent>
               </Card>
             ))}
