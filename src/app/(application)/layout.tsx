@@ -19,8 +19,8 @@ export default function AppLayout({
   return (
     <SidebarProvider defaultOpen>
       <Sidebar collapsible="icon" variant="sidebar" side="left">
-        <SidebarHeader className="border-b">
-           <div className="flex items-center gap-2 py-2 group-data-[collapsible=icon]:justify-center">
+        <SidebarHeader className="border-b h-16 p-0">
+           <div className="flex h-full items-center gap-2 px-4 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-2">
             <CarFront className="h-7 w-7 text-primary" />
             <span className="font-semibold text-lg group-data-[collapsible=icon]:hidden">TyreTrace AI</span>
           </div>

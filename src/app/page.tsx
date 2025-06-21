@@ -14,7 +14,15 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 w-full border-b border-border bg-card shadow-sm">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/mon-logo.png" alt="Mon logo TyreTrace IA" width="150" />          </Link>
+            <Image
+              src="https://placehold.co/150x40.png"
+              alt="TyreTrace AI Logo"
+              width={150}
+              height={40}
+              priority
+              data-ai-hint="logo brand"
+            />
+          </Link>
           <nav className="hidden items-center gap-6 md:flex">
             <Link href="#fonctionnalites" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               Fonctionnalités
