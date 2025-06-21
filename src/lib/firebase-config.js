@@ -10,5 +10,7 @@ const firebaseConfig = {
   appId: "1:XXXX:web:XXXX"
 };
 
-const app = initializeApp(firebaseConfig);
+// L'initialisation avec des identifiants invalides peut bloquer le serveur.
+// const app = initializeApp(firebaseConfig);
+const app = null; // Désactivé temporairement
 export default app;
