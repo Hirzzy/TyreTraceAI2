@@ -1,47 +1,51 @@
 
-import { BarChart2, AlertTriangle, MapPin } from "lucide-react";
+// src/app/dashboard/page.tsx
+import { AlertsPanel } from "@/components/dashboard/alerts-panel";
 import { NewKpiCard } from "@/components/dashboard/new-kpi-card";
 import { PerformanceComparatorWidget } from "@/components/dashboard/performance-comparator-widget";
-import { TireListWidget } from "@/components/dashboard/tire-list-widget";
+import { PerformanceSummaryChart } from "@/components/dashboard/performance-summary-chart";
 import { PredictiveAnalysisWidget } from "@/components/dashboard/predictive-analysis-widget";
+import { TireListWidget } from "@/components/dashboard/tire-list-widget";
+import { TireTrackingTable } from "@/components/dashboard/tire-tracking-table";
 import { AiChatbotWidget } from "@/components/dashboard/ai-chatbot-widget";
-import type { MockTire } from "@/types";
+import { TrendingUp, Wrench, ShieldAlert, Truck } from "lucide-react";
 
-// Données simulées (peuvent être déplacées ou chargées dynamiquement)
-const mockTires: MockTire[] = [
-    { id: 'PNEU-001', vehicle: 'Dumper A-12', site: 'Carrière Est', status: 'ok', wear: 32, cost_h: 1.25, cost_mm: 15.50, brand: 'Michelin' },
-    { id: 'PNEU-002', vehicle: 'Chargeuse B-04', site: 'Carrière Est', status: 'surveillance', wear: 18, cost_h: 1.50, cost_mm: 18.75, brand: 'Bridgestone' },
-    { id: 'PNEU-003', vehicle: 'Niveleuse C-01', site: 'Chantier Nord', status: 'critique', wear: 8, cost_h: 1.80, cost_mm: 22.50, brand: 'Goodyear' },
-];
-
-
-export default function NewDashboardPage() {
-  const kpiData = [
-    { title: 'Coût moyen par heure', value: `${(mockTires.reduce((acc, t) => acc + t.cost_h, 0) / mockTires.length).toFixed(2)} €`, Icon: BarChart2, iconContainerClass: 'bg-blue-500/10 text-blue-500' },
-    { title: 'Pneus en alerte critique', value: mockTires.filter(t => t.status === 'critique').length, Icon: AlertTriangle, iconContainerClass: 'bg-destructive/10 text-destructive' },
-    { title: 'Sites actifs', value: new Set(mockTires.map(t => t.site)).size, Icon: MapPin, iconContainerClass: 'bg-green-500/10 text-green-500' },
-  ];
-
+export default function DashboardPage() {
   return (
-    <div className="flex flex-col gap-6 p-4 md:p-6 lg:p-8">
-      <p className="text-muted-foreground">Bienvenue sur votre plateforme de gestion de pneumatiques.</p>
+    <>
+      <div className="p-4 md:p-6 lg:p-8 flex flex-col gap-6">
+        {/* KPI Cards */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <NewKpiCard title="Pneus Actifs" value={258} Icon={Truck} iconContainerClass="bg-blue-100 text-blue-600" />
+          <NewKpiCard title="Coût/h Moyen" value="1,42 €" Icon={TrendingUp} iconContainerClass="bg-green-100 text-green-600" />
+          <NewKpiCard title="Maintenance Prévue" value={12} Icon={Wrench} iconContainerClass="bg-yellow-100 text-yellow-600" />
+          <NewKpiCard title="Alertes Critiques" value={3} Icon={ShieldAlert} iconContainerClass="bg-red-100 text-red-600" />
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {kpiData.map(kpi => <NewKpiCard key={kpi.title} {...kpi} />)}
-      </div>
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <PerformanceSummaryChart />
+          </div>
+          <div className="lg:col-span-1">
+            <AlertsPanel />
+          </div>
+        </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <PredictiveAnalysisWidget />
+            <PerformanceComparatorWidget />
+        </div>
+        
+        <div>
           <TireListWidget />
         </div>
+
         <div>
-          <PredictiveAnalysisWidget />
-        </div>
-        <div className="lg:col-span-3">
-          <PerformanceComparatorWidget />
+          <TireTrackingTable />
         </div>
       </div>
       <AiChatbotWidget />
-    </div>
+    </>
   );
 }

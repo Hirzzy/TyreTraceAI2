@@ -1,3 +1,4 @@
+
 import { AppHeader } from "@/components/layout/app-header";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { AppFooter } from "@/components/layout/app-footer";
