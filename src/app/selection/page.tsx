@@ -1,78 +1,58 @@
-// src/app/(selection)/page.tsx
-"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-  DialogClose,
-} from '@/components/ui/dialog';
+import Link from 'next/link';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { User, Truck, ChevronRight } from "lucide-react";
 
-export default function SelectionEntryPage() {
-  const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleGoToDashboard = () => {
-    setIsModalOpen(false);
-    router.push('/dashboard');
-  };
-
-  const handleStartNewInspection = () => {
-    setIsModalOpen(false);
-    router.push('/selection/type-vehicule');
-  };
-
+export default function SelectionPage() {
   return (
-    <div className="flex flex-col items-center justify-center text-center">
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogTrigger asChild>
-          <Button
-            className="bg-primary text-primary-foreground hover:bg-primary/90 
-                       px-10 py-6 text-xl font-bold rounded-lg 
-                       shadow-[0_4px_15px_hsla(var(--primary),0.4)] 
-                       hover:translate-y-[-3px] transition-all duration-200"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Connexion
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-background border-2 border-primary text-foreground">
-          <DialogHeader>
-            <DialogTitle className="text-primary text-xl">Choisissez votre destination</DialogTitle>
-            <DialogDescription className="text-muted-foreground">
-              Que souhaitez-vous faire ?
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <Button
-              onClick={handleGoToDashboard}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 py-3 text-md"
-            >
-              Tableau de bord
-            </Button>
-            <Button
-              onClick={handleStartNewInspection}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 py-3 text-md"
-            >
-              Nouvelle inspection
-            </Button>
-          </div>
-          <DialogFooter>
-            <DialogClose asChild>
-                <Button type="button" variant="secondary" className="w-full text-foreground hover:bg-accent/80">
-                Annuler
-                </Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          Qui êtes-vous ?
+        </h1>
+        <p className="mt-4 text-lg text-muted-foreground">
+          Sélectionnez votre profil pour accéder à votre espace dédié.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+        <Link href="/dashboard" className="block">
+          <Card className="h-full hover:shadow-primary/20 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col">
+            <CardHeader className="items-center text-center flex-grow">
+              <div className="p-4 bg-primary/10 rounded-full mb-4">
+                <User className="h-10 w-10 text-primary" />
+              </div>
+              <CardTitle className="text-2xl">Client</CardTitle>
+              <CardDescription>
+                Accédez à votre tableau de bord pour gérer et analyser la performance de votre flotte de pneus.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-center">
+              <Button>
+                Espace Client <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/fournisseur" className="block">
+           <Card className="h-full hover:shadow-primary/20 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col">
+            <CardHeader className="items-center text-center flex-grow">
+               <div className="p-4 bg-primary/10 rounded-full mb-4">
+                <Truck className="h-10 w-10 text-primary" />
+              </div>
+              <CardTitle className="text-2xl">Fournisseur</CardTitle>
+              <CardDescription>
+                Connectez-vous à votre portail pour gérer les commandes, les stocks et la logistique.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex justify-center">
+              <Button>
+                Portail Fournisseur <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
     </div>
   );
 }
