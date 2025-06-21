@@ -15,10 +15,10 @@ export default function LandingPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2">
             <Image
-              src="https://placehold.co/150x40.png"
+              src="https://placehold.co/120x32.png"
               alt="TyreTrace AI Logo"
-              width={150}
-              height={40}
+              width={120}
+              height={32}
               className="object-contain"
               data-ai-hint="logo brand"
             />
@@ -43,7 +43,7 @@ export default function LandingPage() {
             </Link>
             <Link href="/dashboard">
                 <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                Accéder à l'application !
+                Dashboard
                 </Button>
             </Link>
           </div>
