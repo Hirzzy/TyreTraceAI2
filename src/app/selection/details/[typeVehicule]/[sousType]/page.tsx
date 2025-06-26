@@ -1,4 +1,3 @@
-
 // src/app/(selection)/details/[typeVehicule]/[sousType]/page.tsx
 "use client";
 
@@ -48,6 +47,14 @@ const tireDimensions = [
   "45/65R45", "50/65R51", "55.5/80R57", "58/85R57", "875/65R29", "750/65R25"
 ];
 
+const motriciteOptions = [
+  { value: "D2.D2", label: "D2.D2 - 4x4 standard" },
+  { value: "D2.52", label: "D2.52 - 4x2 direction arrière" },
+  { value: "D2.SD2", label: "D2.SD2 - 4x4 renforcé" },
+  { value: "S2.D2", label: "S2.D2 - traction arrière" },
+  { value: "SD2.D2", label: "SD2.D2 - 4x4 haute motricité" },
+];
+
 export default function EnterDetailsPage() {
   const router = useRouter();
   const params = useParams();
@@ -64,6 +71,7 @@ export default function EnterDetailsPage() {
   const [motorisation, setMotorisation] = useState('');
   const [usage, setUsage] = useState('');
   const [pneusOrigine, setPneusOrigine] = useState(false);
+  const [motricite, setMotricite] = useState('');
 
   useEffect(() => {
     // Retrieve display names from localStorage
@@ -87,6 +95,7 @@ export default function EnterDetailsPage() {
       marque,
       modele,
       dimension,
+      motricite,
       motorisation,
       usage,
       pneusOrigine,
@@ -101,7 +110,7 @@ export default function EnterDetailsPage() {
     router.push(`/selection/sous-type/${typeVehiculePath}`);
   };
 
-  const isFormValid = marque && modele && dimension && motorisation && usage;
+  const isFormValid = marque && modele && dimension && motricite && motorisation && usage;
 
   return (
     <Card className="w-full max-w-lg bg-card text-card-foreground shadow-xl border-primary/50">
@@ -160,6 +169,22 @@ export default function EnterDetailsPage() {
                 {tireDimensions.map(dim => (
                   <SelectItem key={dim} value={dim}>
                     {dim}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="motricite">Configuration de Motricité :</Label>
+            <Select value={motricite} onValueChange={setMotricite}>
+              <SelectTrigger id="motricite">
+                <SelectValue placeholder="Sélectionnez une configuration" />
+              </SelectTrigger>
+              <SelectContent>
+                {motriciteOptions.map(opt => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
                   </SelectItem>
                 ))}
               </SelectContent>
