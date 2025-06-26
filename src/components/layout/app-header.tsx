@@ -8,9 +8,9 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const routeTitles: { [key: string]: string } = {
   "/dashboard": "Tableau de bord",
+  "/dashboard/vehicles": "Gestion de Flotte",
   "/dashboard/features": "Fonctionnalités & Tarifs",
   "/dashboard/tire-details": "Analyse détaillée des pneus",
-  "/dashboard/tire-recommendation": "Recommandation IA de pneus",
   "/dashboard/prediction": "Analyse prédictive du suivi",
   "/selection": "Nouvelle Inspection",
 };

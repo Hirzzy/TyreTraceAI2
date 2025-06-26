@@ -48,12 +48,6 @@ const navItems = [
     tooltip: "Analyse approfondie des données par pneu",
   },
   {
-    href: "/dashboard/tire-recommendation",
-    icon: Settings2,
-    label: "Recommandation IA de pneus",
-    tooltip: "Obtenir des recommandations de pneus par l'IA",
-  },
-  {
     href: "/dashboard/prediction",
     icon: TrendingUp,
     label: "Analyse prédictive du suivi",
