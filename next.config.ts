@@ -1,15 +1,8 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/selection/type-vehicule',
-        permanent: true,
-      },
-    ];
-  },
+  // La redirection a été supprimée car elle causait une erreur 404 sur Vercel.
+  // La redirection est maintenant gérée côté client dans src/app/page.tsx.
 };
 
 export default nextConfig;
