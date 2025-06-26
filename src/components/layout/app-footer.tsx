@@ -13,9 +13,9 @@ export function AppFooter() {
     return (
         <footer className="bg-card text-card-foreground border-t border-border mt-auto">
             <div className="container mx-auto px-6 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center md:text-left">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
                     {services.map(service => (
-                        <div key={service.title} className="flex flex-col items-center md:items-start p-4">
+                        <div key={service.title} className="flex flex-col items-center p-4">
                             <div className="text-primary mb-3"><service.icon size={32} /></div>
                             <h3 className="font-bold text-lg mb-1 text-foreground">{service.title}</h3>
                             <p className="text-sm text-muted-foreground">{service.description}</p>
