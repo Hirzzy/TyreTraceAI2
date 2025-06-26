@@ -27,6 +27,19 @@ const vehicleBrands = [
   { value: "XCMG", label: "XCMG" },
 ];
 
+const vehicleModels: Record<string, string[]> = {
+  "Komatsu": ["WA 320-8", "WA 270-8", "WA 470-10", "WA 600-8", "P&H L-2350 (WE 2350)", "WA 250-5", "WA 500-8", "WA 380-8", "WA 200-8", "WA 150-5"],
+  "Caterpillar": ["926M", "930G", "938G", "950G", "950H", "966H", "994", "994K", "995", "924G"],
+  "Volvo CE": ["L90H", "L120H", "L150H", "L110H", "L60H", "L220H", "L180H"],
+  "CASE Construction": ["321F", "621G", "821G", "121F", "721G"],
+  "Doosan / Bobcat": ["L65", "L75", "L85", "L95", "T770 (skid-steer)"],
+  "Liebherr": ["L556 2plus2", "L508 Stereo", "L550", "L538", "L574"],
+  "XCMG": ["ZL50GN", "ZL60GN", "ZL40GN"],
+  "Hitachi": ["ZW 330-6", "ZW 220-6", "ZW 180-6"],
+  "Hyundai Construction": ["HL980", "HL960", "HL955"],
+  "Doosan": ["DL580", "DL420"],
+};
+
 export default function EnterDetailsPage() {
   const router = useRouter();
   const params = useParams();
@@ -38,6 +51,7 @@ export default function EnterDetailsPage() {
 
   // State for form fields
   const [marque, setMarque] = useState('');
+  const [modele, setModele] = useState('');
   const [dimension, setDimension] = useState('');
   const [motorisation, setMotorisation] = useState('');
   const [usage, setUsage] = useState('');
@@ -52,12 +66,18 @@ export default function EnterDetailsPage() {
     if (storedSubType) setDisplayVehicleSubType(storedSubType);
 
   }, []);
+  
+  const handleBrandChange = (newBrand: string) => {
+    setMarque(newBrand);
+    setModele(''); // Reset model when brand changes
+  };
 
   const handleSubmit = () => {
     const formData = {
       typeVehicule: displayVehicleType,
       sousType: displayVehicleSubType,
       marque,
+      modele,
       dimension,
       motorisation,
       usage,
@@ -73,7 +93,7 @@ export default function EnterDetailsPage() {
     router.push(`/selection/sous-type/${typeVehiculePath}`);
   };
 
-  const isFormValid = marque && dimension && motorisation && usage;
+  const isFormValid = marque && modele && dimension && motorisation && usage;
 
   return (
     <Card className="w-full max-w-lg bg-card text-card-foreground shadow-xl border-primary/50">
@@ -90,7 +110,7 @@ export default function EnterDetailsPage() {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="marque">Marque du véhicule :</Label>
-            <Select value={marque} onValueChange={setMarque}>
+            <Select value={marque} onValueChange={handleBrandChange}>
               <SelectTrigger id="marque">
                 <SelectValue placeholder="Sélectionnez une marque" />
               </SelectTrigger>
@@ -100,6 +120,24 @@ export default function EnterDetailsPage() {
                     {brand.label}
                   </SelectItem>
                 ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="modele">Modèle du véhicule :</Label>
+            <Select value={modele} onValueChange={setModele} disabled={!marque}>
+              <SelectTrigger id="modele">
+                <SelectValue placeholder={!marque ? "Sélectionnez d'abord une marque" : "Sélectionnez un modèle"} />
+              </SelectTrigger>
+              <SelectContent>
+                {marque && vehicleModels[marque] ? (
+                  vehicleModels[marque].map(model => (
+                    <SelectItem key={model} value={model}>{model}</SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="none" disabled>Aucun modèle disponible</SelectItem>
+                )}
               </SelectContent>
             </Select>
           </div>
