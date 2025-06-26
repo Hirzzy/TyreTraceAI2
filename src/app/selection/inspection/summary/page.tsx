@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import type { VehicleDetailsFormData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,6 +15,12 @@ export default function InspectionSummaryPage() {
   const router = useRouter();
   const [details, setDetails] = useState<VehicleDetailsFormData | null>(null);
   const [inspectionDate, setInspectionDate] = useState('');
+  const [mileage, setMileage] = useState('');
+  const [comments, setComments] = useState('');
+  const [depth1, setDepth1] = useState('');
+  const [depth2, setDepth2] = useState('');
+  const [depth3, setDepth3] = useState('');
+  const [pressure, setPressure] = useState('');
 
   useEffect(() => {
     try {
@@ -40,8 +45,20 @@ export default function InspectionSummaryPage() {
   }, [router]);
 
   const handleFinishInspection = () => {
+    const inspectionData = {
+        details,
+        inspectionDate,
+        mileage,
+        tire_1L: {
+            depth1,
+            depth2,
+            depth3,
+            pressure,
+        },
+        comments,
+    };
     // Here you would typically save the full inspection data to your backend
-    console.log("Inspection terminée pour :", details);
+    console.log("Inspection terminée pour :", inspectionData);
     // For now, let's just clear the stored data and navigate
     localStorage.removeItem('vehicleInspectionDetails');
     router.push('/dashboard/vehicles');
@@ -67,16 +84,30 @@ export default function InspectionSummaryPage() {
         <main className="flex-1 p-4 md:p-6 lg:p-8">
             <Card className="w-full max-w-2xl mx-auto shadow-lg">
                 <CardContent className="pt-6">
-                    <div className="w-full mb-6">
-                        <Image
-                            src="https://placehold.co/800x400.png"
-                            alt="Disposition des pneus du véhicule"
-                            width={800}
-                            height={400}
-                            className="rounded-lg object-cover"
-                            data-ai-hint="tire layout diagram"
-                        />
-                         <div className="text-center mt-2 text-sm text-muted-foreground">Représentation des essieux et pressions.</div>
+                    <div className="w-full mb-6 p-4 border rounded-lg bg-muted/50">
+                        <h3 className="text-lg font-semibold mb-4 text-primary">Inspection du Pneu (Position 1L)</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <Label htmlFor="depth1_1L">Profondeur 1 [mm]</Label>
+                                <Input type="number" id="depth1_1L" value={depth1} onChange={(e) => setDepth1(e.target.value)} placeholder="mm" />
+                            </div>
+                            <div>
+                                <Label htmlFor="depth2_1L">Profondeur 2 [mm]</Label>
+                                <Input type="number" id="depth2_1L" value={depth2} onChange={(e) => setDepth2(e.target.value)} placeholder="mm (optionnel)" />
+                            </div>
+                            <div>
+                                <Label htmlFor="depth3_1L">Profondeur 3 [mm]</Label>
+                                <Input type="number" id="depth3_1L" value={depth3} onChange={(e) => setDepth3(e.target.value)} placeholder="mm (optionnel)" />
+                            </div>
+                            <div>
+                                <Label htmlFor="pressure_1L">Pression mesurée [bar]</Label>
+                                <Input type="number" id="pressure_1L" value={pressure} onChange={(e) => setPressure(e.target.value)} placeholder="bar" step="0.1" />
+                            </div>
+                            <div className="md:col-span-2">
+                                <Label htmlFor="pressure_rec_1L">Pression préconisée [bar]</Label>
+                                <Input type="number" id="pressure_rec_1L" value="3.5" readOnly disabled className="bg-slate-100" />
+                            </div>
+                        </div>
                     </div>
 
                     <div className="space-y-6">
@@ -92,7 +123,7 @@ export default function InspectionSummaryPage() {
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="mileage">Kilométrage</Label>
-                                <Input id="mileage" placeholder="Saisir le kilométrage..." />
+                                <Input id="mileage" placeholder="Saisir le kilométrage..." value={mileage} onChange={(e) => setMileage(e.target.value)} />
                             </div>
                         </div>
 
@@ -114,7 +145,7 @@ export default function InspectionSummaryPage() {
                             <h3 className="text-lg font-semibold text-primary">Observations</h3>
                              <p className="text-sm text-muted-foreground bg-gray-50 p-3 rounded-md">Aucune observation actuelle.</p>
                              <Label htmlFor="comments">Commentaires</Label>
-                            <Textarea id="comments" placeholder="Ajouter des commentaires supplémentaires ici..." />
+                            <Textarea id="comments" placeholder="Ajouter des commentaires supplémentaires ici..." value={comments} onChange={(e) => setComments(e.target.value)} />
                         </div>
 
                         <div className="pt-4">
