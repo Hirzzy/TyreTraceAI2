@@ -3,21 +3,30 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Switch } from '@/components/ui/switch';
+import { Separator } from '@/components/ui/separator';
+import { Check, ArrowLeft, QrCode } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function EnterDetailsPage() {
   const router = useRouter();
   const params = useParams();
   const typeVehiculePath = params.typeVehicule as string;
-  // const sousTypePath = decodeURIComponent(params.sousType as string); // Not directly used for display text from path
 
+  // State for display names
   const [displayVehicleType, setDisplayVehicleType] = useState('');
   const [displayVehicleSubType, setDisplayVehicleSubType] = useState('');
+
+  // State for form fields
   const [marque, setMarque] = useState('');
   const [dimension, setDimension] = useState('');
+  const [motorisation, setMotorisation] = useState('');
+  const [usage, setUsage] = useState('');
+  const [pneusOrigine, setPneusOrigine] = useState(false);
 
   useEffect(() => {
     // Retrieve display names from localStorage
@@ -30,71 +39,125 @@ export default function EnterDetailsPage() {
   }, []);
 
   const handleSubmit = () => {
-    // Here you would typically save the data (marque, dimension)
-    // For now, let's log it and navigate to a hypothetical confirmation or back to selection start
-    console.log({
+    const formData = {
       typeVehicule: displayVehicleType,
       sousType: displayVehicleSubType,
       marque,
       dimension,
-    });
-    alert(`Informations saisies : \nType: ${displayVehicleType}\nSous-type: ${displayVehicleSubType}\nMarque: ${marque}\nDimension: ${dimension}\n\nLa fonctionnalité de sauvegarde sera implémentée ultérieurement.`);
-    router.push('/selection'); // Or to a confirmation page
+      motorisation,
+      usage,
+      pneusOrigine,
+    };
+    console.log("Form Data Submitted:", formData);
+    alert(`Informations saisies : \n${JSON.stringify(formData, null, 2)}\n\nLa fonctionnalité de sauvegarde sera implémentée ultérieurement.`);
+    // Navigate to the next step, for now redirect to selection home
+    router.push('/selection');
   };
 
   const handleBack = () => {
     router.push(`/selection/sous-type/${typeVehiculePath}`);
   };
 
+  const isFormValid = marque && dimension && motorisation && usage;
+
   return (
-    <Card className="w-full max-w-md bg-card text-card-foreground shadow-xl border-primary/50">
+    <Card className="w-full max-w-lg bg-card text-card-foreground shadow-xl border-primary/50">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl font-bold text-primary" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.3)' }}>
           Saisir les Détails
         </CardTitle>
         <CardDescription className="text-muted-foreground">
-          Véhicule : <span className="font-semibold text-primary">{displayVehicleType} - {displayVehicleSubType}</span>
+          Véhicule : <span className="font-semibold text-primary">{displayVehicleType || '...'} - {displayVehicleSubType || '...'}</span>
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
+      <CardContent className="space-y-6">
+        
+        <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="marque" className="text-left text-foreground">Marque du véhicule :</Label>
+            <Label htmlFor="marque">Marque du véhicule :</Label>
             <Input
               id="marque"
-              type="text"
-              placeholder="Ex: Caterpillar, Renault"
               value={marque}
               onChange={(e) => setMarque(e.target.value)}
-              className="bg-input border-primary/30 focus:border-primary focus:ring-primary placeholder:text-muted-foreground/70"
+              placeholder="Ex : Caterpillar, Renault, Komatsu"
             />
           </div>
+
           <div className="space-y-2">
-            <Label htmlFor="dimension" className="text-left text-foreground">Dimension du pneu :</Label>
+            <Label htmlFor="dimension">Dimension du pneu :</Label>
             <Input
               id="dimension"
-              type="text"
-              placeholder="Ex: 20.5R25, 385/65R22.5"
               value={dimension}
               onChange={(e) => setDimension(e.target.value)}
-              className="bg-input border-primary/30 focus:border-primary focus:ring-primary placeholder:text-muted-foreground/70"
+              placeholder="Ex : 20.5R25, 385/65R22.5"
             />
           </div>
+
+          <div className="space-y-2">
+            <Label>Motorisation :</Label>
+            <RadioGroup
+              value={motorisation}
+              onValueChange={setMotorisation}
+              className="flex flex-wrap gap-4 pt-1"
+            >
+              {['Diesel', 'Électrique', 'Hybride', 'Autre'].map(option => (
+                 <div key={option} className="flex items-center space-x-2">
+                    <RadioGroupItem value={option} id={`motorisation-${option}`} />
+                    <Label htmlFor={`motorisation-${option}`} className="font-normal">{option}</Label>
+                 </div>
+              ))}
+            </RadioGroup>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="usage">Usage :</Label>
+            <Input
+              id="usage"
+              value={usage}
+              onChange={(e) => setUsage(e.target.value)}
+              placeholder="Chantier, Route, Manutention, etc."
+            />
+          </div>
+
+          <div className="flex items-center justify-between space-x-2 rounded-md border p-3 shadow-sm bg-background">
+             <Label htmlFor="pneus-origine" className="font-medium">Pneus montés à l’origine ?</Label>
+             <Switch
+                id="pneus-origine"
+                checked={pneusOrigine}
+                onCheckedChange={setPneusOrigine}
+             />
+          </div>
         </div>
-        <Button
-          onClick={handleSubmit}
-          className="w-full mt-8 bg-primary text-primary-foreground hover:bg-primary/90 py-3 text-md"
-        >
-          Valider les informations
-        </Button>
-        <Button
-          variant="outline"
-          onClick={handleBack}
-          className="w-full mt-4 py-3 text-md border-muted-foreground text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-        >
-          Retour
-        </Button>
+
+        <Separator />
+        
+        <div className="p-3 bg-muted/50 rounded-lg text-center space-y-2">
+            <Button variant="outline" disabled className="bg-background">
+                <QrCode className="mr-2 h-4 w-4" />
+                Générer un QR Code (option)
+            </Button>
+            <p className="text-xs text-muted-foreground">Option à activer pour liaison future</p>
+        </div>
+
       </CardContent>
+      <CardFooter className="flex flex-col-reverse sm:flex-row-reverse gap-3">
+          <Button
+            onClick={handleSubmit}
+            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            disabled={!isFormValid}
+          >
+            <Check className="mr-2 h-4 w-4" />
+            Valider les informations
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={handleBack}
+            className="w-full sm:w-auto"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Retour
+          </Button>
+      </CardFooter>
     </Card>
   );
 }
