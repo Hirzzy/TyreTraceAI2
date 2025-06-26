@@ -10,7 +10,6 @@ const routeTitles: { [key: string]: string } = {
   "/dashboard": "Tableau de bord",
   "/dashboard/features": "Fonctionnalités & Tarifs",
   "/dashboard/tire-details": "Analyse détaillée des pneus",
-  "/dashboard/lifespan-prediction": "Prédiction IA de durée de vie",
   "/dashboard/tire-recommendation": "Recommandation IA de pneus",
   "/dashboard/prediction": "Analyse prédictive du suivi",
   "/selection": "Nouvelle Inspection",

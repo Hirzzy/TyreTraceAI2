@@ -48,12 +48,6 @@ const navItems = [
     tooltip: "Analyse approfondie des données par pneu",
   },
   {
-    href: "/dashboard/lifespan-prediction",
-    icon: Clock,
-    label: "Prédiction IA de durée de vie",
-    tooltip: "Estimer la durée de vie des pneus avec l'IA",
-  },
-  {
     href: "/dashboard/tire-recommendation",
     icon: Settings2,
     label: "Recommandation IA de pneus",
