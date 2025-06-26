@@ -41,14 +41,7 @@ export function AppHeader() {
       
       <Link href="/" passHref>
         <div className="cursor-pointer">
-          <Image
-            src="/logo1.png" 
-            alt="TyreTrace AI Logo"
-            width={100} 
-            height={28} 
-            priority 
-            className="object-contain"
-          />
+          <span className="font-bold text-xl text-primary">TyreTrace AI</span>
         </div>
       </Link>
     </header>
