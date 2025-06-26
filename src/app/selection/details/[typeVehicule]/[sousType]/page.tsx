@@ -11,6 +11,21 @@ import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Check, ArrowLeft, QrCode } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+
+const vehicleBrands = [
+  { value: "Caterpillar", label: "Caterpillar" },
+  { value: "Komatsu", label: "Komatsu" },
+  { value: "Volvo CE", label: "Volvo CE" },
+  { value: "Liebherr", label: "Liebherr" },
+  { value: "JCB", label: "JCB" },
+  { value: "Hitachi", label: "Hitachi" },
+  { value: "Doosan / Bobcat", label: "Doosan / Bobcat" },
+  { value: "Hyundai Construction", label: "Hyundai Construction" },
+  { value: "CASE Construction", label: "CASE Construction" },
+  { value: "XCMG", label: "XCMG" },
+];
 
 export default function EnterDetailsPage() {
   const router = useRouter();
@@ -75,12 +90,18 @@ export default function EnterDetailsPage() {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="marque">Marque du véhicule :</Label>
-            <Input
-              id="marque"
-              value={marque}
-              onChange={(e) => setMarque(e.target.value)}
-              placeholder="Ex : Caterpillar, Renault, Komatsu"
-            />
+            <Select value={marque} onValueChange={setMarque}>
+              <SelectTrigger id="marque">
+                <SelectValue placeholder="Sélectionnez une marque" />
+              </SelectTrigger>
+              <SelectContent>
+                {vehicleBrands.map(brand => (
+                  <SelectItem key={brand.value} value={brand.value}>
+                    {brand.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
