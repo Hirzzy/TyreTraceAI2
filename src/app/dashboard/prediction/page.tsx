@@ -60,7 +60,7 @@ export default function PredictionPage() {
           {donnees.length === 0 ? (
             <div className="text-center py-10">
               <p className="text-muted-foreground text-lg">Aucune donnée d'inspection de pneu n'est disponible actuellement.</p>
-              <p className="text-muted-foreground">Veuillez saisir des données via la page <Button variant="link" onClick={() => router.push('/remplissage')} className="p-0 h-auto">'Nouvelle inspection'</Button> pour afficher les prédictions.</p>
+              <p className="text-muted-foreground">Veuillez saisir des données via la page <Button variant="link" onClick={() => router.push('/selection/type-vehicule')} className="p-0 h-auto">'Nouvelle inspection'</Button> pour afficher les prédictions.</p>
             </div>
           ) : (
             <ScrollArea className="h-[500px] w-full">

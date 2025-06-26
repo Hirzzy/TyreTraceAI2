@@ -60,12 +60,6 @@ const navItems = [
     tooltip: "Obtenir des recommandations de pneus par l'IA",
   },
   {
-    href: "/dashboard/remplissage",
-    icon: FilePlus,
-    label: "Saisie Manuelle (Legacy)", 
-    tooltip: "Enregistrer les données d'une inspection (ancien formulaire)",
-  },
-  {
     href: "/dashboard/prediction",
     icon: TrendingUp,
     label: "Analyse prédictive du suivi",
