@@ -67,3 +67,15 @@ export interface MockPredictiveDataItem {
     name: string; // Month or time period
     usure: number; // Wear in mm
 }
+
+export interface Vehicle {
+  id: string;
+  immatriculation: string;
+  fleetNumber: string;
+  context: string;
+  mileage?: number;
+  hours?: number;
+  status: 'ok' | 'attention' | 'urgent';
+  lastInspectionDate: string; // "DD/MM/YYYY" format
+  activityStatus: 'Actif' | 'Inactif';
+}

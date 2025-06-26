@@ -11,7 +11,8 @@ import {
   FilePlus,
   TrendingUp,
   LogIn,
-  LayoutGrid, // Ajout de l'icône
+  LayoutGrid,
+  Truck, // Ajout de l'icône
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -27,6 +28,12 @@ const navItems = [
     icon: LayoutDashboard,
     label: "Tableau de bord",
     tooltip: "Synthèse des performances et alertes",
+  },
+  {
+    href: "/dashboard/vehicles",
+    icon: Truck,
+    label: "Gestion de Flotte",
+    tooltip: "Gérer les véhicules et les inspections",
   },
   {
     href: "/dashboard/features",
@@ -55,7 +62,7 @@ const navItems = [
   {
     href: "/dashboard/remplissage",
     icon: FilePlus,
-    label: "Ancienne Inspection", // Changé pour différencier
+    label: "Saisie Manuelle (Legacy)", 
     tooltip: "Enregistrer les données d'une inspection (ancien formulaire)",
   },
   {
@@ -64,10 +71,10 @@ const navItems = [
     label: "Analyse prédictive du suivi",
     tooltip: "Consulter les analyses prédictives du suivi",
   },
-  { // Nouvel élément de menu pour le flux de sélection
-    href: "/selection",
+  { 
+    href: "/selection/type-vehicule",
     icon: LogIn,
-    label: "Nouvelle Inspection (Flux)",
+    label: "Nouvelle Inspection",
     tooltip: "Démarrer le nouveau flux de saisie d'inspection",
   },
 ];
@@ -75,6 +82,13 @@ const navItems = [
 export function SidebarNav() {
   const pathname = usePathname();
   const { setOpenMobile } = useSidebar();
+
+  const isNavItemActive = (itemHref: string) => {
+    if (itemHref === "/dashboard") {
+        return pathname === itemHref;
+    }
+    return pathname.startsWith(itemHref);
+  }
 
   return (
     <SidebarMenu>
@@ -84,7 +98,7 @@ export function SidebarNav() {
               asChild
               variant="default"
               size="default"
-              isActive={pathname.startsWith(item.href) && (item.href !== '/' || pathname === '/')} // Gère l'activité pour les routes imbriquées
+              isActive={isNavItemActive(item.href)}
               tooltip={{ children: item.tooltip, side: "right", align: "center" }}
               onClick={() => {
                 setOpenMobile(false);
