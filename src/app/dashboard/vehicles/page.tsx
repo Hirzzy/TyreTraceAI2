@@ -81,7 +81,7 @@ export default function VehiclesPage() {
       <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
         <CardHeader className="flex flex-row items-center justify-between p-4 border-b">
           <CardTitle className="text-xl">Gestion de Flotte</CardTitle>
-          <Link href="/dashboard/vehicles/add">
+          <Link href="/selection/type-vehicule">
             <Button>
               <Plus className="mr-2 h-4 w-4" /> Ajouter un véhicule
             </Button>
