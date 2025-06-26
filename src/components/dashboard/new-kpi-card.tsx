@@ -1,6 +1,6 @@
 
 import type { LucideIcon } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 
 interface NewKpiCardProps {
   title: string;
@@ -12,16 +12,14 @@ interface NewKpiCardProps {
 export function NewKpiCard({ title, value, Icon, iconContainerClass = "bg-primary/10 text-primary" }: NewKpiCardProps) {
   return (
     <Card className="shadow-md hover:shadow-lg transition-shadow duration-300">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardContent className="flex flex-col items-center text-center p-6 gap-1">
+        <div className={`p-2 rounded-md ${iconContainerClass} mb-2`}>
+          <Icon className="h-6 w-6" />
+        </div>
+        <div className="text-3xl font-bold text-foreground">{value}</div>
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
         </CardTitle>
-         <div className={`p-2 rounded-md ${iconContainerClass}`}>
-            <Icon className="h-5 w-5" />
-         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold text-foreground">{value}</div>
       </CardContent>
     </Card>
   );
