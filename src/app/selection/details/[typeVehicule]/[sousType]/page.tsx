@@ -1,3 +1,4 @@
+
 // src/app/(selection)/details/[typeVehicule]/[sousType]/page.tsx
 "use client";
 
@@ -39,6 +40,13 @@ const vehicleModels: Record<string, string[]> = {
   "Hyundai Construction": ["HL980", "HL960", "HL955"],
   "Doosan": ["DL580", "DL420"],
 };
+
+const tireDimensions = [
+  "335/80R18", "365/80R20", "365/70R18", "405/70R20", "12.5/80R18",
+  "15.5R25", "17.5R25", "17.5-25 (var. R25)", "20.5R25", "20.5-25",
+  "23.5R25", "23.5-25", "26.5R25", "29.5R25", "35/65R33", "40/65R39",
+  "45/65R45", "50/65R51", "55.5/80R57", "58/85R57", "875/65R29", "750/65R25"
+];
 
 export default function EnterDetailsPage() {
   const router = useRouter();
@@ -144,12 +152,18 @@ export default function EnterDetailsPage() {
 
           <div className="space-y-2">
             <Label htmlFor="dimension">Dimension du pneu :</Label>
-            <Input
-              id="dimension"
-              value={dimension}
-              onChange={(e) => setDimension(e.target.value)}
-              placeholder="Ex : 20.5R25, 385/65R22.5"
-            />
+            <Select value={dimension} onValueChange={setDimension}>
+              <SelectTrigger id="dimension">
+                <SelectValue placeholder="Sélectionnez une dimension" />
+              </SelectTrigger>
+              <SelectContent>
+                {tireDimensions.map(dim => (
+                  <SelectItem key={dim} value={dim}>
+                    {dim}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
