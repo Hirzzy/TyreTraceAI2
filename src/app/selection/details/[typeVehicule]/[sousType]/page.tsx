@@ -100,10 +100,13 @@ export default function EnterDetailsPage() {
       usage,
       pneusOrigine,
     };
-    console.log("Form Data Submitted:", formData);
-    alert(`Informations saisies : \n${JSON.stringify(formData, null, 2)}\n\nLa fonctionnalité de sauvegarde sera implémentée ultérieurement.`);
-    // Navigate to the next step, for now redirect to selection home
-    router.push('/selection');
+    try {
+      localStorage.setItem('vehicleInspectionDetails', JSON.stringify(formData));
+      router.push('/selection/inspection/summary');
+    } catch (error) {
+      console.error("Erreur lors de la sauvegarde dans le localStorage :", error);
+      alert("Une erreur est survenue lors de la sauvegarde des données.");
+    }
   };
 
   const handleBack = () => {

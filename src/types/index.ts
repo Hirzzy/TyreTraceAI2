@@ -79,3 +79,15 @@ export interface Vehicle {
   lastInspectionDate: string; // "DD/MM/YYYY" format
   activityStatus: 'Actif' | 'Inactif';
 }
+
+export interface VehicleDetailsFormData {
+  typeVehicule: string;
+  sousType: string;
+  marque: string;
+  modele: string;
+  dimension: string;
+  motricite: string;
+  motorisation: string;
+  usage: string;
+  pneusOrigine: boolean;
+}
