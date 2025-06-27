@@ -1,17 +1,17 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { VehicleTypeSelection } from "@/components/inspection/vehicle-type-selection";
 
-export default function NewInspectionPage() {
+export default function TypeVehiculePage() {
   return (
     <div className="container mx-auto py-8">
         <Card>
             <CardHeader>
-                <CardTitle>Nouvelle Inspection</CardTitle>
-                <CardDescription>Démarrez ici le processus de saisie d'une nouvelle inspection de pneu.</CardDescription>
+                <CardTitle>Nouvelle Inspection : Étape 1</CardTitle>
+                <CardDescription>Veuillez sélectionner le type de véhicule à inspecter pour commencer.</CardDescription>
             </CardHeader>
             <CardContent>
-                <p>Le formulaire d'inspection et le flux de travail commenceront ici.</p>
-                <p>Contenu à venir...</p>
+                <VehicleTypeSelection />
             </CardContent>
         </Card>
     </div>

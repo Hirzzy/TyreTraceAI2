@@ -1,15 +1,16 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { VehicleList } from "@/components/dashboard/vehicle-list";
 
 export default function VehiclesPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Gestion de Flotte</CardTitle>
-        <CardDescription>Cette page affichera les outils pour gérer les véhicules et les inspections.</CardDescription>
+        <CardTitle>Gestion de la Flotte</CardTitle>
+        <CardDescription>Consultez, ajoutez et gérez les véhicules de votre flotte.</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Contenu à venir...</p>
+        <VehicleList />
       </CardContent>
     </Card>
   );
