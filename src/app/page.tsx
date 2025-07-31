@@ -15,7 +15,7 @@ export default function LandingPage() {
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2">
             <Truck className="h-7 w-7 text-primary" />
-            <span className="text-xl font-bold text-foreground">TyreTrace AI</span>
+            <span className="text-xl font-bold text-foreground">TyreTrace AI Florian</span>
           </Link>
           <nav className="hidden items-center gap-6 md:flex">
             <Link href="#fonctionnalites" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
