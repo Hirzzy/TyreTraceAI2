@@ -71,6 +71,7 @@ export default function EnterDetailsPage() {
   const [motorisation, setMotorisation] = useState('');
   const [usage, setUsage] = useState('');
   const [pneusOrigine, setPneusOrigine] = useState(false);
+  const [heuresMontage, setHeuresMontage] = useState('');
   const [motricite, setMotricite] = useState('');
 
   useEffect(() => {
@@ -99,6 +100,7 @@ export default function EnterDetailsPage() {
       motorisation,
       usage,
       pneusOrigine,
+      heuresMontage,
     };
     try {
       localStorage.setItem('vehicleInspectionDetails', JSON.stringify(formData));
@@ -113,7 +115,7 @@ export default function EnterDetailsPage() {
     router.push(`/selection/sous-type/${typeVehiculePath}`);
   };
 
-  const isFormValid = marque && modele && dimension && motricite && motorisation && usage;
+  const isFormValid = marque && modele && dimension && motricite && motorisation && usage && heuresMontage;
 
   return (
     <Card className="w-full max-w-lg bg-card text-card-foreground shadow-xl border-primary/50">
@@ -227,6 +229,17 @@ export default function EnterDetailsPage() {
                 checked={pneusOrigine}
                 onCheckedChange={setPneusOrigine}
              />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="heures-montage">Heures de montage :</Label>
+            <Input
+              id="heures-montage"
+              type="number"
+              value={heuresMontage}
+              onChange={(e) => setHeuresMontage(e.target.value)}
+              placeholder="Saisir les heures machine"
+            />
           </div>
         </div>
 
