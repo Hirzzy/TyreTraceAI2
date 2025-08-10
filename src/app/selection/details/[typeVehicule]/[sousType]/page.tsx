@@ -12,6 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { Check, ArrowLeft, QrCode } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 
 const vehicleBrands = [
@@ -55,6 +56,13 @@ const motriciteOptions = [
   { value: "SD2.D2", label: "SD2.D2 - 4x4 haute motricité" },
 ];
 
+const soilTypes = [
+  { id: 'sol-meuble', label: 'Sol meuble' },
+  { id: 'sol-semi-meuble', label: 'Sol semi-meuble' },
+  { id: 'sol-compact-abrasif', label: 'Sol compact abrasif' },
+  { id: 'roche-dure-abrasive', label: 'Roche dure abrasive' },
+];
+
 export default function EnterDetailsPage() {
   const router = useRouter();
   const params = useParams();
@@ -73,6 +81,7 @@ export default function EnterDetailsPage() {
   const [pneusOrigine, setPneusOrigine] = useState(false);
   const [heuresMontage, setHeuresMontage] = useState('');
   const [motricite, setMotricite] = useState('');
+  const [typeSol, setTypeSol] = useState<string[]>([]);
 
   useEffect(() => {
     // Retrieve display names from localStorage
@@ -88,6 +97,14 @@ export default function EnterDetailsPage() {
     setMarque(newBrand);
     setModele(''); // Reset model when brand changes
   };
+  
+  const handleSoilTypeChange = (soilLabel: string) => {
+    setTypeSol(prev => 
+      prev.includes(soilLabel)
+        ? prev.filter(s => s !== soilLabel)
+        : [...prev, soilLabel]
+    );
+  };
 
   const handleSubmit = () => {
     const formData = {
@@ -101,6 +118,7 @@ export default function EnterDetailsPage() {
       usage,
       pneusOrigine,
       heuresMontage,
+      typeSol,
     };
     try {
       localStorage.setItem('vehicleInspectionDetails', JSON.stringify(formData));
@@ -230,7 +248,7 @@ export default function EnterDetailsPage() {
                 onCheckedChange={setPneusOrigine}
              />
           </div>
-
+          
           <div className="space-y-2">
             <Label htmlFor="heures-montage">Heures de montage :</Label>
             <Input
@@ -240,6 +258,27 @@ export default function EnterDetailsPage() {
               onChange={(e) => setHeuresMontage(e.target.value)}
               placeholder="Saisir les heures machine"
             />
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Type de sol principal :</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 rounded-md border p-3 shadow-sm bg-background">
+              {soilTypes.map((item) => (
+                <div key={item.id} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={item.id}
+                    checked={typeSol.includes(item.label)}
+                    onCheckedChange={() => handleSoilTypeChange(item.label)}
+                  />
+                  <Label
+                    htmlFor={item.id}
+                    className="font-normal text-sm"
+                  >
+                    {item.label}
+                  </Label>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
