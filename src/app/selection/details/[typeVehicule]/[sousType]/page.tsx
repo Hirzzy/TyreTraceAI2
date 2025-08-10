@@ -238,13 +238,13 @@ export default function EnterDetailsPage() {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="heures-montage">Heures de montage :</Label>
+            <Label htmlFor="heures-montage">Heures machine (au montage) :</Label>
             <Input
               id="heures-montage"
               type="number"
               value={heuresMontage}
               onChange={(e) => setHeuresMontage(e.target.value)}
-              placeholder="Saisir les heures machine"
+              placeholder="Saisir les heures machine actuelles"
             />
           </div>
           
