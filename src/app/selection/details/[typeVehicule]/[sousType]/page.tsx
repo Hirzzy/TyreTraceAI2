@@ -79,6 +79,7 @@ export default function EnterDetailsPage() {
   const [motorisation, setMotorisation] = useState('');
   const [pneusOrigine, setPneusOrigine] = useState(false);
   const [heuresMontage, setHeuresMontage] = useState('');
+  const [heuresActuelles, setHeuresActuelles] = useState('');
   const [motricite, setMotricite] = useState('');
   const [typeSol, setTypeSol] = useState<string[]>([]);
 
@@ -116,6 +117,7 @@ export default function EnterDetailsPage() {
       motorisation,
       pneusOrigine,
       heuresMontage,
+      heuresActuelles,
       typeSol,
     };
     try {
@@ -131,7 +133,7 @@ export default function EnterDetailsPage() {
     router.push(`/selection/sous-type/${typeVehiculePath}`);
   };
 
-  const isFormValid = marque && modele && dimension && motricite && motorisation && heuresMontage;
+  const isFormValid = marque && modele && dimension && motricite && motorisation && heuresMontage && heuresActuelles;
 
   return (
     <Card className="w-full max-w-lg bg-card text-card-foreground shadow-xl border-primary/50">
@@ -244,7 +246,17 @@ export default function EnterDetailsPage() {
               type="number"
               value={heuresMontage}
               onChange={(e) => setHeuresMontage(e.target.value)}
-              placeholder="Saisir les heures machine actuelles"
+              placeholder="Saisir les heures au montage"
+            />
+          </div>
+           <div className="space-y-2">
+            <Label htmlFor="heures-actuelles">Heures machine actuelles :</Label>
+            <Input
+              id="heures-actuelles"
+              type="number"
+              value={heuresActuelles}
+              onChange={(e) => setHeuresActuelles(e.target.value)}
+              placeholder="Saisir les heures actuelles de la machine"
             />
           </div>
           

@@ -89,4 +89,7 @@ export interface VehicleDetailsFormData {
   motricite: string;
   motorisation: string;
   pneusOrigine: boolean;
+  heuresMontage: string;
+  heuresActuelles: string;
+  typeSol: string[];
 }
