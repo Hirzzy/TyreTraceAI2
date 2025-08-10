@@ -17,13 +17,10 @@ export default function SelectVehicleTypePage() {
   return (
     <div className="w-full max-w-md">
       <Link href="/" passHref>
-          <h1 className="text-center mb-2 text-primary text-3xl md:text-4xl font-extrabold tracking-wide" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.5)' }}>
+          <h1 className="text-center mb-8 text-primary text-3xl md:text-4xl font-extrabold tracking-wide" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.5)' }}>
             TyreTrace IA
           </h1>
       </Link>
-      <h2 className="text-center mb-6 text-xl font-semibold text-muted-foreground">
-        Négociants
-      </h2>
       <Card className="w-full bg-card text-card-foreground shadow-xl border-primary/50">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold text-primary" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.3)' }}>
