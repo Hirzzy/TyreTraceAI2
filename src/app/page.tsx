@@ -83,7 +83,7 @@ export default function LandingPage() {
               { icon: BarChartBig, title: "Indicateurs clés (KPI)", description: "Mesurez votre succès et identifiez les opportunités d'amélioration continue." , dataAiHint: "dashboard metrics"},
             ].map((feature, index) => (
               <Card key={index} className="flex flex-col items-center text-center bg-card hover:shadow-xl transition-shadow duration-300">
-                <CardHeader className="pb-2">
+                <CardHeader className="items-center pb-2">
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                     <feature.icon className="h-6 w-6" />
                   </div>
