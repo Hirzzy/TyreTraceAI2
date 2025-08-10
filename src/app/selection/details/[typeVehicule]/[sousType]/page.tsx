@@ -92,6 +92,12 @@ export default function EnterDetailsPage() {
     if (storedSubType) setDisplayVehicleSubType(storedSubType);
 
   }, []);
+
+  useEffect(() => {
+    if (pneusOrigine) {
+      setHeuresMontage('0');
+    }
+  }, [pneusOrigine]);
   
   const handleBrandChange = (newBrand: string) => {
     setMarque(newBrand);
@@ -133,7 +139,7 @@ export default function EnterDetailsPage() {
     router.push(`/selection/sous-type/${typeVehiculePath}`);
   };
 
-  const isFormValid = marque && modele && dimension && motricite && motorisation && heuresMontage && heuresActuelles;
+  const isFormValid = marque && modele && dimension && motricite && motorisation && (pneusOrigine || heuresMontage) && heuresActuelles;
 
   return (
     <Card className="w-full max-w-lg bg-card text-card-foreground shadow-xl border-primary/50">
@@ -240,13 +246,14 @@ export default function EnterDetailsPage() {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="heures-montage">Heures machine (au montage) :</Label>
+            <Label htmlFor="heures-montage">Heures de montage des pneus :</Label>
             <Input
               id="heures-montage"
               type="number"
               value={heuresMontage}
               onChange={(e) => setHeuresMontage(e.target.value)}
               placeholder="Saisir les heures au montage"
+              disabled={pneusOrigine}
             />
           </div>
            <div className="space-y-2">
