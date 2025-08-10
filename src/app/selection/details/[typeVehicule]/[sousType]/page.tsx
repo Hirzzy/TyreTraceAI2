@@ -77,7 +77,6 @@ export default function EnterDetailsPage() {
   const [modele, setModele] = useState('');
   const [dimension, setDimension] = useState('');
   const [motorisation, setMotorisation] = useState('');
-  const [usage, setUsage] = useState('');
   const [pneusOrigine, setPneusOrigine] = useState(false);
   const [heuresMontage, setHeuresMontage] = useState('');
   const [motricite, setMotricite] = useState('');
@@ -115,7 +114,6 @@ export default function EnterDetailsPage() {
       dimension,
       motricite,
       motorisation,
-      usage,
       pneusOrigine,
       heuresMontage,
       typeSol,
@@ -133,7 +131,7 @@ export default function EnterDetailsPage() {
     router.push(`/selection/sous-type/${typeVehiculePath}`);
   };
 
-  const isFormValid = marque && modele && dimension && motricite && motorisation && usage && heuresMontage;
+  const isFormValid = marque && modele && dimension && motricite && motorisation && heuresMontage;
 
   return (
     <Card className="w-full max-w-lg bg-card text-card-foreground shadow-xl border-primary/50">
@@ -230,16 +228,6 @@ export default function EnterDetailsPage() {
             </RadioGroup>
           </div>
           
-          <div className="space-y-2">
-            <Label htmlFor="usage">Usage :</Label>
-            <Input
-              id="usage"
-              value={usage}
-              onChange={(e) => setUsage(e.target.value)}
-              placeholder="Chantier, Route, Manutention, etc."
-            />
-          </div>
-
           <div className="flex items-center justify-between space-x-2 rounded-md border p-3 shadow-sm bg-background">
              <Label htmlFor="pneus-origine" className="font-medium">Pneus montés à l’origine ?</Label>
              <Switch

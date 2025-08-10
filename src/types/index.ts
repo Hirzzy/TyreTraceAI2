@@ -88,6 +88,5 @@ export interface VehicleDetailsFormData {
   dimension: string;
   motricite: string;
   motorisation: string;
-  usage: string;
   pneusOrigine: boolean;
 }
