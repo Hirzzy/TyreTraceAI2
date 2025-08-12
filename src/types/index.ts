@@ -1,4 +1,5 @@
 
+
 export interface Tire {
   id: string;
   name: string;
@@ -92,4 +93,22 @@ export interface VehicleDetailsFormData {
   heuresMontage: string;
   heuresActuelles: string;
   typeSol: string[];
+}
+
+export type VehicleDetails = {
+  category: string;
+  brand: string;
+  model: string;
+  dimension: string;
+  driveConfig: string;
+  motor: string;
+  typeSol: string[];
+  precoAxle: Record<string, number>;
+};
+
+export interface InspectionData {
+  '1L'?: { pressure: number; depth: number };
+  '1R'?: { pressure: number; depth: number };
+  '2L'?: { pressure: number; depth: number };
+  '2R'?: { pressure: number; depth: number };
 }

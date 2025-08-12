@@ -1,3 +1,4 @@
+
 // src/app/(selection)/details/[typeVehicule]/[sousType]/page.tsx
 "use client";
 
@@ -13,6 +14,9 @@ import { Check, ArrowLeft, QrCode } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useToast } from "@/hooks/use-toast";
+import type { VehicleDetails } from "@/types";
+import { TyreInspectionPanel } from "@/components/inspection/tyre-inspection-panel";
 
 
 const vehicleBrands = [
@@ -63,10 +67,20 @@ const soilTypes = [
   { id: 'roche-dure-abrasive', label: 'Roche dure abrasive' },
 ];
 
+function computePrecoAxle(driveConfigLabel: string): Record<string, number> {
+  if (/traction arrière/i.test(driveConfigLabel)) return { "1": 3.0, "2": 3.5 };
+  if (/traction avant/i.test(driveConfigLabel)) return { "1": 3.5, "2": 3.0 };
+  return { "1": 3.0, "2": 3.0 }; // fallback uniforme
+}
+
 export default function EnterDetailsPage() {
   const router = useRouter();
   const params = useParams();
+  const { toast } = useToast();
   const typeVehiculePath = params.typeVehicule as string;
+
+  const [showInspectionPanel, setShowInspectionPanel] = useState(false);
+  const [vehicleDetails, setVehicleDetails] = useState<VehicleDetails | null>(null);
 
   // State for display names
   const [displayVehicleType, setDisplayVehicleType] = useState('');
@@ -76,11 +90,11 @@ export default function EnterDetailsPage() {
   const [marque, setMarque] = useState('');
   const [modele, setModele] = useState('');
   const [dimension, setDimension] = useState('');
+  const [motricite, setMotricite] = useState('');
   const [motorisation, setMotorisation] = useState('');
   const [pneusOrigine, setPneusOrigine] = useState(false);
   const [heuresMontage, setHeuresMontage] = useState('');
   const [heuresActuelles, setHeuresActuelles] = useState('');
-  const [motricite, setMotricite] = useState('');
   const [typeSol, setTypeSol] = useState<string[]>([]);
 
   useEffect(() => {
@@ -112,34 +126,65 @@ export default function EnterDetailsPage() {
     );
   };
 
-  const handleSubmit = () => {
-    const formData = {
-      typeVehicule: displayVehicleType,
-      sousType: displayVehicleSubType,
-      marque,
-      modele,
-      dimension,
-      motricite,
-      motorisation,
-      pneusOrigine,
-      heuresMontage,
-      heuresActuelles,
-      typeSol,
-    };
-    try {
-      localStorage.setItem('vehicleInspectionDetails', JSON.stringify(formData));
-      router.push('/dashboard/vehicles');
-    } catch (error) {
-      console.error("Erreur lors de la sauvegarde dans le localStorage :", error);
-      alert("Une erreur est survenue lors de la sauvegarde des données.");
+  const validateForm = (): boolean => {
+    const requiredFields = [marque, modele, dimension, motricite, motorisation, heuresActuelles];
+    if (requiredFields.some(field => !field)) {
+      toast({ variant: "destructive", title: "Champs requis", description: "Veuillez remplir tous les champs obligatoires." });
+      return false;
     }
+    if (typeSol.length === 0) {
+      toast({ variant: "destructive", title: "Champ requis", description: "Veuillez sélectionner au moins un type de sol." });
+      return false;
+    }
+    if (!pneusOrigine && !heuresMontage) {
+        toast({ variant: "destructive", title: "Champ requis", description: "Veuillez saisir les heures de montage." });
+        return false;
+    }
+    const heuresMontageNum = parseFloat(heuresMontage);
+    const heuresActuellesNum = parseFloat(heuresActuelles);
+    if (heuresActuellesNum < heuresMontageNum) {
+        toast({ variant: "destructive", title: "Avertissement", description: "Les heures actuelles sont inférieures aux heures de montage." });
+    }
+    return true;
+  };
+
+  const handleSubmit = () => {
+    if (!validateForm()) return;
+
+    const motriciteLabel = motriciteOptions.find(opt => opt.value === motricite)?.label || motricite;
+
+    const details: VehicleDetails = {
+      category: `${displayVehicleType} – ${displayVehicleSubType}`,
+      brand: marque,
+      model: modele,
+      dimension: dimension,
+      driveConfig: motriciteLabel,
+      motor: motorisation,
+      typeSol: typeSol,
+      precoAxle: computePrecoAxle(motriciteLabel),
+    };
+    
+    // Store metadata separately if needed
+    const metadata = {
+        pneusOrigine,
+        heuresMontage,
+        heuresActuelles,
+    };
+    localStorage.setItem('vehicleInspectionMetadata', JSON.stringify(metadata));
+
+    setVehicleDetails(details);
+    setShowInspectionPanel(true);
   };
 
   const handleBack = () => {
     router.push(`/selection/sous-type/${typeVehiculePath}`);
   };
 
-  const isFormValid = marque && modele && dimension && motricite && motorisation && (pneusOrigine || heuresMontage) && heuresActuelles;
+  const isFormValid = marque && modele && dimension && motricite && motorisation && (pneusOrigine || heuresMontage) && heuresActuelles && typeSol.length > 0;
+
+  if (showInspectionPanel && vehicleDetails) {
+    return <TyreInspectionPanel vehicleDetails={vehicleDetails} />;
+  }
 
   return (
     <Card className="w-full max-w-lg bg-card text-card-foreground shadow-xl border-primary/50">
@@ -307,7 +352,7 @@ export default function EnterDetailsPage() {
             disabled={!isFormValid}
           >
             <Check className="mr-2 h-4 w-4" />
-            Valider les informations
+            Valider et inspecter les pneus
           </Button>
           <Button
             variant="ghost"
