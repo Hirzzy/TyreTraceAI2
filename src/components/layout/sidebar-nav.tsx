@@ -47,12 +47,6 @@ const navItems = [
     label: "Analyse détaillée des pneus",
     tooltip: "Analyse approfondie des données par pneu",
   },
-  {
-    href: "/dashboard/prediction",
-    icon: TrendingUp,
-    label: "Analyse prédictive du suivi",
-    tooltip: "Consulter les analyses prédictives du suivi",
-  },
   { 
     href: "/selection/type-vehicule",
     icon: LogIn,
