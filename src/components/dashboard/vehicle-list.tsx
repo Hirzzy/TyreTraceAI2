@@ -55,7 +55,7 @@ export const columns: ColumnDef<Vehicle>[] = [
   {
     accessorKey: "category",
     header: "Catégorie",
-    cell: ({ row }) => row.original.category.split('–')[1]?.trim() || 'N/A',
+    cell: ({ row }) => row.original.category?.split('–')[1]?.trim() || 'N/A',
   },
   {
     accessorKey: "lastInspectionDate",

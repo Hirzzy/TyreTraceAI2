@@ -3,7 +3,7 @@ export interface Vehicle {
   id: string;
   immatriculation: string;
   fleetNumber: string;
-  category: string;
+  category?: string;
   brand: string;
   model: string;
   dimension: string;
