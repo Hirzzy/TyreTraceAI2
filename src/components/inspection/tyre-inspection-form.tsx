@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -14,17 +14,48 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { AlertCircle, CheckCircle } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle, CheckCircle, Info, Ban } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import type { TyreInspectionPayload, TyreDepth, TyrePressure } from '@/types';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
 
 interface TyreInspectionFormProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: { pressure: number; depth: number }) => void;
-  tyrePosition: string;
+  onSave: (data: TyreInspectionPayload) => void;
+  tyrePosition: '1L' | '1R' | '2L' | '2R';
   precoPressure: number;
-  existingData?: { pressure: number; depth: number };
+  existingData?: TyreInspectionPayload;
 }
+
+const toNum = (s?: string | null): number | null => {
+    if (s === null || s === undefined || s.trim() === "") return null;
+    const cleaned = String(s).replace(",", ".");
+    const num = parseFloat(cleaned);
+    return isNaN(num) ? null : num;
+};
+
+const roundToHalf = (n: number | null): number | null => {
+    if (n === null) return null;
+    return Math.round(n * 2) / 2;
+};
+
+const computeStats = (vals: (number | null)[]): Omit<TyreDepth, 'inner' | 'center' | 'outer'> => {
+  const validVals = vals.filter((v): v is number => v !== null && isFinite(v));
+  const n = validVals.length;
+
+  if (n === 0) return { avg: null, min: null, max: null, spread: null, std: null, qualityScore: null };
+  
+  const min = Math.min(...validVals);
+  const max = Math.max(...validVals);
+  const avg = validVals.reduce((a, b) => a + b, 0) / n;
+  const spread = max - min;
+  const std = n > 1 ? Math.sqrt(validVals.reduce((acc, val) => acc + Math.pow(val - avg, 2), 0) / (n -1)) : 0; // Sample StDev
+
+  return { avg, min, max, spread, std: roundToHalf(std), qualityScore: 0 }; // qualityScore computed later
+}
+
 
 export function TyreInspectionForm({
   isOpen,
@@ -34,88 +65,194 @@ export function TyreInspectionForm({
   precoPressure,
   existingData,
 }: TyreInspectionFormProps) {
-  const [pressure, setPressure] = useState<string>('');
-  const [depth, setDepth] = useState<string>('');
-  const [pressureDiff, setPressureDiff] = useState<number | null>(null);
+  // --- STATE MANAGEMENT ---
+  const [pressureMeasured, setPressureMeasured] = useState<string>('');
+  const [pressureCorrected, setPressureCorrected] = useState<string>('');
+  
+  const [depthInner, setDepthInner] = useState<string>('');
+  const [depthCenter, setDepthCenter] = useState<string>('');
+  const [depthOuter, setDepthOuter] = useState<string>('');
 
   useEffect(() => {
-    if (existingData) {
-      setPressure(String(existingData.pressure));
-      setDepth(String(existingData.depth));
-    } else {
-      setPressure('');
-      setDepth('');
+    if (isOpen && existingData) {
+      setPressureMeasured(String(existingData.pressure.measuredBar ?? ''));
+      setPressureCorrected(String(existingData.pressure.correctedBar ?? ''));
+      setDepthInner(String(existingData.depth.inner ?? ''));
+      setDepthCenter(String(existingData.depth.center ?? ''));
+      setDepthOuter(String(existingData.depth.outer ?? ''));
+    } else if (isOpen) {
+      // Reset form on open if no existing data
+      setPressureMeasured('');
+      setPressureCorrected('');
+      setDepthInner('');
+      setDepthCenter('');
+      setDepthOuter('');
     }
-    setPressureDiff(null); 
   }, [isOpen, existingData]);
 
-  useEffect(() => {
-    const pressureNum = parseFloat(pressure);
-    if (!isNaN(pressureNum) && precoPressure) {
-      setPressureDiff(Math.abs(pressureNum - precoPressure));
-    } else {
-      setPressureDiff(null);
+  // --- PARSED & COMPUTED VALUES ---
+  const { pressure, depth, errors, warnings, isFormValid, canSave } = useMemo(() => {
+    const pMeasuredNum = toNum(pressureMeasured);
+    const pCorrectedNum = toNum(pressureCorrected);
+    const dInnerNum = toNum(depthInner);
+    const dCenterNum = toNum(depthCenter);
+    const dOuterNum = toNum(depthOuter);
+    
+    const depthValues = [dInnerNum, dCenterNum, dOuterNum];
+    const depthStats = computeStats(depthValues);
+    
+    const errors: string[] = [];
+    const warnings: string[] = [];
+
+    // Validations
+    if (depthStats.spread !== null && depthStats.spread > 5) {
+      errors.push("Écart I/C/E inhabituel (>5 mm). Reprends la mesure.");
     }
-  }, [pressure, precoPressure]);
+
+    // Warnings
+    const validDepths = depthValues.filter((v): v is number => v !== null);
+    if (dCenterNum !== null && dInnerNum !== null && dOuterNum !== null) {
+      if (dCenterNum - Math.min(dInnerNum, dOuterNum) >= 3) {
+        warnings.push("Usure épaules : vérifier sous-gonflage/alignement.");
+      }
+      if (Math.max(dInnerNum, dOuterNum) - dCenterNum >= 3) {
+        warnings.push("Usure centrale : possible sur-gonflage.");
+      }
+    }
+    if (validDepths.some(d => d < 3)) {
+        warnings.push("Proche témoin : planifier permutation/remplacement.");
+    }
+    if (pMeasuredNum !== null && Math.abs(pMeasuredNum - precoPressure) >= 0.5) {
+        warnings.push(`Écart de pression de ${Math.abs(pMeasuredNum - precoPressure).toFixed(2)} Bar détecté.`);
+    }
+
+    const isFormValid = errors.length === 0;
+    const canSave = isFormValid && (validDepths.length > 0 || pMeasuredNum !== null);
+
+    return {
+      pressure: { measuredBar: pMeasuredNum, recommendedBar: precoPressure, correctedBar: pCorrectedNum },
+      depth: { inner: dInnerNum, center: dCenterNum, outer: dOuterNum, ...depthStats },
+      errors,
+      warnings,
+      isFormValid,
+      canSave,
+    };
+  }, [pressureMeasured, pressureCorrected, depthInner, depthCenter, depthOuter, precoPressure]);
+
 
   const handleSave = () => {
-    const pressureNum = parseFloat(pressure);
-    const depthNum = parseFloat(depth);
-
-    if (isNaN(pressureNum) || isNaN(depthNum) || pressureNum <= 0 || depthNum <= 0) {
-      alert('Veuillez saisir des valeurs valides et positives pour la pression et la profondeur.');
-      return;
-    }
-    onSave({ pressure: pressureNum, depth: depthNum });
+    if (!canSave) return;
+    
+    const payload: TyreInspectionPayload = {
+        position: tyrePosition,
+        depth: depth,
+        pressure: pressure,
+        measureMeta: {
+            tool: "pige mécanique", // default for now
+            side: tyrePosition.includes('L') ? "gauche" : "droite",
+            timestamp: new Date().toISOString(),
+        },
+        status: 'completed',
+        inspectedAt: new Date().toISOString(),
+        version: 2
+    };
+    onSave(payload);
   };
   
-  const isFormValid = pressure !== '' && depth !== '';
-  const isPressureAlert = pressureDiff !== null && pressureDiff > precoPressure * 0.1; // Alerte si > 10% d'écart
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Inspection du Pneu ({tyrePosition})</DialogTitle>
           <DialogDescription>
-            Saisissez la pression et la profondeur de sculpture mesurées.
+            Saisissez les profondeurs et la pression. Les calculs sont automatiques.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="pressure" className="text-right">
-              Pression (Bar)
-            </Label>
-            <Input
-              id="pressure"
-              type="number"
-              value={pressure}
-              onChange={(e) => setPressure(e.target.value)}
-              className="col-span-3"
-              placeholder={`Préco: ${precoPressure.toFixed(1)} Bar`}
-            />
+        <div className="space-y-6 py-2">
+          {/* Pressure Section */}
+          <div className="space-y-2 rounded-md border p-3 bg-background shadow-sm">
+            <Label className="font-semibold text-foreground">Pression (Bar)</Label>
+            <div className="grid grid-cols-3 gap-x-2 gap-y-3">
+              <div className="space-y-1">
+                <Label htmlFor="p-mesuree" className="text-xs text-muted-foreground">Mesurée</Label>
+                <Input id="p-mesuree" type="text" inputMode="decimal" value={pressureMeasured} onChange={e => setPressureMeasured(e.target.value)} placeholder="Ex: 8.5" />
+              </div>
+               <div className="space-y-1">
+                <Label htmlFor="p-preco" className="text-xs text-muted-foreground">Préconisée</Label>
+                <Input id="p-preco" type="text" value={precoPressure.toFixed(1)} readOnly disabled className="font-bold text-primary"/>
+              </div>
+               <div className="space-y-1">
+                <Label htmlFor="p-corrigee" className="text-xs text-muted-foreground">Corrigée</Label>
+                <Input id="p-corrigee" type="text" inputMode="decimal" value={pressureCorrected} onChange={e => setPressureCorrected(e.target.value)} placeholder="(Optionnel)" />
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="depth" className="text-right">
-              Profondeur (mm)
-            </Label>
-            <Input
-              id="depth"
-              type="number"
-              value={depth}
-              onChange={(e) => setDepth(e.target.value)}
-              className="col-span-3"
-              placeholder="Ex: 8"
-            />
+          
+          {/* Depth Section */}
+          <div className="space-y-2 rounded-md border p-3 bg-background shadow-sm">
+            <div className="flex items-center gap-2">
+                <Label className="font-semibold text-foreground">Profondeur de sculpture (mm)</Label>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p className="max-w-xs">Mesurer au fond de rainure, pige perpendiculaire. Faire 2 lectures et garder la meilleure.</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            </div>
+            <div className="grid grid-cols-3 gap-x-2 gap-y-3">
+               <div className="space-y-1">
+                <Label htmlFor="d-int" className="text-xs text-muted-foreground">Intérieur</Label>
+                <Input id="d-int" type="text" inputMode="decimal" value={depthInner} onChange={e => setDepthInner(e.target.value)} placeholder="Ex: 12" />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="d-centre" className="text-xs text-muted-foreground">Centre</Label>
+                <Input id="d-centre" type="text" inputMode="decimal" value={depthCenter} onChange={e => setDepthCenter(e.target.value)} placeholder="Ex: 12.5" />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="d-ext" className="text-xs text-muted-foreground">Extérieur</Label>
+                <Input id="d-ext" type="text" inputMode="decimal" value={depthOuter} onChange={e => setDepthOuter(e.target.value)} placeholder="Ex: 11.5" />
+              </div>
+            </div>
+             {/* Stats */}
+             {depth.avg !== null && (
+              <div className="pt-3 text-xs text-muted-foreground grid grid-cols-3 gap-x-2">
+                <p>Moy: <strong className="text-foreground">{depth.avg.toFixed(1)}mm</strong></p>
+                <p>Écart: <strong className="text-foreground">{depth.spread?.toFixed(1)}mm</strong></p>
+                <p>Min: <strong className="text-foreground">{depth.min?.toFixed(1)}mm</strong></p>
+              </div>
+            )}
           </div>
-          {isPressureAlert && (
-             <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription>
-                    Attention : Écart de pression de <strong>{pressureDiff?.toFixed(2)} Bar</strong> détecté (supérieur à la tolérance de 10%).
-                </AlertDescription>
-             </Alert>
-          )}
+
+           {/* Alerts & Warnings */}
+           <div className="space-y-2">
+            {!isFormValid && (
+                <Alert variant="destructive">
+                    <Ban className="h-4 w-4" />
+                    <AlertTitle>Erreur de saisie</AlertTitle>
+                    <AlertDescription>
+                        <ul>
+                            {errors.map((err, i) => <li key={i}>{err}</li>)}
+                        </ul>
+                    </AlertDescription>
+                </Alert>
+            )}
+            {warnings.length > 0 && isFormValid && (
+                 <Alert variant="default" className="border-yellow-400/50 text-yellow-700 dark:text-yellow-400 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Avertissements</AlertTitle>
+                    <AlertDescription>
+                        <ul className="list-disc pl-4">
+                            {warnings.map((warn, i) => <li key={i}>{warn}</li>)}
+                        </ul>
+                    </AlertDescription>
+                 </Alert>
+            )}
+           </div>
+
         </div>
         <DialogFooter>
           <DialogClose asChild>
@@ -123,7 +260,7 @@ export function TyreInspectionForm({
               Annuler
             </Button>
           </DialogClose>
-          <Button type="button" onClick={handleSave} disabled={!isFormValid}>
+          <Button type="button" onClick={handleSave} disabled={!canSave}>
             <CheckCircle className="mr-2 h-4 w-4" />
             Enregistrer
           </Button>
@@ -133,3 +270,4 @@ export function TyreInspectionForm({
   );
 }
 
+    

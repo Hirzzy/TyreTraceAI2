@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { HardHat, ChevronsRight, GitBranch, Power, Sprout, Save } from 'lucide-react';
-import type { VehicleDetails, InspectionData } from '@/types';
+import { HardHat, ChevronsRight, GitBranch, Power, Sprout, Save, AlertTriangle } from 'lucide-react';
+import type { VehicleDetails, InspectionData, TyreInspectionPayload } from '@/types';
 import { TyreInspectionForm } from './tyre-inspection-form';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+
 
 interface TyreInspectionPanelProps {
   vehicleDetails: VehicleDetails;
@@ -26,7 +28,7 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
     setIsModalOpen(true);
   };
 
-  const handleFormSave = (data: { pressure: number; depth: number }) => {
+  const handleFormSave = (data: TyreInspectionPayload) => {
     if (selectedTyre) {
       setInspectionData(prev => ({
         ...prev,
@@ -38,14 +40,36 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
   };
 
   const handleSaveInspection = () => {
-    console.log("[SAVE] Inspection", { vehicleDetails, inspectionData });
-    alert("Inspection enregistrée ! (Voir la console pour les données)");
+    // Here you would typically send the data to Firestore or your backend
+    console.log("[SAVE] Inspection Complète:", { vehicleDetails, inspectionData });
+    alert("Inspection enregistrée avec succès ! (Voir la console pour le détail des données)");
   };
   
   const getTyreStatus = (position: TyrePosition) => {
     if (inspectionData[position]) return 'inspected';
     return 'pending';
   }
+
+  // --- Cross-axle check ---
+  const axle1L = inspectionData['1L']?.depth.avg;
+  const axle1R = inspectionData['1R']?.depth.avg;
+  const axle2L = inspectionData['2L']?.depth.avg;
+  const axle2R = inspectionData['2R']?.depth.avg;
+
+  let axle1Imbalance = false;
+  let axle2Imbalance = false;
+
+  if (axle1L !== undefined && axle1L !== null && axle1R !== undefined && axle1R !== null) {
+      if (Math.abs(axle1L - axle1R) > 3) {
+          axle1Imbalance = true;
+      }
+  }
+  if (axle2L !== undefined && axle2L !== null && axle2R !== undefined && axle2R !== null) {
+      if (Math.abs(axle2L - axle2R) > 3) {
+          axle2Imbalance = true;
+      }
+  }
+
 
   return (
     <>
@@ -57,7 +81,6 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
           <CardDescription className="text-muted-foreground">{vehicleDetails.category}</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* Badges récapitulatifs */}
           <div className="flex flex-wrap justify-center gap-2 mb-6 p-3 bg-muted/50 rounded-lg">
             <Badge variant="secondary" className="flex items-center gap-1"><HardHat size={14} />{vehicleDetails.brand} - {vehicleDetails.model}</Badge>
             <Badge variant="secondary" className="flex items-center gap-1"><ChevronsRight size={14} />{vehicleDetails.dimension}</Badge>
@@ -68,9 +91,19 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
             ))}
           </div>
 
-          <Separator className="my-6" />
+          <Separator className="my-4" />
 
-          {/* Schéma du véhicule et préconisations */}
+          { (axle1Imbalance || axle2Imbalance) &&
+            <Alert variant="destructive" className="mb-4">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Alerte de déséquilibre</AlertTitle>
+                <AlertDescription>
+                    {axle1Imbalance && <p>Déséquilibre d'usure détecté sur l'essieu 1 (&gt;3 mm).</p>}
+                    {axle2Imbalance && <p>Déséquilibre d'usure détecté sur l'essieu 2 (&gt;3 mm).</p>}
+                </AlertDescription>
+            </Alert>
+          }
+
           <div className="relative">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-4 z-10 p-4 bg-background/80 rounded-lg backdrop-blur-sm border">
                 <div className="text-center">
@@ -81,19 +114,16 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
             </div>
             
             <div className="grid grid-cols-[1fr_auto_1fr] items-center justify-items-center gap-y-16 gap-x-4">
-              {/* Pneus avant */}
-              <TyreButton position="1L" status={getTyreStatus('1L')} onClick={handleTyreClick} />
+              <TyreButton position="1L" status={getTyreStatus('1L')} onClick={handleTyreClick} inspectionData={inspectionData['1L']} />
               <div className="w-8 h-1 bg-muted-foreground rounded-full" />
-              <TyreButton position="1R" status={getTyreStatus('1R')} onClick={handleTyreClick} />
+              <TyreButton position="1R" status={getTyreStatus('1R')} onClick={handleTyreClick} inspectionData={inspectionData['1R']} />
               
-              {/* Châssis */}
               <div className="h-2 w-full bg-muted-foreground rounded-full col-start-1 col-end-2" />
               <div className="h-2 w-full bg-muted-foreground rounded-full col-start-3 col-end-4" />
               
-              {/* Pneus arrière */}
-              <TyreButton position="2L" status={getTyreStatus('2L')} onClick={handleTyreClick} />
+              <TyreButton position="2L" status={getTyreStatus('2L')} onClick={handleTyreClick} inspectionData={inspectionData['2L']} />
               <div className="w-8 h-1 bg-muted-foreground rounded-full" />
-              <TyreButton position="2R" status={getTyreStatus('2R')} onClick={handleTyreClick} />
+              <TyreButton position="2R" status={getTyreStatus('2R')} onClick={handleTyreClick} inspectionData={inspectionData['2R']} />
             </div>
           </div>
         </CardContent>
@@ -126,25 +156,33 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
   );
 }
 
-// Composant interne pour les boutons de pneu
 interface TyreButtonProps {
     position: TyrePosition;
     status: 'pending' | 'inspected';
     onClick: (position: TyrePosition) => void;
+    inspectionData?: TyreInspectionPayload;
 }
-const TyreButton = ({ position, status, onClick }: TyreButtonProps) => {
+const TyreButton = ({ position, status, onClick, inspectionData }: TyreButtonProps) => {
     const isInspected = status === 'inspected';
     return (
         <Button
           variant={isInspected ? "default" : "outline"}
-          className={`w-24 h-32 text-lg font-bold transition-all duration-300 ${
+          className={`w-28 h-36 text-lg font-bold transition-all duration-300 flex flex-col justify-center items-center gap-1 ${
             isInspected 
               ? 'bg-green-500 hover:bg-green-600 text-white border-green-700' 
               : 'border-dashed border-2 text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'
           }`}
           onClick={() => onClick(position)}
         >
-          {position}
+          <span>{position}</span>
+           {isInspected && inspectionData && (
+              <div className="text-xs font-normal mt-1 text-center">
+                 <p>P: {inspectionData.pressure.measuredBar}b</p>
+                 <p>Ø: {inspectionData.depth.avg?.toFixed(1)}mm</p>
+              </div>
+           )}
         </Button>
     )
 }
+
+    

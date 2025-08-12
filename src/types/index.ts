@@ -106,9 +106,50 @@ export type VehicleDetails = {
   precoAxle: Record<string, number>;
 };
 
-export interface InspectionData {
-  '1L'?: { pressure: number; depth: number };
-  '1R'?: { pressure: number; depth: number };
-  '2L'?: { pressure: number; depth: number };
-  '2R'?: { pressure: number; depth: number };
-}
+
+// --- Types for Tyre Inspection v2 ---
+
+export type TyreDepth = {
+  inner: number | null;
+  center: number | null;
+  outer: number | null;
+  avg: number | null;
+  min: number | null;
+  max: number | null;
+  spread: number | null;
+  std: number | null;
+  qualityScore: number | null;
+};
+
+export type TyrePressure = {
+  measuredBar: number | null;
+  recommendedBar: number;
+  correctedBar: number | null;
+};
+
+export type MeasureMeta = {
+  tool: "pige digitale" | "pige mécanique" | "autre";
+  photoIds?: string[];
+  byUserId?: string;
+  side: "gauche" | "droite";
+  timestamp: string; // ISO
+};
+
+export type TyreInspectionPayload = {
+  position: "1L" | "1R" | "2L" | "2R";
+  depth: TyreDepth;
+  pressure: TyrePressure;
+  measureMeta: MeasureMeta;
+  status: "completed";
+  inspectedAt: string; // ISO
+  version: 2;
+};
+
+export type InspectionData = {
+  '1L'?: TyreInspectionPayload;
+  '1R'?: TyreInspectionPayload;
+  '2L'?: TyreInspectionPayload;
+  '2R'?: TyreInspectionPayload;
+};
+
+    
