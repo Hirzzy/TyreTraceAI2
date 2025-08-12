@@ -99,7 +99,6 @@ export function TireTrackingTable() {
                 <TableHead className="text-right">H. Restantes</TableHead>
                 <TableHead className="text-right">Proj. Final (h)</TableHead>
                 <TableHead className="text-right">Éch. Mois</TableHead>
-                <TableHead className="text-right">Qté</TableHead>
                 <TableHead>Profil Recommandé</TableHead>
                 <TableHead>Date Changement</TableHead>
                 <TableHead>Statut</TableHead>
@@ -119,7 +118,6 @@ export function TireTrackingTable() {
                   <TableCell className="text-right">{item.echeanceRestanteHeures}</TableCell>
                   <TableCell className="text-right">{item.projectionFinal}</TableCell>
                   <TableCell className="text-right">{item.echeanceMois.toFixed(1)}</TableCell>
-                  <TableCell className="text-right">{item.quantite}</TableCell>
                   <TableCell>{item.profilRecommande}</TableCell>
                   <TableCell>{item.dateChangement}</TableCell>
                   <TableCell>

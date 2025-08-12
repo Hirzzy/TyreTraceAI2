@@ -6,13 +6,13 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   BarChart3,
-  Clock,
+  ClipboardCheck,
   Settings2,
   FilePlus,
   TrendingUp,
   LogIn,
   LayoutGrid,
-  Truck, // Ajout de l'icône
+  Truck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -28,6 +28,12 @@ const navItems = [
     icon: LayoutDashboard,
     label: "Tableau de bord",
     tooltip: "Synthèse des performances et alertes",
+  },
+  {
+    href: "/driver/check",
+    icon: ClipboardCheck,
+    label: "Check Matin",
+    tooltip: "Effectuer le contrôle quotidien du véhicule",
   },
   {
     href: "/dashboard/vehicles",
