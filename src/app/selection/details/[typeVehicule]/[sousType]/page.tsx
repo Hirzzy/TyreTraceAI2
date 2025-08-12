@@ -128,7 +128,7 @@ export default function EnterDetailsPage() {
     };
     try {
       localStorage.setItem('vehicleInspectionDetails', JSON.stringify(formData));
-      router.push('/selection/inspection/summary');
+      router.push('/dashboard/vehicles');
     } catch (error) {
       console.error("Erreur lors de la sauvegarde dans le localStorage :", error);
       alert("Une erreur est survenue lors de la sauvegarde des données.");
