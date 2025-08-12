@@ -1,4 +1,5 @@
 
+import type { Vehicle } from './vehicle';
 
 export interface Tire {
   id: string;
@@ -68,47 +69,6 @@ export interface MockPredictiveDataItem {
     name: string; // Month or time period
     usure: number; // Wear in mm
 }
-
-export interface Vehicle {
-  id: string;
-  immatriculation: string;
-  fleetNumber: string;
-  context: string;
-  brand?: string;
-  model?: string;
-  dimension?: string;
-  mileage?: number;
-  hours?: number;
-  status: 'ok' | 'attention' | 'urgent';
-  lastInspectionDate: string; // "DD/MM/YYYY" format
-  activityStatus: 'Actif' | 'Inactif';
-}
-
-export interface VehicleDetailsFormData {
-  typeVehicule: string;
-  sousType: string;
-  marque: string;
-  modele: string;
-  dimension: string;
-  motricite: string;
-  motorisation: string;
-  pneusOrigine: boolean;
-  heuresMontage: string;
-  heuresActuelles: string;
-  typeSol: string[];
-}
-
-export type VehicleDetails = {
-  category: string;
-  brand: string;
-  model: string;
-  dimension: string;
-  driveConfig: string;
-  motor: string;
-  typeSol: string[];
-  precoAxle: Record<string, number>;
-};
-
 
 // --- Types for Tyre Inspection v2 ---
 

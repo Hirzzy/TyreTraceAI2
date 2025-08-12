@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import type { VehicleDetails } from "@/types";
+import type { VehicleDetails } from "@/types/vehicle";
 import { TyreInspectionPanel } from "@/components/inspection/tyre-inspection-panel";
 
 
@@ -67,7 +67,7 @@ const soilTypes = [
   { id: 'roche-dure-abrasive', label: 'Roche dure abrasive' },
 ];
 
-function computePrecoAxle(driveConfigLabel: string): Record<string, number> {
+function computePrecoAxle(driveConfigLabel: string): { "1": number; "2": number } {
   if (/traction arrière/i.test(driveConfigLabel)) return { "1": 3.0, "2": 3.5 };
   if (/traction avant/i.test(driveConfigLabel)) return { "1": 3.5, "2": 3.0 };
   return { "1": 3.0, "2": 3.0 }; // fallback uniforme

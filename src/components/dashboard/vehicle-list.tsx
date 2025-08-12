@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, PlusCircle } from "lucide-react";
-import type { Vehicle } from "@/types";
+import type { Vehicle } from "@/types/vehicle";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -53,8 +53,9 @@ export const columns: ColumnDef<Vehicle>[] = [
     header: "Immatriculation",
   },
   {
-    accessorKey: "context",
-    header: "Type",
+    accessorKey: "category",
+    header: "Catégorie",
+    cell: ({ row }) => row.original.category.split('–')[1]?.trim() || 'N/A',
   },
   {
     accessorKey: "lastInspectionDate",
@@ -77,6 +78,7 @@ export const columns: ColumnDef<Vehicle>[] = [
     id: "actions",
     cell: ({ row }) => {
       const vehicle = row.original;
+      const router = useRouter();
       return (
         <div className="text-right">
             <DropdownMenu>
@@ -88,15 +90,15 @@ export const columns: ColumnDef<Vehicle>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => alert(`Voir détails du véhicule ${vehicle.id}`)}>
-                Voir la fiche
+                <DropdownMenuItem onClick={() => router.push(`/dashboard/vehicles/${vehicle.id}`)}>
+                 Voir la fiche
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => alert(`Lancer inspection pour ${vehicle.id}`)}>
-                Nouvelle inspection
+                <DropdownMenuItem onClick={() => router.push('/selection/type-vehicule')}>
+                  Nouvelle inspection
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-destructive">
-                Archiver
+                 Archiver
                 </DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>
@@ -126,7 +128,6 @@ export function VehicleList() {
     }
   }, []);
 
-
   const table = useReactTable({
     data,
     columns,
@@ -137,6 +138,11 @@ export function VehicleList() {
       sorting,
     },
   });
+  
+  const navigateToVehicle = (vehicleId: string) => {
+    router.push(`/dashboard/vehicles/${vehicleId}`);
+  };
+
 
   return (
     <div className="w-full space-y-4">
@@ -178,6 +184,8 @@ export function VehicleList() {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => navigateToVehicle(row.original.id)}
+                  className="cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

@@ -8,7 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { HardHat, ChevronsRight, GitBranch, Power, Sprout, Save, AlertTriangle } from 'lucide-react';
-import type { VehicleDetails, InspectionData, TyreInspectionPayload, Vehicle } from '@/types';
+import type { InspectionData, TyreInspectionPayload } from '@/types';
+import type { Vehicle, VehicleDetails } from '@/types/vehicle';
 import { TyreInspectionForm } from './tyre-inspection-form';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useToast } from "@/hooks/use-toast";
@@ -55,14 +56,17 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
             id: newVehicleId,
             immatriculation: `IM-${String(Date.now()).slice(-4)}`, // Placeholder
             fleetNumber: vehicleDetails.model.substring(0, 2).toUpperCase() + "-" + String(Date.now()).slice(-2), // Placeholder
-            context: vehicleDetails.category.split('–')[1]?.trim() || 'N/A',
-            status: 'ok',
-            lastInspectionDate: new Date().toLocaleDateString('fr-FR'),
-            activityStatus: 'Actif',
-            // Add other details from vehicleDetails if needed in the Vehicle type
+            category: vehicleDetails.category,
             brand: vehicleDetails.brand,
             model: vehicleDetails.model,
             dimension: vehicleDetails.dimension,
+            driveConfig: vehicleDetails.driveConfig,
+            motor: vehicleDetails.motor,
+            typeSol: vehicleDetails.typeSol,
+            precoAxle: vehicleDetails.precoAxle,
+            status: 'ok',
+            lastInspectionDate: new Date().toLocaleDateString('fr-FR'),
+            activityStatus: 'Actif',
         };
 
         const updatedVehicles = [...existingVehicles, newVehicle];
