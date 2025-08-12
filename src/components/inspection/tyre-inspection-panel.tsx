@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Truck, HardHat, ChevronsRight, GitBranch, Power, Sprout, Save } from 'lucide-react';
+import { HardHat, ChevronsRight, GitBranch, Power, Sprout, Save } from 'lucide-react';
 import type { VehicleDetails, InspectionData } from '@/types';
 import { TyreInspectionForm } from './tyre-inspection-form';
 
@@ -88,7 +88,6 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
               
               {/* Châssis */}
               <div className="h-2 w-full bg-muted-foreground rounded-full col-start-1 col-end-2" />
-              <Truck className="h-16 w-16 text-muted-foreground opacity-50 col-start-2 col-end-3 row-start-1 row-end-3" />
               <div className="h-2 w-full bg-muted-foreground rounded-full col-start-3 col-end-4" />
               
               {/* Pneus arrière */}
