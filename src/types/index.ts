@@ -74,6 +74,9 @@ export interface Vehicle {
   immatriculation: string;
   fleetNumber: string;
   context: string;
+  brand?: string;
+  model?: string;
+  dimension?: string;
   mileage?: number;
   hours?: number;
   status: 'ok' | 'attention' | 'urgent';
@@ -151,5 +154,3 @@ export type InspectionData = {
   '2L'?: TyreInspectionPayload;
   '2R'?: TyreInspectionPayload;
 };
-
-    

@@ -2,14 +2,16 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { HardHat, ChevronsRight, GitBranch, Power, Sprout, Save, AlertTriangle } from 'lucide-react';
-import type { VehicleDetails, InspectionData, TyreInspectionPayload } from '@/types';
+import type { VehicleDetails, InspectionData, TyreInspectionPayload, Vehicle } from '@/types';
 import { TyreInspectionForm } from './tyre-inspection-form';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { useToast } from "@/hooks/use-toast";
 
 
 interface TyreInspectionPanelProps {
@@ -22,6 +24,8 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
   const [inspectionData, setInspectionData] = useState<InspectionData>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTyre, setSelectedTyre] = useState<TyrePosition | null>(null);
+  const router = useRouter();
+  const { toast } = useToast();
 
   const handleTyreClick = (position: TyrePosition) => {
     setSelectedTyre(position);
@@ -40,9 +44,46 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
   };
 
   const handleSaveInspection = () => {
-    // Here you would typically send the data to Firestore or your backend
-    console.log("[SAVE] Inspection Complète:", { vehicleDetails, inspectionData });
-    alert("Inspection enregistrée avec succès ! (Voir la console pour le détail des données)");
+    // In a real app, this would go to Firestore. For now, we use localStorage.
+    try {
+        const existingVehicles: Vehicle[] = JSON.parse(localStorage.getItem('vehicles') || '[]');
+        
+        // Simple unique ID for demo purposes.
+        const newVehicleId = `V-${String(Date.now()).slice(-6)}`;
+
+        const newVehicle: Vehicle = {
+            id: newVehicleId,
+            immatriculation: `IM-${String(Date.now()).slice(-4)}`, // Placeholder
+            fleetNumber: vehicleDetails.model.substring(0, 2).toUpperCase() + "-" + String(Date.now()).slice(-2), // Placeholder
+            context: vehicleDetails.category.split('–')[1]?.trim() || 'N/A',
+            status: 'ok',
+            lastInspectionDate: new Date().toLocaleDateString('fr-FR'),
+            activityStatus: 'Actif',
+            // Add other details from vehicleDetails if needed in the Vehicle type
+            brand: vehicleDetails.brand,
+            model: vehicleDetails.model,
+            dimension: vehicleDetails.dimension,
+        };
+
+        const updatedVehicles = [...existingVehicles, newVehicle];
+        localStorage.setItem('vehicles', JSON.stringify(updatedVehicles));
+        localStorage.setItem(`inspection_${newVehicleId}`, JSON.stringify({ vehicleDetails, inspectionData }));
+
+        toast({
+            title: "Inspection Enregistrée",
+            description: `Le véhicule ${newVehicle.fleetNumber} a été ajouté à votre flotte.`,
+        });
+
+        router.push('/dashboard/vehicles');
+
+    } catch (error) {
+        console.error("Failed to save to localStorage:", error);
+        toast({
+            variant: "destructive",
+            title: "Erreur d'enregistrement",
+            description: "Impossible de sauvegarder l'inspection dans le stockage local.",
+        });
+    }
   };
   
   const getTyreStatus = (position: TyrePosition) => {
@@ -184,5 +225,3 @@ const TyreButton = ({ position, status, onClick, inspectionData }: TyreButtonPro
         </Button>
     )
 }
-
-    

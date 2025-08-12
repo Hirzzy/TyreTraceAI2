@@ -30,14 +30,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const mockVehicles: Vehicle[] = [
-  { id: "V-001", immatriculation: "AB-123-CD", fleetNumber: "A-12", context: "Dumper", status: 'ok', lastInspectionDate: "15/06/2024", activityStatus: 'Actif' },
-  { id: "V-002", immatriculation: "EF-456-GH", fleetNumber: "B-04", context: "Chargeuse", status: 'attention', lastInspectionDate: "01/06/2024", activityStatus: 'Actif' },
-  { id: "V-003", immatriculation: "IJ-789-KL", fleetNumber: "C-01", context: "Niveleuse", status: 'urgent', lastInspectionDate: "20/05/2024", activityStatus: 'Inactif' },
-  { id: "V-004", immatriculation: "MN-012-OP", fleetNumber: "A-13", context: "Dumper", status: 'ok', lastInspectionDate: "18/06/2024", activityStatus: 'Actif' },
-  { id: "V-005", immatriculation: "QR-345-ST", fleetNumber: "D-05", context: "Utilitaire", status: 'ok', lastInspectionDate: "22/06/2024", activityStatus: 'Actif' },
-];
 
 const getStatusBadgeVariant = (status: Vehicle['status']) => {
   switch (status) {
@@ -94,14 +89,14 @@ export const columns: ColumnDef<Vehicle>[] = [
             <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem onClick={() => alert(`Voir détails du véhicule ${vehicle.id}`)}>
-                Voir détails
+                Voir la fiche
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => alert(`Lancer inspection pour ${vehicle.id}`)}>
-                Lancer une inspection
+                Nouvelle inspection
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-destructive">
-                Supprimer le véhicule
+                Archiver
                 </DropdownMenuItem>
             </DropdownMenuContent>
             </DropdownMenu>
@@ -112,8 +107,25 @@ export const columns: ColumnDef<Vehicle>[] = [
 ];
 
 export function VehicleList() {
+  const router = useRouter();
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [data] = React.useState<Vehicle[]>(mockVehicles);
+  const [data, setData] = React.useState<Vehicle[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    try {
+      const storedVehicles = localStorage.getItem('vehicles');
+      if (storedVehicles) {
+        setData(JSON.parse(storedVehicles));
+      }
+    } catch (e) {
+      console.error("Failed to load vehicles from localStorage", e);
+      // Handle error, maybe show a toast
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
 
   const table = useReactTable({
     data,
@@ -129,7 +141,7 @@ export function VehicleList() {
   return (
     <div className="w-full space-y-4">
         <div className="flex justify-end">
-            <Button>
+            <Button onClick={() => router.push('/selection/type-vehicule')}>
                 <PlusCircle className="mr-2 h-4 w-4" />
                 Ajouter un véhicule
             </Button>
@@ -153,7 +165,15 @@ export function VehicleList() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                    <TableRow key={i}>
+                        <TableCell colSpan={columns.length}>
+                            <Skeleton className="h-8 w-full" />
+                        </TableCell>
+                    </TableRow>
+                ))
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -175,7 +195,7 @@ export function VehicleList() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Aucun véhicule trouvé.
+                  Aucun véhicule trouvé. Commencez par en ajouter un.
                 </TableCell>
               </TableRow>
             )}
