@@ -5,8 +5,15 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function LandingPage() {
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+  
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {/* Header */}
@@ -173,7 +180,7 @@ export default function LandingPage() {
       <footer id="faq" className="border-t border-border bg-background py-8 text-center">
         <div className="container mx-auto px-4 md:px-6">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} TyreTrace AI. Tous droits réservés.
+            &copy; {currentYear || new Date().getFullYear()} TyreTrace AI. Tous droits réservés.
           </p>
           <div className="mt-2 space-x-4">
             <Link href="#" className="text-xs text-muted-foreground hover:text-primary">Politique de confidentialité</Link>
@@ -184,5 +191,4 @@ export default function LandingPage() {
     </div>
   );
 }
-
     
