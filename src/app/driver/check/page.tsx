@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { AlertTriangle, Clock, Tractor } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type { Vehicle } from '@/types/vehicle';
@@ -20,6 +19,19 @@ const mockVehicles: Partial<Vehicle>[] = [
     { id: 'V-789', immatriculation: 'IJ-789-KL', category: 'Poids Lourd – Porteur', precoAxle: { "1": 8.0, "2": 8.5 } },
 ];
 
+// helpers
+const toNum = (v: string) => {
+  if (!v && v !== "0") return null;
+  const n = parseFloat(String(v).replace(",", "."));
+  return Number.isFinite(n) ? n : null;
+};
+const round05 = (n: number) => Math.round(n * 2) / 2;
+const inRange = (v: string, min: number, max: number) => {
+  if (v === "") return true;
+  const n = toNum(v);
+  return n != null && n >= min && n <= max;
+};
+
 export default function DriverCheckPage() {
     const { toast } = useToast();
     const [countdown, setCountdown] = useState(120);
@@ -28,15 +40,38 @@ export default function DriverCheckPage() {
     const [selectedVehicleId, setSelectedVehicleId] = useState<string>('');
     const [pressureMeasured, setPressureMeasured] = useState('');
     const [pressureTemp, setPressureTemp] = useState<'froid' | 'chaud'>('froid');
-    const [depthMode, setDepthMode] = useState<'rapide' | 'complet'>('rapide');
-    const [depthValues, setDepthValues] = useState({ inner: '', center: '', outer: '' });
+    
+    // New depth states per position
+    const [dAvg, setDAvg] = useState<string>("");  // avant gauche
+    const [dAvd, setDAvd] = useState<string>("");  // avant droit
+    const [dArg, setDArg] = useState<string>("");  // arrière gauche
+    const [dArd, setDArd] = useState<string>("");  // arrière droit
 
     const selectedVehicle = useMemo(() => mockVehicles.find(v => v.id === selectedVehicleId), [selectedVehicleId]);
     const precoPressure = useMemo(() => {
         if (!selectedVehicle || !selectedVehicle.precoAxle) return 3.0; // Default
-        // Simplified: using axle 1 pressure as global for now. To be refined.
         return selectedVehicle.precoAxle["1"];
     }, [selectedVehicle]);
+
+    const depthErr = {
+        avg: !inRange(dAvg, 0, 100),
+        avd: !inRange(dAvd, 0, 100),
+        arg: !inRange(dArg, 0, 100),
+        ard: !inRange(dArd, 0, 100),
+    };
+
+    const depthStats = useMemo(() => {
+        const nums = [dAvg, dAvd, dArg, dArd]
+            .map(toNum)
+            .filter((v): v is number => v != null)
+            .map(round05);
+        if (!nums.length) return { avg: null as number | null, spread: null as number | null, min: null as number | null };
+        const min = Math.min(...nums);
+        const max = Math.max(...nums);
+        const avg = +(nums.reduce((a,b)=>a+b,0)/nums.length).toFixed(1);
+        const spread = +(max - min).toFixed(1);
+        return { avg, spread, min };
+    }, [dAvg, dAvd, dArg, dArd]);
 
     useEffect(() => {
         if (countdown > 0) {
@@ -46,14 +81,15 @@ export default function DriverCheckPage() {
     }, [countdown]);
 
     const handleValidation = () => {
-        // Placeholder for the business logic from the ticket
         toast({
             title: "Check validé !",
             description: "Les données ont été enregistrées. Bonne route !",
         });
     }
-    
-    const isFormValid = !!selectedVehicleId && (!!pressureMeasured || !!depthValues.inner);
+
+    const hasAnyDepth = [dAvg, dAvd, dArg, dArd].some(v => v !== "");
+    const canSubmitDepths = hasAnyDepth && !depthErr.avg && !depthErr.avd && !depthErr.arg && !depthErr.ard;
+    const isFormValid = selectedVehicleId && (canSubmitDepths || pressureMeasured !== '');
 
     return (
         <div className="p-4 md:p-6 lg:p-8 max-w-2xl mx-auto">
@@ -85,7 +121,6 @@ export default function DriverCheckPage() {
                         </Select>
                     </div>
 
-                    {/* Pressure Section */}
                     <div className="space-y-3 rounded-md border p-4 bg-background shadow-sm">
                         <Label className="text-lg font-semibold text-foreground">Pression (Bar)</Label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -118,39 +153,61 @@ export default function DriverCheckPage() {
                         </div>
                     </div>
 
-                    {/* Depth Section */}
                     <div className="space-y-3 rounded-md border p-4 bg-background shadow-sm">
-                         <div className="flex items-center justify-between">
-                            <Label className="text-lg font-semibold text-foreground">Profondeur (mm)</Label>
-                             <ToggleGroup type="single" value={depthMode} onValueChange={(v: 'rapide' | 'complet') => v && setDepthMode(v)} size="sm">
-                                <ToggleGroupItem value="rapide">Rapide</ToggleGroupItem>
-                                <ToggleGroupItem value="complet">Complet (I/C/E)</ToggleGroupItem>
-                            </ToggleGroup>
-                         </div>
-                        
-                        {depthMode === 'rapide' ? (
-                            <div className="space-y-2">
-                                <Label htmlFor="d-avg">Profondeur moyenne</Label>
-                                <Input id="d-avg" type="number" value={depthValues.inner} onChange={e => setDepthValues({ inner: e.target.value, center: '', outer: ''})} placeholder="Ex: 8.5" />
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="text-lg font-semibold text-foreground">Profondeur (mm)</h3>
+                          <span className="text-xs text-muted-foreground">
+                            {depthStats.avg != null ? `moyenne ${depthStats.avg} mm` : "—"}
+                            {depthStats.spread != null ? ` • écart ${depthStats.spread} mm` : ""}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <Label className="block text-sm font-medium mb-1">avant gauche <span className="text-xs text-muted-foreground">(avg)</span></Label>
+                                <Input
+                                inputMode="decimal"
+                                placeholder="Ex: 8.5"
+                                value={dAvg}
+                                onChange={(e)=>setDAvg(e.target.value)}
+                                className={depthErr.avg ? "border-destructive" : ""}
+                                />
+                                {depthErr.avg && <p className="mt-1 text-xs text-destructive">Valeur 0–100 mm</p>}
                             </div>
-                        ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="d-int">Intérieur</Label>
-                                    <Input id="d-int" type="number" value={depthValues.inner} onChange={e => setDepthValues(v => ({...v, inner: e.target.value}))} placeholder="I" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="d-cen">Centre</Label>
-                                    <Input id="d-cen" type="number" value={depthValues.center} onChange={e => setDepthValues(v => ({...v, center: e.target.value}))} placeholder="C" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="d-ext">Extérieur</Label>
-                                    <Input id="d-ext" type="number" value={depthValues.outer} onChange={e => setDepthValues(v => ({...v, outer: e.target.value}))} placeholder="E" />
-                                </div>
+                            <div>
+                                <Label className="block text-sm font-medium mb-1">avant droit <span className="text-xs text-muted-foreground">(avd)</span></Label>
+                                <Input
+                                inputMode="decimal"
+                                placeholder="Ex: 8.5"
+                                value={dAvd}
+                                onChange={(e)=>setDAvd(e.target.value)}
+                                className={depthErr.avd ? "border-destructive" : ""}
+                                />
+                                {depthErr.avd && <p className="mt-1 text-xs text-destructive">Valeur 0–100 mm</p>}
                             </div>
-                        )}
+                            <div>
+                                <Label className="block text-sm font-medium mb-1">arrière gauche <span className="text-xs text-muted-foreground">(arg)</span></Label>
+                                <Input
+                                inputMode="decimal"
+                                placeholder="Ex: 8.5"
+                                value={dArg}
+                                onChange={(e)=>setDArg(e.target.value)}
+                                className={depthErr.arg ? "border-destructive" : ""}
+                                />
+                                {depthErr.arg && <p className="mt-1 text-xs text-destructive">Valeur 0–100 mm</p>}
+                            </div>
+                            <div>
+                                <Label className="block text-sm font-medium mb-1">arrière droit <span className="text-xs text-muted-foreground">(ard)</span></Label>
+                                <Input
+                                inputMode="decimal"
+                                placeholder="Ex: 8.5"
+                                value={dArd}
+                                onChange={(e)=>setDArd(e.target.value)}
+                                className={depthErr.ard ? "border-destructive" : ""}
+                                />
+                                {depthErr.ard && <p className="mt-1 text-xs text-destructive">Valeur 0–100 mm</p>}
+                            </div>
+                        </div>
                     </div>
-                     
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">
                     <Button variant="ghost">Annuler</Button>

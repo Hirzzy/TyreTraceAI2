@@ -4,7 +4,13 @@ export type DriverCheck = {
   driverId: string;
   vehicleId: string;
   depth: {
-    mode: "rapide"|"complet";
+    mode: "rapide" | "complet" | "multi-positions";
+    positions?: { 
+        avg?: number|null; 
+        avd?: number|null; 
+        arg?: number|null; 
+        ard?: number|null 
+    };
     inner?: number|null;
     center?: number|null;
     outer?: number|null;
