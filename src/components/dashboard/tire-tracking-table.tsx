@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
+import { toHuman } from '@/lib/tyre-position';
 
 export function TireTrackingTable() {
   const [data, setData] = useState<RemplissageFormData[]>([]);
@@ -65,7 +66,12 @@ export function TireTrackingTable() {
     } else if (echeanceRestanteHeures <= item.echeanceHoraire * 0.2) { 
       statut = 'Proche Échéance';
     }
-    return { ...item, echeanceRestanteHeures, statut };
+
+    const positionHuman = item.position && ["1L","1R","2L","2R"].includes(item.position) 
+        ? toHuman(item.position as any).code 
+        : item.position;
+
+    return { ...item, echeanceRestanteHeures, statut, positionHuman };
   });
 
   const getStatutBadgeVariant = (statut: 'OK' | 'Proche Échéance' | 'Échu') => {
@@ -112,7 +118,7 @@ export function TireTrackingTable() {
                   <TableCell>{item.numeroInterne}</TableCell>
                   <TableCell>{item.dimension}</TableCell>
                   <TableCell>{item.profilActuel}</TableCell>
-                  <TableCell>{item.position}</TableCell>
+                  <TableCell className="uppercase font-medium">{item.positionHuman}</TableCell>
                   <TableCell className="text-right">{item.heuresRealisees}</TableCell>
                   <TableCell className="text-right">{item.echeanceHoraire}</TableCell>
                   <TableCell className="text-right">{item.echeanceRestanteHeures}</TableCell>

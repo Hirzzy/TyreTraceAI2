@@ -18,13 +18,14 @@ import { AlertCircle, CheckCircle, Info, Ban } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import type { TyreInspectionPayload, TyreDepth, TyrePressure } from '@/types';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { toHuman, TyrePos } from '@/lib/tyre-position';
 
 
 interface TyreInspectionFormProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (data: TyreInspectionPayload) => void;
-  tyrePosition: '1L' | '1R' | '2L' | '2R';
+  tyrePosition: TyrePos;
   precoPressure: number;
   existingData?: TyreInspectionPayload;
 }
@@ -145,6 +146,7 @@ export function TyreInspectionForm({
     
     const payload: TyreInspectionPayload = {
         position: tyrePosition,
+        positionHuman: toHuman(tyrePosition),
         depth: depth,
         pressure: pressure,
         measureMeta: {
@@ -159,11 +161,13 @@ export function TyreInspectionForm({
     onSave(payload);
   };
   
+  const humanPos = toHuman(tyrePosition);
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Inspection du Pneu ({tyrePosition})</DialogTitle>
+          <DialogTitle>Inspection du pneu ({humanPos.long})</DialogTitle>
           <DialogDescription>
             Saisissez les profondeurs et la pression. Les calculs sont automatiques.
           </DialogDescription>
@@ -269,5 +273,3 @@ export function TyreInspectionForm({
     </Dialog>
   );
 }
-
-    

@@ -1,5 +1,6 @@
 
 import type { Vehicle } from './vehicle';
+import { TyreHuman, TyrePos } from '@/lib/tyre-position';
 
 export interface Tire {
   id: string;
@@ -35,7 +36,7 @@ export interface RemplissageFormData {
   heure2025: number;
   dimension: string;
   profilActuel: string;
-  position: string;
+  position: TyrePos | string;
   heuresRealisees: number;
   echeanceHoraire: number;
   projectionFinal: number;
@@ -99,7 +100,8 @@ export type MeasureMeta = {
 };
 
 export type TyreInspectionPayload = {
-  position: "1L" | "1R" | "2L" | "2R";
+  position: TyrePos;
+  positionHuman: TyreHuman;
   depth: TyreDepth;
   pressure: TyrePressure;
   measureMeta: MeasureMeta;

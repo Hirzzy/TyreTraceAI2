@@ -13,22 +13,21 @@ import type { Vehicle, VehicleDetails } from '@/types/vehicle';
 import { TyreInspectionForm } from './tyre-inspection-form';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { useToast } from "@/hooks/use-toast";
+import { toHuman, TyrePos } from '@/lib/tyre-position';
 
 
 interface TyreInspectionPanelProps {
   vehicleDetails: VehicleDetails;
 }
 
-type TyrePosition = '1L' | '1R' | '2L' | '2R';
-
 export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps) {
   const [inspectionData, setInspectionData] = useState<InspectionData>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTyre, setSelectedTyre] = useState<TyrePosition | null>(null);
+  const [selectedTyre, setSelectedTyre] = useState<TyrePos | null>(null);
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleTyreClick = (position: TyrePosition) => {
+  const handleTyreClick = (position: TyrePos) => {
     setSelectedTyre(position);
     setIsModalOpen(true);
   };
@@ -90,7 +89,7 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
     }
   };
   
-  const getTyreStatus = (position: TyrePosition) => {
+  const getTyreStatus = (position: TyrePos) => {
     if (inspectionData[position]) return 'inspected';
     return 'pending';
   }
@@ -202,13 +201,14 @@ export function TyreInspectionPanel({ vehicleDetails }: TyreInspectionPanelProps
 }
 
 interface TyreButtonProps {
-    position: TyrePosition;
+    position: TyrePos;
     status: 'pending' | 'inspected';
-    onClick: (position: TyrePosition) => void;
+    onClick: (position: TyrePos) => void;
     inspectionData?: TyreInspectionPayload;
 }
 const TyreButton = ({ position, status, onClick, inspectionData }: TyreButtonProps) => {
     const isInspected = status === 'inspected';
+    const humanPos = toHuman(position);
     return (
         <Button
           variant={isInspected ? "default" : "outline"}
@@ -218,8 +218,9 @@ const TyreButton = ({ position, status, onClick, inspectionData }: TyreButtonPro
               : 'border-dashed border-2 text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground'
           }`}
           onClick={() => onClick(position)}
+          aria-label={`Sélectionner le pneu ${humanPos.long}`}
         >
-          <span>{position}</span>
+          <span className="text-sm font-semibold uppercase">{humanPos.code}</span>
            {isInspected && inspectionData && (
               <div className="text-xs font-normal mt-1 text-center">
                  <p>P: {inspectionData.pressure.measuredBar}b</p>
