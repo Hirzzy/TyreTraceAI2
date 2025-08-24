@@ -50,7 +50,7 @@ export default function LandingPage() {
         <Image
           src="https://placehold.co/1920x800.png"
           alt="Camion minier dans une carrière"
-          layout="fill"
+          fill
           className="opacity-20 object-cover"
           data-ai-hint="quarry truck"
           priority
