@@ -35,6 +35,12 @@ const navItems = [
     label: "Encodage express",
     tooltip: "Saisie rapide des pressions et profondeurs",
   },
+  { 
+    href: "/selection/type-vehicule",
+    icon: FilePlus,
+    label: "Ajouter véhicule",
+    tooltip: "Démarrer le flux pour ajouter un nouveau véhicule",
+  },
   {
     href: "/dashboard/vehicles",
     icon: Truck,
@@ -42,22 +48,16 @@ const navItems = [
     tooltip: "Gérer les véhicules et les inspections",
   },
   {
+    href: "/dashboard/tire-details",
+    icon: BarChart3,
+    label: "Analyse des pneus",
+    tooltip: "Analyse approfondie des données par pneu",
+  },
+  {
     href: "/dashboard/features",
     icon: LayoutGrid,
     label: "Fonctionnalités & Tarifs",
     tooltip: "Voir les fonctionnalités et les plans",
-  },
-  {
-    href: "/dashboard/tire-details",
-    icon: BarChart3,
-    label: "Analyse détaillée des pneus",
-    tooltip: "Analyse approfondie des données par pneu",
-  },
-  { 
-    href: "/selection/type-vehicule",
-    icon: LogIn,
-    label: "Ajouter véhicule",
-    tooltip: "Démarrer le flux pour ajouter un nouveau véhicule",
   },
 ];
 
