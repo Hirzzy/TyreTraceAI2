@@ -32,8 +32,8 @@ const navItems = [
   {
     href: "/driver/check",
     icon: ClipboardCheck,
-    label: "Check Matin",
-    tooltip: "Effectuer le contrôle quotidien du véhicule",
+    label: "Encodage express",
+    tooltip: "Saisie rapide des pressions et profondeurs",
   },
   {
     href: "/dashboard/vehicles",
@@ -56,8 +56,8 @@ const navItems = [
   { 
     href: "/selection/type-vehicule",
     icon: LogIn,
-    label: "Nouvelle Inspection",
-    tooltip: "Démarrer le nouveau flux de saisie d'inspection",
+    label: "Ajouter véhicule",
+    tooltip: "Démarrer le flux pour ajouter un nouveau véhicule",
   },
 ];
 
