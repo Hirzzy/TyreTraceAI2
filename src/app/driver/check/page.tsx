@@ -211,5 +211,4 @@ export default function DriverCheckPage() {
             </Card>
         </div>
     );
-
-    
+}
