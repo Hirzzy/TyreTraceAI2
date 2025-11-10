@@ -24,7 +24,7 @@ export default function SelectVehicleTypePage() {
       <Card className="w-full bg-card text-card-foreground shadow-xl border-primary/50">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold text-primary" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.3)' }}>
-            Nouvelle Inspection
+            Ajouter un véhicule
           </CardTitle>
           <CardDescription className="text-muted-foreground">
             Sélectionnez le type de véhicule pour l'inspection :
