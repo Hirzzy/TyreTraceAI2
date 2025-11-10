@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -94,11 +95,8 @@ export default function DriverCheckPage() {
     return (
         <div className="p-4 md:p-6 lg:p-8 max-w-2xl mx-auto">
             <Card className="w-full bg-card text-card-foreground shadow-xl border-primary/50">
-                <CardHeader>
-                    <div className="flex justify-between items-center">
-                        <CardTitle className="text-2xl font-bold text-primary">Check Matin Conducteur</CardTitle>
-                        
-                    </div>
+                <CardHeader className="text-center">
+                    <CardTitle className="text-2xl font-bold text-primary">Encodage express</CardTitle>
                     <CardDescription>Contrôle sécurité & économie avant démarrage.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -213,4 +211,5 @@ export default function DriverCheckPage() {
             </Card>
         </div>
     );
-}
+
+    
