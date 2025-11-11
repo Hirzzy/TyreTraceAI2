@@ -1,10 +1,11 @@
+
 "use client";
 
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight } from 'lucide-react';
+import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function LandingPage() {
@@ -18,18 +19,14 @@ export default function LandingPage() {
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       {/* Bouton connexion en haut à droite */}
       <div className="absolute right-4 top-4 z-50">
-        <Link
-          href="/auth"
-          className="flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
-          aria-label="Se connecter"
-        >
-          {/* Icône login (SVG inline) */}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="opacity-80">
-            <path d="M10 17l5-5-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M15 12H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M21 4v16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-50"/>
-          </svg>
-          Se connecter
+        <Link href="/auth" aria-label="Se connecter">
+          <Button
+            variant="default"
+            size="icon"
+            className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 w-10 h-10"
+          >
+            <User className="h-5 w-5" />
+          </Button>
         </Link>
       </div>
 
