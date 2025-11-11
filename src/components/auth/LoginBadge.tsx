@@ -42,6 +42,3 @@ export function LoginBadge() {
     </div>
   );
 }
-
-
-    
