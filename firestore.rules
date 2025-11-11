@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function to check ownership
+    function isOwner(tenantId) {
+      return request.auth != null && request.auth.uid == tenantId;
+    }
+
+    // Users can only read and write their own profile
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Users can only CRUD machines they own (tenantId matches their UID)
+    match /machines/{machineId} {
+      allow read, delete: if isOwner(resource.data.tenantId);
+      allow create: if isOwner(request.resource.data.tenantId);
+      allow update: if isOwner(resource.data.tenantId) && isOwner(request.resource.data.tenantId);
+    }
+  }
+}
