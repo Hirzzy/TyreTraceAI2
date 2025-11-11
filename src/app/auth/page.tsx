@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useAuth } from '@/firebase/auth/use-user';
+import { useAuth } from '@/firebase';
 import { signInAnonymously, UserCredential } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
