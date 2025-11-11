@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "Machine": {
+      "title": "Machine",
+      "description": "Represents a piece of equipment in the fleet.",
+      "type": "object",
+      "properties": {
+        "tenantId": {
+          "type": "string",
+          "description": "The UID of the user who owns this machine."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name or identifier of the machine."
+        },
+        "type": {
+          "type": "string",
+          "description": "The type of machine (e.g., Chargeuse, Dumper)."
+        },
+        "positions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "An array of tire position codes (e.g., '1L', '1R')."
+        },
+        "createdAt": {
+          "type": "number",
+          "description": "The timestamp when the machine was created."
+        }
+      },
+      "required": ["tenantId", "name", "type", "createdAt"]
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/machines/{machineId}": {
+      "schema": {
+        "$ref": "#/entities/Machine"
+      },
+      "description": "Stores information about individual machines in the fleet."
+    }
+  }
+}
