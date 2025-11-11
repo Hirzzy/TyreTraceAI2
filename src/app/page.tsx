@@ -16,8 +16,25 @@ export default function LandingPage() {
   
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
+      {/* Bouton connexion en haut à droite */}
+      <div className="absolute right-4 top-4 z-50">
+        <Link
+          href="/auth"
+          className="flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+          aria-label="Se connecter"
+        >
+          {/* Icône login (SVG inline) */}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="opacity-80">
+            <path d="M10 17l5-5-5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M15 12H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M21 4v16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-50"/>
+          </svg>
+          Se connecter
+        </Link>
+      </div>
+
       {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b border-border bg-card shadow-sm">
+      <header className="sticky top-0 z-40 w-full border-b border-border bg-card shadow-sm">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center gap-2">
             <Truck className="h-7 w-7 text-primary" />
