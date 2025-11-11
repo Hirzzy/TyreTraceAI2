@@ -5,8 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight, User } from 'lucide-react';
+import { Truck, MapPin, Cog, LineChart, BarChartBig, ClipboardCheck, TrendingUp, Archive, ChevronRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { LoginBadge } from '@/components/auth/LoginBadge';
 
 export default function LandingPage() {
   const [currentYear, setCurrentYear] = useState<number | null>(null);
@@ -17,18 +18,8 @@ export default function LandingPage() {
   
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      {/* Bouton connexion en haut à droite */}
-      <div className="absolute right-4 top-4 z-50">
-        <Link href="/auth" aria-label="Se connecter">
-          <Button
-            variant="default"
-            size="icon"
-            className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 w-10 h-10"
-          >
-            <User className="h-5 w-5" />
-          </Button>
-        </Link>
-      </div>
+      
+      <LoginBadge />
 
       {/* Header */}
       <header className="sticky top-0 z-40 w-full border-b border-border bg-card shadow-sm">
