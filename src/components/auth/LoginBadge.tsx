@@ -13,17 +13,17 @@ export function LoginBadge() {
 
   if (isLoading) {
     return (
-      <div className="absolute right-4 top-4">
+      <div className="absolute right-4 top-4 z-50">
         <Skeleton className="h-10 w-24 rounded-full" />
       </div>
     );
   }
 
   return (
-    <div className="absolute right-4 top-4 z-10">
+    <div className="absolute right-4 top-4 z-50">
       {user ? (
         <Link href="/dashboard" aria-label="Accéder au tableau de bord">
-            <Button variant="outline" className="rounded-full pl-2 pr-4 py-2 h-auto flex items-center gap-2 bg-background/80 backdrop-blur-sm">
+            <Button variant="outline" className="rounded-full pl-2 pr-4 py-2 h-auto flex items-center gap-2 bg-background/80 backdrop-blur-sm shadow-md">
                  <Avatar className="h-7 w-7">
                     {user.photoURL && <AvatarImage src={user.photoURL} alt={user.displayName || 'Avatar'} />}
                     <AvatarFallback>{user.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}</AvatarFallback>
@@ -33,7 +33,7 @@ export function LoginBadge() {
         </Link>
       ) : (
         <Link href="/auth" aria-label="Se connecter">
-          <Button variant="default" className="rounded-full pl-3 pr-4 py-2 h-auto flex items-center gap-2">
+          <Button variant="default" className="rounded-full pl-3 pr-4 py-2 h-auto flex items-center gap-2 shadow-md">
             <LogIn className="h-4 w-4" />
             <span className="text-sm font-medium">Se connecter</span>
           </Button>
@@ -42,3 +42,6 @@ export function LoginBadge() {
     </div>
   );
 }
+
+
+    

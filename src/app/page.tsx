@@ -17,7 +17,7 @@ export default function LandingPage() {
   }, []);
   
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
+    <div className="relative flex flex-col min-h-screen bg-background text-foreground">
       
       <LoginBadge />
 
@@ -196,4 +196,6 @@ export default function LandingPage() {
     </div>
   );
 }
+    
+
     
