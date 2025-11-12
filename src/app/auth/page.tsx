@@ -1,14 +1,14 @@
+"use client";
 
-'use client';
-
-import { useState } from 'react';
-import { useAuth, useFirestore } from '@/firebase';
+import { useState } from "react";
+import { auth } from "@/lib/firebaseAuth.client";
+import { db } from "@/lib/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
-} from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+} from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -18,7 +18,6 @@ import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-
 export default function AuthPage() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
@@ -26,16 +25,13 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  const auth = useAuth();
-  const firestore = useFirestore();
 
   async function onSignUp(e: React.FormEvent) {
     e.preventDefault();
-    if (!auth || !firestore) return;
     setLoading(true);
     try {
       const { user } = await createUserWithEmailAndPassword(auth, email, pwd);
-      await setDoc(doc(firestore, "users", user.uid), {
+      await setDoc(doc(db, "users", user.uid), {
         tenantId: user.uid,
         email,
         role: "owner",
@@ -59,7 +55,6 @@ export default function AuthPage() {
 
   async function onSignIn(e: React.FormEvent) {
     e.preventDefault();
-    if (!auth) return;
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, pwd);
@@ -76,7 +71,6 @@ export default function AuthPage() {
   }
 
   async function onReset() {
-    if (!auth) return;
     if (!email) {
       toast({
         variant: "destructive",

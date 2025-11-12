@@ -1,4 +1,3 @@
-
 "use client";
 import { OverviewCard } from "@/components/dashboard/overview-card";
 import { PerformanceSummaryChart } from "@/components/dashboard/performance-summary-chart";
@@ -8,61 +7,72 @@ import { PredictiveAnalysisWidget } from "@/components/dashboard/predictive-anal
 import { PerformanceComparatorWidget } from "@/components/dashboard/performance-comparator-widget";
 import { TireTrackingTable } from "@/components/dashboard/tire-tracking-table";
 import { NewKpiCard } from "@/components/dashboard/new-kpi-card";
-
 import { Users, Truck, Fuel, Wrench, AlertCircle, TrendingUp, CheckCircle, BarChart2 } from "lucide-react";
-
+import { RequireAuth } from "@/components/auth/RequireAuth";
+import ExportButtons from "@/components/dashboard/ExportButtons";
+import ExportWeeklyPdf from "@/components/dashboard/ExportWeeklyPdf";
 
 export default function DashboardPage() {
   return (
-    <div className="space-y-6">
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <NewKpiCard
-          title="Pneus Actifs"
-          value={248}
-          Icon={Truck}
-        />
-        <NewKpiCard
-          title="Alertes Actives"
-          value={5}
-          Icon={AlertCircle}
-          iconContainerClass="bg-destructive/10 text-destructive"
-        />
-        <NewKpiCard
-          title="Performances"
-          value="+2.5%"
-          Icon={TrendingUp}
-          iconContainerClass="bg-green-500/10 text-green-600"
-        />
-        <NewKpiCard
-          title="Inspections OK"
-          value="98.7%"
-          Icon={CheckCircle}
-          iconContainerClass="bg-green-500/10 text-green-600"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <PerformanceSummaryChart />
+    <RequireAuth>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Tableau de bord</h1>
+          <div className="flex gap-2">
+            <ExportButtons />
+            <ExportWeeklyPdf />
+          </div>
         </div>
-        <div className="lg:col-span-1">
-          <AlertsPanel />
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <NewKpiCard
+            title="Pneus Actifs"
+            value={248}
+            Icon={Truck}
+          />
+          <NewKpiCard
+            title="Alertes Actives"
+            value={5}
+            Icon={AlertCircle}
+            iconContainerClass="bg-destructive/10 text-destructive"
+          />
+          <NewKpiCard
+            title="Performances"
+            value="+2.5%"
+            Icon={TrendingUp}
+            iconContainerClass="bg-green-500/10 text-green-600"
+          />
+          <NewKpiCard
+            title="Inspections OK"
+            value="98.7%"
+            Icon={CheckCircle}
+            iconContainerClass="bg-green-500/10 text-green-600"
+          />
         </div>
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <PredictiveAnalysisWidget />
-          <PerformanceComparatorWidget />
-      </div>
 
-      <div>
-        <TireListWidget />
-      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <PerformanceSummaryChart />
+          </div>
+          <div className="lg:col-span-1">
+            <AlertsPanel />
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <PredictiveAnalysisWidget />
+            <PerformanceComparatorWidget />
+        </div>
 
-       <div>
-        <TireTrackingTable />
+        <div>
+          <TireListWidget />
+        </div>
+
+         <div>
+          <TireTrackingTable />
+        </div>
+        
       </div>
-      
-    </div>
+    </RequireAuth>
   );
 }

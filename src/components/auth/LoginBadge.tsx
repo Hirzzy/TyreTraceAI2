@@ -1,44 +1,23 @@
-
 "use client";
-
 import Link from "next/link";
-import { useUser } from "@/firebase/auth/use-user";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth } from "@/lib/firebaseAuth.client";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogIn, LayoutDashboard } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import { LogIn } from "lucide-react";
 
-export function LoginBadge() {
-  const { user, isLoading } = useUser();
-
-  if (isLoading) {
-    return (
-      <div className="fixed right-4 top-4 z-50">
-        <Skeleton className="h-10 w-24 rounded-full" />
-      </div>
-    );
-  }
+export function LoginBadge(){
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(()=>onAuthStateChanged(auth, setUser),[]);
 
   return (
     <div className="fixed right-4 top-4 z-50">
-      {user ? (
-        <Link href="/dashboard" aria-label="Accéder au tableau de bord">
-            <Button variant="outline" className="rounded-full pl-2 pr-4 py-2 h-auto flex items-center gap-2 bg-background/80 backdrop-blur-sm shadow-md">
-                 <Avatar className="h-7 w-7">
-                    {user.photoURL && <AvatarImage src={user.photoURL} alt={user.displayName || 'Avatar'} />}
-                    <AvatarFallback>{user.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}</AvatarFallback>
-                </Avatar>
-                <span className="text-sm font-medium">Mon Espace</span>
-            </Button>
-        </Link>
-      ) : (
-        <Link href="/auth" aria-label="Se connecter">
-          <Button variant="default" className="rounded-full pl-3 pr-4 py-2 h-auto flex items-center gap-2 shadow-md">
-            <LogIn className="h-4 w-4" />
-            <span className="text-sm font-medium">Se connecter</span>
-          </Button>
-        </Link>
-      )}
+      <Link href={user ? "/dashboard" : "/auth"}
+        className="flex items-center gap-2 rounded-full border bg-background/80 backdrop-blur-sm px-3 py-1.5 text-sm hover:bg-black hover:text-white transition shadow-md"
+        aria-label={user ? "Mon espace" : "Se connecter"}>
+        <LogIn className="h-4 w-4" />
+        {user ? "Mon espace" : "Se connecter"}
+      </Link>
     </div>
   );
 }
