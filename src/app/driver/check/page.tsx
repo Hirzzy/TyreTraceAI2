@@ -7,7 +7,7 @@ import {
   addDoc, collection, doc, getDoc, getDocs, orderBy, query, serverTimestamp,
   updateDoc, where, limit, DocumentSnapshot
 } from "firebase/firestore";
-import { db } from "@/firebase";
+import { useFirestore } from "@/firebase";
 import { useUser } from "@/firebase/auth/use-user";
 import { useToast } from "@/hooks/use-toast";
 
@@ -34,6 +34,7 @@ export default function EncodageExpressPage() {
   const router = useRouter();
   const sp = useSearchParams();
   const { user } = useUser();
+  const db = useFirestore();
   const { toast } = useToast();
 
   const prefillTyreId = sp.get("tyreId");
@@ -56,7 +57,7 @@ export default function EncodageExpressPage() {
 
   // --- load machines + tyres (stock) for this tenant
   useEffect(() => {
-    if (!uid) return;
+    if (!uid || !db) return;
 
     setLoading(true);
     (async () => {
@@ -95,7 +96,7 @@ export default function EncodageExpressPage() {
         setLoading(false);
       }
     })();
-  }, [uid, prefillTyreId]);
+  }, [uid, db, prefillTyreId]);
   
   const machineName = useMemo(
     () => machines.find(m => m.id === machineId)?.name ?? "",
@@ -106,7 +107,7 @@ export default function EncodageExpressPage() {
     e.preventDefault();
     setError(null);
 
-    if (!uid) { setError("Session expirée. Merci de vous reconnecter."); return; }
+    if (!uid || !db) { setError("Session expirée ou connexion DB impossible. Merci de vous reconnecter."); return; }
     if (!machineId) { setError("Sélectionnez une machine."); return; }
     if (!type) { setError("Sélectionnez un type d’intervention."); return; }
     if (type === "Montage" && !tyreId) { setError("Sélectionnez un pneu à monter."); return; }
@@ -267,5 +268,3 @@ export default function EncodageExpressPage() {
     </div>
   );
 }
-
-    

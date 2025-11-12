@@ -7,8 +7,7 @@ import {
   collection, query, where, orderBy, limit, getDocs, startAfter,
   updateDoc, doc, DocumentSnapshot
 } from "firebase/firestore";
-import { db } from "@/firebase";
-import { auth } from "@/lib/firebaseAuth.client"; // Utilisation directe pour UID
+import { useFirestore } from "@/firebase";
 import { download, toCsv, fmtDate } from "@/lib/exportCsv";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,6 +33,7 @@ const PAGE_SIZE = 20;
 
 export default function StockPneusPage() {
   const { user } = useUser();
+  const db = useFirestore();
   const [status, setStatus] = useState<"stock" | "mounted" | "removed" | "all">("stock");
   const [rows, setRows] = useState<Tyre[]>([]);
   const [loading, setLoading] = useState(false);
@@ -43,7 +43,7 @@ export default function StockPneusPage() {
   const uid = user?.uid;
 
   async function fetchPage(reset = false) {
-    if (!uid) return;
+    if (!uid || !db) return;
     setLoading(true);
 
     const baseConditions = [where("tenantId", "==", uid)];
@@ -74,15 +74,16 @@ export default function StockPneusPage() {
   }
 
   useEffect(() => {
-    if (uid) {
+    if (uid && db) {
       setRows([]);
       setCursor(null);
       fetchPage(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, uid]);
+  }, [status, uid, db]);
 
   async function deposer(t: Tyre) {
+    if (!db) return;
     await updateDoc(doc(db, "tyres", t.id), {
       status: "stock",
       machineId: null,
@@ -94,12 +95,13 @@ export default function StockPneusPage() {
   }
 
   async function archiver(t: Tyre) {
+    if (!db) return;
     await updateDoc(doc(db, "tyres", t.id), { status: "removed", updatedAt: new Date() });
     setRows(prev => prev.filter(p => p.id !== t.id));
   }
 
   async function exportStockCsv() {
-    if (!uid) return;
+    if (!uid || !db) return;
     const baseConditions = [where("tenantId", "==", uid)];
     if (status !== "all") {
       baseConditions.push(where("status", "==", status));
