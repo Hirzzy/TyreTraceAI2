@@ -8,13 +8,13 @@ import {
   updateDoc, doc, DocumentSnapshot
 } from "firebase/firestore";
 import { useFirestore } from "@/firebase";
+import { useUser } from "@/firebase/auth/use-user";
 import { download, toCsv, fmtDate } from "@/lib/exportCsv";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, FileDown, PlusCircle } from "lucide-react";
-import { useUser } from "@/firebase/auth/use-user";
 
 type Tyre = {
   id: string;
@@ -46,7 +46,7 @@ export default function StockPneusPage() {
     if (!uid || !db) return;
     setLoading(true);
 
-    const baseConditions = [where("tenantId", "==", uid)];
+    const baseConditions: any[] = [where("tenantId", "==", uid)];
     if (status !== "all") {
       baseConditions.push(where("status", "==", status));
     }
@@ -102,7 +102,7 @@ export default function StockPneusPage() {
 
   async function exportStockCsv() {
     if (!uid || !db) return;
-    const baseConditions = [where("tenantId", "==", uid)];
+    const baseConditions: any[] = [where("tenantId", "==", uid)];
     if (status !== "all") {
       baseConditions.push(where("status", "==", status));
     }

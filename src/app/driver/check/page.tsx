@@ -23,6 +23,7 @@ type Machine = { id: string; name: string };
 type Tyre = {
   id: string; brand?: string; size?: string;
   status: "stock"|"mounted"|"removed";
+  tenantId: string;
   machineId?: string|null; position?: string|null;
   updatedAt?: any;
 };

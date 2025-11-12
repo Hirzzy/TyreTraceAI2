@@ -1,23 +1,28 @@
+// Multi-tenant simple : admin voit tout, sinon locataire voit son tenantId
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper function to check ownership
-    function isOwner(tenantId) {
-      return request.auth != null && request.auth.uid == tenantId;
+    function isAuth() { return request.auth != null; }
+    function isAdmin() {
+      return isAuth() &&
+        get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.isAdmin == true;
     }
+    function myTenant() { return request.auth.uid; }
+    function sameTenant(res) { return res.tenantId == myTenant(); }
+    function creatingForSelf() { return request.resource.data.tenantId == myTenant(); }
 
-    // Users can only read and write their own profile
-    match /users/{userId} {
-      allow read, write: if isOwner(userId);
-    }
+    match /{c}/{id} {
+      // READ : admin ou même tenant
+      allow read: if isAdmin() || (isAuth() && sameTenant(resource.data));
 
-    // Users can only CRUD machines they own (tenantId matches their UID)
-    match /machines/{machineId} {
-      allow read, delete: if isOwner(resource.data.tenantId);
-      allow create: if isOwner(request.resource.data.tenantId);
-      allow update: if isOwner(resource.data.tenantId) && isOwner(request.resource.data.tenantId);
+      // CREATE : doc doit avoir tenantId = mon UID
+      allow create: if isAdmin() || (isAuth() && creatingForSelf());
+
+      // UPDATE/DELETE : admin, ou même tenant et tenantId inchangé
+      allow update, delete: if isAdmin() ||
+        (isAuth() && sameTenant(resource.data) &&
+         request.resource.data.tenantId == resource.data.tenantId);
     }
   }
 }
