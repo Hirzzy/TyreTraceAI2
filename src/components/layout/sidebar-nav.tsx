@@ -13,6 +13,7 @@ import {
   LogIn,
   LayoutGrid,
   Truck,
+  Archive,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -44,8 +45,14 @@ const navItems = [
   {
     href: "/dashboard/vehicles",
     icon: Truck,
-    label: "Gestion de Flotte",
+    label: "Gestion Véhicules",
     tooltip: "Gérer les véhicules et les inspections",
+  },
+  {
+    href: "/dashboard/gestion-de-flotte",
+    icon: Archive,
+    label: "Gestion Pneus",
+    tooltip: "Gérer le stock de pneus",
   },
   {
     href: "/dashboard/tire-details",

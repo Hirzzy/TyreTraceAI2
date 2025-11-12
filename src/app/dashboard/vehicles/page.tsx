@@ -7,7 +7,7 @@ export default function VehiclesPage() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Gestion de la Flotte</CardTitle>
+          <CardTitle>Gestion des Véhicules</CardTitle>
           <CardDescription>Consultez, ajoutez et gérez les véhicules de votre flotte. Cliquez sur un véhicule pour voir sa fiche détaillée.</CardDescription>
         </CardHeader>
         <CardContent>

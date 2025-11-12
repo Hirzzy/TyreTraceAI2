@@ -2,6 +2,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -35,13 +36,23 @@ const inRange = (v: string, min: number, max: number) => {
 
 export default function DriverCheckPage() {
     const { toast } = useToast();
-    const [countdown, setCountdown] = useState(120);
+    const params = useSearchParams();
+    const prefillTyreId = params.get("tyreId");
+    const isPrefillMontage = params.get("prefill") === "montage";
 
     // Form state
     const [selectedVehicleId, setSelectedVehicleId] = useState<string>('');
     const [pressureMeasured, setPressureMeasured] = useState('');
     const [pressureTemp, setPressureTemp] = useState<'froid' | 'chaud'>('froid');
+    const [selectedTyreId, setSelectedTyreId] = useState<string | null>(null);
+    const [type, setType] = useState<"Montage"|"Rotation"|"Dépose"|"Réparation">(
+        isPrefillMontage ? "Montage" : "Montage"
+    );
     
+    useEffect(() => {
+        if (prefillTyreId) setSelectedTyreId(prefillTyreId);
+    }, [prefillTyreId]);
+
     // New depth states per position
     const [dAvg, setDAvg] = useState<string>("");  // avant gauche
     const [dAvd, setDAvd] = useState<string>("");  // avant droit
@@ -74,17 +85,20 @@ export default function DriverCheckPage() {
         return { avg, spread, min };
     }, [dAvg, dAvd, dArg, dArd]);
 
-    useEffect(() => {
-        if (countdown > 0) {
-            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-            return () => clearTimeout(timer);
-        }
-    }, [countdown]);
 
     const handleValidation = () => {
         toast({
             title: "Check validé !",
             description: "Les données ont été enregistrées. Bonne route !",
+        });
+        // Here would be the logic to save to Firestore
+        console.log({
+            type,
+            selectedTyreId,
+            selectedVehicleId,
+            pressureMeasured,
+            pressureTemp,
+            depths: { dAvg, dAvd, dArg, dArd }
         });
     }
 
@@ -100,6 +114,18 @@ export default function DriverCheckPage() {
                     <CardDescription>Contrôle sécurité & économie avant démarrage.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
+
+                    {/* Champ pour afficher le pneu pré-rempli */}
+                    {selectedTyreId && (
+                        <Alert variant="default" className="border-green-400/50 text-green-700 dark:text-green-400 [&>svg]:text-green-600">
+                            <Tractor className="h-4 w-4" />
+                            <AlertTitle>Montage de pneu</AlertTitle>
+                            <AlertDescription>
+                                Vous êtes sur le point de monter le pneu <strong className="font-mono">{selectedTyreId.slice(0, 8)}...</strong>
+                            </AlertDescription>
+                        </Alert>
+                    )}
+
                     <div className="space-y-2">
                         <Label htmlFor="vehicle-select">Véhicule</Label>
                         <Select onValueChange={setSelectedVehicleId} value={selectedVehicleId}>
