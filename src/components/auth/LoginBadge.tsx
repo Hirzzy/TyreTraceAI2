@@ -13,14 +13,14 @@ export function LoginBadge() {
 
   if (isLoading) {
     return (
-      <div className="absolute right-4 top-4 z-50">
+      <div className="fixed right-4 top-4 z-50">
         <Skeleton className="h-10 w-24 rounded-full" />
       </div>
     );
   }
 
   return (
-    <div className="absolute right-4 top-4 z-50">
+    <div className="fixed right-4 top-4 z-50">
       {user ? (
         <Link href="/dashboard" aria-label="Accéder au tableau de bord">
             <Button variant="outline" className="rounded-full pl-2 pr-4 py-2 h-auto flex items-center gap-2 bg-background/80 backdrop-blur-sm shadow-md">
