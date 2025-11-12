@@ -9,3 +9,6 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+git add .
+git commit -m "feat: auth email + multi-tenant rules"
+git push

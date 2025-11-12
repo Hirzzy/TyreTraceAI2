@@ -7,10 +7,13 @@ import {
   SidebarHeader,
   SidebarContent,
   SidebarInset,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { AiChatbotWidget } from "@/components/dashboard/ai-chatbot-widget";
 import { RequireAuth } from "@/components/auth/RequireAuth";
+import { UserMenu } from "@/components/layout/user-menu";
+
 
 export default function DashboardLayout({
   children,
@@ -25,6 +28,9 @@ export default function DashboardLayout({
           <SidebarContent>
             <SidebarNav />
           </SidebarContent>
+          <SidebarFooter>
+            <UserMenu />
+          </SidebarFooter>
         </Sidebar>
         <SidebarInset className="flex flex-col">
           <AppHeader />
