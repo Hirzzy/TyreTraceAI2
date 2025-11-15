@@ -12,6 +12,7 @@ import { useUser } from "@/firebase/auth/use-user";
 import { useAuth } from "@/firebase";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export function UserMenu() {
   const { user, isLoading } = useUser();
@@ -45,14 +46,16 @@ export function UserMenu() {
                 </div>
             </div>
              <SidebarMenuButton
+                asChild
                 variant="default"
                 size="icon"
                 className="h-8 w-8 shrink-0"
                 tooltip={{ children: "Se déconnecter", side: "right", align: "center" }}
-                onClick={handleSignOut}
                 aria-label="Se déconnecter"
             >
-                <LogOut />
+                <Button variant="ghost" size="sm" className="h-8 w-8 shrink-0" onClick={handleSignOut}>
+                    <LogOut />
+                </Button>
             </SidebarMenuButton>
         </div>
       </SidebarMenuItem>
