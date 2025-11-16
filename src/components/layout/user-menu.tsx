@@ -45,18 +45,15 @@ export function UserMenu() {
                     </span>
                 </div>
             </div>
-             <SidebarMenuButton
-                asChild
-                variant="default"
-                size="icon"
-                className="h-8 w-8 shrink-0"
-                tooltip={{ children: "Se déconnecter", side: "right", align: "center" }}
+            <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 shrink-0 p-0"
+                onClick={handleSignOut}
                 aria-label="Se déconnecter"
-            >
-                <Button variant="ghost" size="sm" className="h-8 w-8 shrink-0 p-0" onClick={handleSignOut}>
-                    <LogOut className="h-4 w-4" />
-                </Button>
-            </SidebarMenuButton>
+              >
+                <LogOut className="h-4 w-4" />
+            </Button>
         </div>
       </SidebarMenuItem>
     </SidebarMenu>
