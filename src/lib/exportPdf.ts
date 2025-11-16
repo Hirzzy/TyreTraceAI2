@@ -40,12 +40,21 @@ export function weeklyPdf({tenantName, kpis, events}:{
     headStyles: { fillColor: [37, 99, 235] }
   });
 
-  const p = doc.internal.getNumberOfPages();
-  for (let i=1;i<=p;i++){
+  const anyDoc = doc as unknown as {
+    getNumberOfPages?: () => number;
+    internal?: { pages?: unknown[] };
+  };
+  
+  const pageCount =
+    typeof anyDoc.getNumberOfPages === "function"
+      ? anyDoc.getNumberOfPages()
+      : Math.max(((anyDoc.internal?.pages?.length ?? 1) - 1), 1);
+
+  for (let i=1;i<=pageCount;i++){
     doc.setPage(i);
     doc.setFontSize(8);
     doc.text(`TyreTrace AI – Rapport hebdo`, 14, 290);
-    doc.text(`${i}/${p}`, 200, 290);
+    doc.text(`${i}/${pageCount}`, 200, 290);
   }
 
   doc.save(`compte-rendu_${new Date().toISOString().slice(0,10)}.pdf`);
