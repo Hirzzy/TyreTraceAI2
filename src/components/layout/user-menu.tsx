@@ -53,8 +53,8 @@ export function UserMenu() {
                 tooltip={{ children: "Se déconnecter", side: "right", align: "center" }}
                 aria-label="Se déconnecter"
             >
-                <Button variant="ghost" size="sm" className="h-8 w-8 shrink-0" onClick={handleSignOut}>
-                    <LogOut />
+                <Button variant="ghost" size="sm" className="h-8 w-8 shrink-0 p-0" onClick={handleSignOut}>
+                    <LogOut className="h-4 w-4" />
                 </Button>
             </SidebarMenuButton>
         </div>
